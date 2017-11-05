@@ -29,6 +29,7 @@ char * read_line (FILE * fp) {
   while (1) {
     c = getc(fp);
     if ((c == EOF) || (c == '\n')) break;
+    if (c == '\r') continue;
     line = realloc(line, length + 1);
     line[length ++] = c;
   }
