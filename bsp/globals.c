@@ -1,3 +1,5 @@
+#include <setjmp.h>
+
 #include "struct.h"
 
 char * current_file = NULL;
@@ -7,3 +9,5 @@ struct file_stack_entry * file_stack = NULL;
 unsigned file_stack_length = 0;
 
 struct script_data * script_data = NULL;
+
+jmp_buf bsp_return_point;

@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <setjmp.h>
 
 #include "../util/public.h"
 
 #include "struct.h"
 #include "commands.h"
+#include "public.h"
 
 #define LETTERS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 #define LETTERS_OR_UNDERSCORE LETTERS "_"
@@ -32,12 +34,16 @@ extern unsigned current_line;
 extern struct file_stack_entry * file_stack;
 extern unsigned file_stack_length;
 extern struct script_data * script_data;
+extern jmp_buf bsp_return_point;
 
 // labels.c
 void declare_label(const char *);
 void flush_locals(void);
 void flush_all_symbols(void);
 int validate_label(const char *);
+
+// main.c
+void bsp_error(void);
 
 // parse.c
 void process_input_line(const char *);
