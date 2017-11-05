@@ -10,7 +10,7 @@ void calculation_command (int opcode_byte, char ** arguments) {
   char buffer[7];
   *buffer = opcode_byte + 2;
   buffer[1] = buffer[2] = argument -> value;
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   argument = get_argument(arguments[1]);
   switch (argument -> kind) {
     case 0:
@@ -27,7 +27,7 @@ void calculation_command (int opcode_byte, char ** arguments) {
       create_reference(argument -> reference, script_data -> length + 3);
       append_data_to_script(buffer, 7);
   }
-  free(argument);
+  mr_free(bsp_memory_region, argument);
 }
 
 void mulacum_command (int opcode_byte, char ** arguments) {
@@ -39,7 +39,7 @@ void mulacum_command (int opcode_byte, char ** arguments) {
   *buffer = opcode_byte;
   if (argument -> kind != 1) error_exit(1, "argument must be a variable");
   buffer[1] = buffer[2] = argument -> value;
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   while (arg_number --) {
     argument = get_argument(*(arguments ++));
     switch (argument -> kind) {
@@ -56,7 +56,7 @@ void mulacum_command (int opcode_byte, char ** arguments) {
         memset(current, 0, 4);
         current += 4;
     }
-    free(argument);
+    mr_free(bsp_memory_region, argument);
   }
   append_data_to_script(buffer, current - buffer);
 }
@@ -76,14 +76,14 @@ void bit_shift_command (int bit_shift_type, char ** arguments) {
   struct bsp_argument * argument = get_argument(*arguments);
   if (argument -> kind != 1) error_exit(1, "argument must be a variable");
   unsigned char variable = argument -> value;
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   unsigned char shift_type, shift_count;
   argument = get_argument(arguments[shorthand ? 1 : 2]);
   if (argument -> kind == 2) error_exit(1, "cannot use a reference as a shift count");
   if ((!argument -> kind) && (argument -> value > 31) && (argument -> value < -31u)) error_exit(1, "shift count must be between -31 and 31");
   shift_type = argument -> kind;
   shift_count = argument -> value;
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   if (!shift_type) shift_count &= 31;
   argument = shorthand ? NULL : get_argument(arguments[1]);
   unsigned char buffer[8];
@@ -116,7 +116,7 @@ void bit_shift_command (int bit_shift_type, char ** arguments) {
         memset(buffer + buffer_length, 0, 4);
         buffer_length += 4;
     }
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   if (shift_type) buffer[buffer_length ++] = shift_count;
   append_data_to_script(buffer, buffer_length);
 }

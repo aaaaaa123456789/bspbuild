@@ -11,7 +11,7 @@ struct bsp_argument * get_argument (const char * string) {
   }
   if (strchr(NUMERIC_CHARACTERS, *string)) {
     char * error;
-    result = malloc(sizeof(struct bsp_argument));
+    result = mr_malloc(bsp_memory_region, sizeof(struct bsp_argument));
     result -> kind = 0;
     result -> value = convert_string_to_number(string, &error);
     if (error) error_exit("%s", error);
@@ -19,13 +19,13 @@ struct bsp_argument * get_argument (const char * string) {
   }
   struct bsp_symbol * definition = find_definition(string);
   if (definition) {
-    result = malloc(sizeof(struct bsp_argument));
+    result = mr_malloc(bsp_memory_region, sizeof(struct bsp_argument));
     result -> kind = 0;
     result -> value = definition -> value;
     return result;
   }
   if (!(validate_label(string) || ((*string == '.') && validate_label(string + 1)))) error_exit("invalid label identifier: %s", string);
-  result = malloc(sizeof(struct bsp_argument) + strlen(string) + 1);
+  result = mr_malloc(bsp_memory_region, sizeof(struct bsp_argument) + strlen(string) + 1);
   result -> kind = 2;
   strcpy(result -> reference, string);
   return result;
@@ -42,6 +42,6 @@ char * get_string_argument (const char * argument) {
     pos ++;
     memmove(pos, pos + 1, strlen(pos));
   }
-  result = realloc(result, strlen(result) + 1);
+  result = mr_realloc(bsp_memory_region, result, strlen(result) + 1);
   return result;
 }

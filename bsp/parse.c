@@ -7,7 +7,7 @@ void process_input_line (const char * line) {
   if (!strchr("\t ", *line)) {
     pos = strchr(line, ':');
     if (pos) {
-      copy = malloc(pos - line + 1);
+      copy = mr_malloc(bsp_memory_region, pos - line + 1);
       memcpy(copy, line, pos - line);
       copy[pos - line] = 0;
       line = pos + 1;
@@ -16,7 +16,7 @@ void process_input_line (const char * line) {
       line = NULL;
     }
     declare_label(copy);
-    free(copy);
+    mr_free(bsp_memory_region, copy);
     if (!(line && *line)) return;
   }
   char ** components = extract_components_from_line(line);
@@ -33,18 +33,18 @@ char ** extract_components_from_line (const char * line) {
   if (pos >= 0) copy[pos] = 0;
   char * current = copy + strspn(copy, " \t");
   if ((!*current)) {
-    free(copy);
+    mr_free(bsp_memory_region, copy);
     return NULL;
   }
   pos = strcspn(current, " \t");
   char ** result;
   if (!current[pos]) {
-    result = malloc(sizeof(char *) * 2);
+    result = mr_malloc(bsp_memory_region, sizeof(char *) * 2);
     *result = duplicate_string(current);
     result[1] = NULL;
     return result;
   }
-  result = malloc(sizeof(char *));
+  result = mr_malloc(bsp_memory_region, sizeof(char *));
   current[pos] = 0;
   *result = duplicate_string(current);
   current += pos + 1;
@@ -56,20 +56,20 @@ char ** extract_components_from_line (const char * line) {
     component = trim_string(current);
     if (pos >= 0) current += pos + 1;
     if (*component) {
-      result = realloc(result, sizeof(char *) * (components + 1));
+      result = mr_realloc(bsp_memory_region, result, sizeof(char *) * (components + 1));
       result[components ++] = component;
     } else
-      free(component);
+      mr_free(bsp_memory_region, component);
   }
-  result = realloc(result, sizeof(char *) * (components + 1));
+  result = mr_realloc(bsp_memory_region, result, sizeof(char *) * (components + 1));
   result[components] = NULL;
   return result;
 }
 
 void destroy_component_array (char ** array) {
   char ** current;
-  for (current = array; *current; current ++) free(*current);
-  free(array);
+  for (current = array; *current; current ++) mr_free(bsp_memory_region, *current);
+  mr_free(bsp_memory_region, array);
 }
 
 unsigned count_parameters (char ** components) {

@@ -1,11 +1,11 @@
 #include "proto.h"
 
 void initialize_script_data (void) {
-  script_data = calloc(1, sizeof(struct script_data));
+  script_data = mr_calloc(bsp_memory_region, sizeof(struct script_data));
 }
 
 void append_data_to_script (const char * data, unsigned length) {
-  script_data = realloc(script_data, sizeof(struct script_data) + script_data -> length + length);
+  script_data = mr_realloc(bsp_memory_region, script_data, sizeof(struct script_data) + script_data -> length + length);
   memcpy(script_data -> data + script_data -> length, data, length);
   script_data -> length += length;
 }
@@ -16,7 +16,7 @@ void append_binary_file_to_script (const char * file) {
   char * error;
   FILE * fp = open_binary_file(file, &error);
   if (error) error_exit("%s", error);
-  char * buffer = malloc(65536);
+  char * buffer = mr_malloc(bsp_memory_region, 65536);
   unsigned rv;
   while (!feof(fp)) {
     rv = fread(buffer, 1, 65536, fp);
@@ -24,7 +24,7 @@ void append_binary_file_to_script (const char * file) {
     append_data_to_script(buffer, rv);
   }
   fclose(fp);
-  free(buffer);
+  mr_free(bsp_memory_region, buffer);
   current_file = prev_current_file;
 }
 

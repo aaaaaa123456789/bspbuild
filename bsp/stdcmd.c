@@ -36,14 +36,14 @@ void standard_command (unsigned char opcode_byte, unsigned char expected_variabl
   unsigned temp = count_parameters(arguments);
   if (temp != (expected_variable_count + expected_argument_count))
     error_exit(1, "command expects %hhu argument(s), got %u", expected_variable_count + expected_argument_count, temp);
-  unsigned char * buffer = calloc(1, 1 + expected_variable_count + 4 * expected_argument_count);
+  unsigned char * buffer = mr_calloc(bsp_memory_region, 1 + expected_variable_count + 4 * expected_argument_count);
   unsigned char * current = buffer + 1;
   struct bsp_argument * argument;
   while (expected_variable_count --) {
     argument = get_argument(*(arguments ++));
     if (argument -> kind != 1) error_exit(1, "argument must be a variable");
     *(current ++) = argument -> value;
-    free(argument);
+    mr_free(bsp_memory_region, argument);
   }
   while (expected_argument_count --) {
     argument = get_argument(*(arguments ++));
@@ -60,11 +60,11 @@ void standard_command (unsigned char opcode_byte, unsigned char expected_variabl
         create_reference(argument -> reference, script_data -> length + (current - buffer));
         current += 4;
     }
-    free(argument);
+    mr_free(bsp_memory_region, argument);
   }
   *buffer = opcode_byte;
   append_data_to_script(buffer, current - buffer);
-  free(buffer);
+  mr_free(bsp_memory_region, buffer);
 }
 
 void one_byte_argument_command (int opcode_byte, char ** arguments) {
@@ -74,7 +74,7 @@ void one_byte_argument_command (int opcode_byte, char ** arguments) {
   char buffer[2];
   *buffer = opcode_byte + argument -> kind;
   buffer[1] = argument -> value;
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   append_data_to_script(buffer, 2);
 }
 
@@ -91,7 +91,7 @@ void one_halfword_argument_command (int opcode_byte, char ** arguments) {
     write_halfword_to_buffer(buffer + 1, argument -> value);
     append_data_to_script(buffer, 3);
   }
-  free(argument);
+  mr_free(bsp_memory_region, argument);
 }
 
 void one_argument_one_byte_argument (int opcode_byte, char ** arguments) {
@@ -113,12 +113,12 @@ void one_argument_one_byte_argument (int opcode_byte, char ** arguments) {
       memset(buffer, 0, 4);
       current += 4;
   }
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   argument = get_argument(arguments[1]);
   if (argument -> kind == 2) error_exit(1, "cannot use a reference as a byte-sized argument");
   opcode_byte += argument -> kind;
   *(current ++) = argument -> value;
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   *buffer = opcode_byte;
   append_data_to_script(buffer, current - buffer);
 }
@@ -142,7 +142,7 @@ void one_argument_one_halfword_argument (int opcode_byte, char ** arguments) {
       memset(buffer, 0, 4);
       current += 4;
   }
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   argument = get_argument(arguments[1]);
   if (argument -> kind == 2) error_exit(1, "cannot use a reference as a halfword-sized argument");
   opcode_byte += argument -> kind;
@@ -152,7 +152,7 @@ void one_argument_one_halfword_argument (int opcode_byte, char ** arguments) {
     write_halfword_to_buffer(current, argument -> value);
     current += 2;
   }
-  free(argument);
+  mr_free(bsp_memory_region, argument);
   *buffer = opcode_byte;
   append_data_to_script(buffer, current - buffer);
 }

@@ -11,3 +11,5 @@ unsigned file_stack_length = 0;
 struct script_data * script_data = NULL;
 
 jmp_buf bsp_return_point;
+
+void * bsp_memory_region = NULL;

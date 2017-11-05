@@ -22,9 +22,9 @@ void flush_locals (void) {
       continue;
     }
     resolve(script_data -> symbols[pos]);
-    free(script_data -> symbols[pos]);
+    mr_free(bsp_memory_region, script_data -> symbols[pos]);
     script_data -> symbols[pos] = script_data -> symbols[-- script_data -> symbol_count];
-    script_data -> symbols = realloc(script_data -> symbols, sizeof(struct bsp_symbol *) * script_data -> symbol_count);
+    script_data -> symbols = mr_realloc(bsp_memory_region, script_data -> symbols, sizeof(struct bsp_symbol *) * script_data -> symbol_count);
   }
   for (pos = 0; pos < script_data -> reference_count; pos ++) if (*(script_data -> references[pos] -> name) == '.')
     error_exit("encountered new global label before local '%s' was resolved", script_data -> references[pos] -> name);
@@ -34,13 +34,13 @@ void flush_all_symbols (void) {
   unsigned pos;
   for (pos = 0; pos < script_data -> symbol_count; pos ++) {
     resolve(script_data -> symbols[pos]);
-    free(script_data -> symbols[pos]);
+    mr_free(bsp_memory_region, script_data -> symbols[pos]);
   }
-  free(script_data -> symbols);
+  mr_free(bsp_memory_region, script_data -> symbols);
   script_data -> symbols = NULL;
   script_data -> symbol_count = 0;
   if (script_data -> reference_count) error_exit("unresolved label: %s", (**(script_data -> references)).name);
-  free(script_data -> references);
+  mr_free(bsp_memory_region, script_data -> references);
   script_data -> references = NULL;
 }
 

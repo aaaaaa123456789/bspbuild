@@ -35,6 +35,7 @@ extern struct file_stack_entry * file_stack;
 extern unsigned file_stack_length;
 extern struct script_data * script_data;
 extern jmp_buf bsp_return_point;
+extern void * bsp_memory_region;
 
 // labels.c
 void declare_label(const char *);
