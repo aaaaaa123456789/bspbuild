@@ -4,7 +4,7 @@ void push_file (const char * file) {
   current_file = NULL;
   char * error;
   FILE * fp = open_text_file(file, &error);
-  if (error) error_exit("%s", error);
+  if (error) bsp_throw_error("%s", error);
   char * filename = duplicate_string(file);
   if (file_stack_length) file_stack -> line = current_line;
   file_stack = mr_realloc(bsp_memory_region, file_stack, sizeof(struct file_stack_entry) * (file_stack_length + 1));

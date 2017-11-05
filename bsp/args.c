@@ -4,8 +4,8 @@ struct bsp_argument * get_argument (const char * string) {
   struct bsp_argument * result;
   if (*string == '#') {
     result = get_argument(string + 1);
-    if (result -> kind) error_exit("invalid variable argument: %s", string);
-    if (result -> value > 255) error_exit("invalid variable number: %u", result -> value);
+    if (result -> kind) bsp_throw_error("invalid variable argument: %s", string);
+    if (result -> value > 255) bsp_throw_error("invalid variable number: %u", result -> value);
     result -> kind = 1;
     return result;
   }
@@ -14,7 +14,7 @@ struct bsp_argument * get_argument (const char * string) {
     result = mr_malloc(bsp_memory_region, sizeof(struct bsp_argument));
     result -> kind = 0;
     result -> value = convert_string_to_number(string, &error);
-    if (error) error_exit("%s", error);
+    if (error) bsp_throw_error("%s", error);
     return result;
   }
   struct bsp_symbol * definition = find_definition(string);
@@ -24,7 +24,7 @@ struct bsp_argument * get_argument (const char * string) {
     result -> value = definition -> value;
     return result;
   }
-  if (!(validate_label(string) || ((*string == '.') && validate_label(string + 1)))) error_exit("invalid label identifier: %s", string);
+  if (!(validate_label(string) || ((*string == '.') && validate_label(string + 1)))) bsp_throw_error("invalid label identifier: %s", string);
   result = mr_malloc(bsp_memory_region, sizeof(struct bsp_argument) + strlen(string) + 1);
   result -> kind = 2;
   strcpy(result -> reference, string);
@@ -32,10 +32,10 @@ struct bsp_argument * get_argument (const char * string) {
 }
 
 char * get_string_argument (const char * argument) {
-  if (*argument != '"') error_exit("unquoted string");
+  if (*argument != '"') bsp_throw_error("unquoted string");
   char * result = duplicate_string(argument + 1);
   unsigned length = strlen(result) - 1;
-  if (result[length] != '"') error_exit("unquoted string");
+  if (result[length] != '"') bsp_throw_error("unquoted string");
   result[length] = 0;
   char * pos = result;
   while (pos = strstr(pos, "\"\"")) {

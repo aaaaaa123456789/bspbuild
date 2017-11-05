@@ -6,7 +6,7 @@ void calculation_command (int opcode_byte, char ** arguments) {
     return;
   }
   struct bsp_argument * argument = get_argument(*arguments);
-  if (argument -> kind != 1) error_exit(1, "argument must be a variable");
+  if (argument -> kind != 1) bsp_throw_error("argument must be a variable");
   char buffer[7];
   *buffer = opcode_byte + 2;
   buffer[1] = buffer[2] = argument -> value;
@@ -31,13 +31,13 @@ void calculation_command (int opcode_byte, char ** arguments) {
 }
 
 void mulacum_command (int opcode_byte, char ** arguments) {
-  if (count_parameters(arguments) != 3) error_exit(1, "command expects 3 argument(s), got %u", count_parameters(arguments));
+  if (count_parameters(arguments) != 3) bsp_throw_error("command expects 3 argument(s), got %u", count_parameters(arguments));
   struct bsp_argument * argument = get_argument(*(arguments ++));
   char buffer[11];
   char * current = buffer + 3;
   unsigned char arg_number = 2;
   *buffer = opcode_byte;
-  if (argument -> kind != 1) error_exit(1, "argument must be a variable");
+  if (argument -> kind != 1) bsp_throw_error("argument must be a variable");
   buffer[1] = buffer[2] = argument -> value;
   mr_free(bsp_memory_region, argument);
   while (arg_number --) {
@@ -71,16 +71,16 @@ void bit_shift_command (int bit_shift_type, char ** arguments) {
       shorthand = 0;
       break;
     default:
-      error_exit(1, "command expects 3 argument(s), got %u", count_parameters(arguments));
+      bsp_throw_error("command expects 3 argument(s), got %u", count_parameters(arguments));
   }
   struct bsp_argument * argument = get_argument(*arguments);
-  if (argument -> kind != 1) error_exit(1, "argument must be a variable");
+  if (argument -> kind != 1) bsp_throw_error("argument must be a variable");
   unsigned char variable = argument -> value;
   mr_free(bsp_memory_region, argument);
   unsigned char shift_type, shift_count;
   argument = get_argument(arguments[shorthand ? 1 : 2]);
-  if (argument -> kind == 2) error_exit(1, "cannot use a reference as a shift count");
-  if ((!argument -> kind) && (argument -> value > 31) && (argument -> value < -31u)) error_exit(1, "shift count must be between -31 and 31");
+  if (argument -> kind == 2) bsp_throw_error("cannot use a reference as a shift count");
+  if ((!argument -> kind) && (argument -> value > 31) && (argument -> value < -31u)) bsp_throw_error("shift count must be between -31 and 31");
   shift_type = argument -> kind;
   shift_count = argument -> value;
   mr_free(bsp_memory_region, argument);

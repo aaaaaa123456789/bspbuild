@@ -22,7 +22,7 @@ void process_input_line (const char * line) {
   char ** components = extract_components_from_line(line);
   if (!components) return;
   struct bsp_command * command = find_command(*components);
-  if (!command) error_exit("unknown command: %s", *components);
+  if (!command) bsp_throw_error("unknown command: %s", *components);
   command -> parser(command -> argument, components + 1);
   destroy_component_array(components);
 }
@@ -91,7 +91,7 @@ int find_unquoted_character (const char * string, char character) {
     if (in_quotes) continue;
     if (*p == character) return pos;
   }
-  if (in_quotes) error_exit("mismatched quotes in string: %s", string);
+  if (in_quotes) bsp_throw_error("mismatched quotes in string: %s", string);
   return -1;
 }
 

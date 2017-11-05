@@ -22,9 +22,9 @@ void data_command (int width, char ** arguments) {
         append_data_to_script(buffer, width);
         break;
       case 1:
-        error_exit(1, "variables are not allowed in data commands");
+        bsp_throw_error("variables are not allowed in data commands");
       case 2:
-        if (width != 4) error_exit(1, "references are not allowed in data commands narrower than 32 bits");
+        if (width != 4) bsp_throw_error("references are not allowed in data commands narrower than 32 bits");
         memset(buffer, 0, 4);
         create_reference(argument -> reference, script_data -> length);
         append_data_to_script(buffer, 4);
@@ -38,7 +38,7 @@ void hexdata_command (int _, char ** arguments) {
   unsigned argument_number, length, pos;
   for (argument_number = 0; arguments[argument_number]; argument_number ++) {
     if (strspn(arguments[argument_number], "0123456789abcdefABCDEF") != strlen(arguments[argument_number]))
-      error_exit(1, "argument %u to hexdata is not a valid hex string", argument_number + 1);
+      bsp_throw_error("argument %u to hexdata is not a valid hex string", argument_number + 1);
     length = (strlen(arguments[argument_number]) + 1) >> 1;
     buffer = mr_malloc(bsp_memory_region, length);
     for (pos = 0; pos < length; pos ++)
@@ -49,10 +49,10 @@ void hexdata_command (int _, char ** arguments) {
 }
 
 void define_command (int _, char ** arguments) {
-  if (count_parameters(arguments) != 2) error_exit(1, "command expects 2 argument(s), got %u", count_parameters(arguments));
-  if (!validate_label(*arguments)) error_exit(1, "'%s' is not a valid symbol name", *arguments);
+  if (count_parameters(arguments) != 2) bsp_throw_error("command expects 2 argument(s), got %u", count_parameters(arguments));
+  if (!validate_label(*arguments)) bsp_throw_error("'%s' is not a valid symbol name", *arguments);
   struct bsp_argument * argument = get_argument(arguments[1]);
-  if (argument -> kind) error_exit(1, "the second argument to define must be a number (got: %s)", arguments[1]);
+  if (argument -> kind) bsp_throw_error("the second argument to define must be a number (got: %s)", arguments[1]);
   unsigned value = argument -> value;
   mr_free(bsp_memory_region, argument);
   struct bsp_symbol * definition = find_definition(*arguments);
@@ -63,7 +63,7 @@ void define_command (int _, char ** arguments) {
 }
 
 void include_command (int is_binary, char ** arguments) {
-  if (count_parameters(arguments) != 1) error_exit(1, "command expects 1 argument(s), got %u", count_parameters(arguments));
+  if (count_parameters(arguments) != 1) bsp_throw_error("command expects 1 argument(s), got %u", count_parameters(arguments));
   char * filename = get_string_argument(*arguments);
   if (is_binary)
     append_binary_file_to_script(filename);
@@ -82,9 +82,9 @@ void string_command (int _, char ** arguments) {
 }
 
 void align_command (int _, char ** arguments) {
-  if (count_parameters(arguments) != 1) error_exit(1, "command expects 1 argument(s), got %u", count_parameters(arguments));
+  if (count_parameters(arguments) != 1) bsp_throw_error("command expects 1 argument(s), got %u", count_parameters(arguments));
   struct bsp_argument * argument = get_argument(*arguments);
-  if (argument -> kind || !(argument -> value)) error_exit(1, "the argument to align must be a non-zero number (got: %s)", *arguments);
+  if (argument -> kind || !(argument -> value)) bsp_throw_error("the argument to align must be a non-zero number (got: %s)", *arguments);
   unsigned alignment = argument -> value;
   mr_free(bsp_memory_region, argument);
   if (!(script_data -> length % alignment)) return;

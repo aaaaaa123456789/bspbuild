@@ -15,12 +15,12 @@ void append_binary_file_to_script (const char * file) {
   current_file = NULL;
   char * error;
   FILE * fp = open_binary_file(file, &error);
-  if (error) error_exit("%s", error);
+  if (error) bsp_throw_error("%s", error);
   char * buffer = mr_malloc(bsp_memory_region, 65536);
   unsigned rv;
   while (!feof(fp)) {
     rv = fread(buffer, 1, 65536, fp);
-    if ((!rv) && ferror(fp)) error_exit("could not read data from binary file %s", file);
+    if ((!rv) && ferror(fp)) bsp_throw_error("could not read data from binary file %s", file);
     append_data_to_script(buffer, rv);
   }
   fclose(fp);
