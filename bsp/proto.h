@@ -35,6 +35,7 @@ extern struct file_stack_entry * file_stack;
 extern unsigned file_stack_length;
 extern struct script_data * script_data;
 extern jmp_buf bsp_return_point;
+extern char * volatile bsp_error;
 extern void * bsp_memory_region;
 
 // labels.c
@@ -44,7 +45,7 @@ void flush_all_symbols(void);
 int validate_label(const char *);
 
 // main.c
-void bsp_error(void);
+void bsp_throw_error(const char *, ...);
 
 // parse.c
 void process_input_line(const char *);
