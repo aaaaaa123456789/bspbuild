@@ -2,21 +2,24 @@
 
 char * bsp_main (const char * output, const char * input, ...) {
   if (!(input && output)) return duplicate_string("error: BSP compilation requires at least one input file and one output file");
+  bsp_memory_region = create_memory_region();
   bsp_error = NULL;
   int rv = setjmp(bsp_return_point);
-  if (rv) return bsp_error;
-  initialize_script_data();
-  file_stack = NULL;
-  file_stack_length = 0;
-  va_list ap;
-  va_start(ap, input);
-  while (input) {
-    bsp_parse_file(input);
-    input = va_arg(ap, const char *);
+  if (!rv) {
+    initialize_script_data();
+    file_stack = NULL;
+    file_stack_length = 0;
+    va_list ap;
+    va_start(ap, input);
+    while (input) {
+      bsp_parse_file(input);
+      input = va_arg(ap, const char *);
+    }
+    flush_all_symbols();
+    bsp_write_output(output);
   }
-  flush_all_symbols();
-  bsp_write_output(output);
-  return NULL;
+  destroy_memory_region(bsp_memory_region);
+  return bsp_error;
 }
 
 void bsp_parse_file (const char * file) {

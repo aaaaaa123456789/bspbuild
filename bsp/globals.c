@@ -13,4 +13,4 @@ struct script_data * script_data = NULL;
 jmp_buf bsp_return_point;
 char * volatile bsp_error;
 
-void * bsp_memory_region = NULL;
+void * volatile bsp_memory_region = NULL;
