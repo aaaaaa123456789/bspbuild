@@ -45,6 +45,8 @@ void flush_all_symbols(void);
 int validate_label(const char *);
 
 // main.c
+void bsp_parse_file(const char *);
+void bsp_write_output(const char *);
 void bsp_throw_error(const char *, ...);
 
 // parse.c
