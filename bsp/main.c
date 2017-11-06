@@ -8,7 +8,7 @@ char * bsp_build_file (const char * output, const char * input) {
 }
 
 char * bsp_build (const char * output, char ** inputs) {
-  if (!(input && output)) return duplicate_string("error: BSP compilation requires at least one input file and one output file");
+  if (!(inputs && *inputs && output)) return duplicate_string("error: BSP compilation requires at least one input file and one output file");
   bsp_memory_region = create_memory_region();
   bsp_error = NULL;
   int rv = setjmp(bsp_return_point);
@@ -43,8 +43,8 @@ void bsp_parse_file (const char * file) {
 void bsp_write_output (const char * output) {
   char * error;
   FILE * fp = open_binary_file_for_writing(output, &error);
-  if (error) error_exit("%s", error);
-  if (!write_data_to_file(fp, script_data -> data, script_data -> length)) error_exit("could not write data to output file");
+  if (error) bsp_throw_error("%s", error);
+  if (!write_data_to_file(fp, script_data -> data, script_data -> length)) bsp_throw_error("could not write data to output file");
   fclose(fp);
 }
 

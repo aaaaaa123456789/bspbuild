@@ -1,4 +1,4 @@
-struct memory_region_list {
-  struct memory_region_list * prev;
-  struct memory_region_list * next;
+struct memory_region {
+  struct memory_region * prev;
+  struct memory_region * next;
 };

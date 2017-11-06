@@ -30,7 +30,7 @@ void * mr_create_node (struct memory_region ** region, struct memory_region * no
   if (!node) return NULL;
   node -> prev = NULL;
   node -> next = *region;
-  if (*region) *region -> prev = node;
+  if (*region) (**region).prev = node;
   *region = node;
   return node + 1;
 }
