@@ -61,9 +61,6 @@ struct bsp_command * find_command(const char *);
 void initialize_script_data(void);
 void append_data_to_script(const char *, unsigned);
 void append_binary_file_to_script(const char *);
-void write_halfword_to_buffer(void *, unsigned short);
-void write_word_to_buffer(void *, unsigned);
-void write_number_to_buffer(unsigned char *, unsigned, unsigned char);
 
 // symbol.c
 struct bsp_symbol * new_symbol(const char *, unsigned);

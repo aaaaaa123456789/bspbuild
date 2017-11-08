@@ -4,6 +4,12 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdint.h>
+
+// buffer.c
+void write_halfword_to_buffer(void * buffer, unsigned short number);
+void write_word_to_buffer(void * buffer, unsigned number);
+void write_number_to_buffer(void * buffer, uintmax_t number, unsigned char length);
 
 // file.c
 FILE * open_text_file(const char * file, char ** error);

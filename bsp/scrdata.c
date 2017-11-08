@@ -27,19 +27,3 @@ void append_binary_file_to_script (const char * file) {
   mr_free(bsp_memory_region, buffer);
   current_file = prev_current_file;
 }
-
-void write_halfword_to_buffer (void * buffer, unsigned short number) {
-  write_number_to_buffer(buffer, number, 2);
-}
-
-void write_word_to_buffer (void * buffer, unsigned number) {
-  write_number_to_buffer(buffer, number, 4);
-}
-
-void write_number_to_buffer (unsigned char * buffer, unsigned number, unsigned char length) {
-  unsigned char pos;
-  for (pos = 0; pos < length; pos ++) {
-    *(buffer ++) = number;
-    number >>= 8;
-  }
-}
