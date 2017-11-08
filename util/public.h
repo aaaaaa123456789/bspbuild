@@ -6,7 +6,11 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+#include "pubtypes.h"
+
 // buffer.c
+Buffer create_buffer(void);
+void append_data_to_buffer(Buffer * buffer, void * data, unsigned length);
 void write_halfword_to_buffer(void * buffer, unsigned short number);
 void write_word_to_buffer(void * buffer, unsigned number);
 void write_number_to_buffer(void * buffer, uintmax_t number, unsigned char length);
