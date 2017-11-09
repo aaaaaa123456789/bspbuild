@@ -13,6 +13,12 @@ void append_data_to_buffer (Buffer * buffer, void * data, unsigned length) {
   (*buffer) -> length += length;
 }
 
+void append_number_to_buffer (Buffer * buffer, uintmax_t number, unsigned char length) {
+  uintmax_t buf; // use the storage space for this variable as buffer
+  write_number_to_buffer(&buf, number, length);
+  append_data_to_buffer(buffer, &buf, length);
+}
+
 void write_halfword_to_buffer (void * buffer, unsigned short number) {
   write_number_to_buffer(buffer, number, 2);
 }

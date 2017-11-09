@@ -11,6 +11,7 @@
 // buffer.c
 Buffer create_buffer(void);
 void append_data_to_buffer(Buffer * buffer, void * data, unsigned length);
+void append_number_to_buffer(Buffer * buffer, uintmax_t number, unsigned char length);
 void write_halfword_to_buffer(void * buffer, unsigned short number);
 void write_word_to_buffer(void * buffer, unsigned number);
 void write_number_to_buffer(void * buffer, uintmax_t number, unsigned char length);
@@ -21,6 +22,7 @@ FILE * open_binary_file(const char * file, char ** error);
 FILE * open_binary_file_for_writing(const char * file, char ** error);
 char * read_line(FILE * fp);
 int write_data_to_file(FILE * fp, const void * data, unsigned length);
+long get_file_length(FILE * fp);
 
 // mem.c
 void * create_memory_region(void);

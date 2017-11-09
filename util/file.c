@@ -49,3 +49,12 @@ int write_data_to_file (FILE * fp, const void * data, unsigned length) {
   }
   return 1;
 }
+
+long get_file_length (FILE * fp) {
+  fpos_t saved_pos;
+  if (fgetpos(fp, &saved_pos) < 0) return -1;
+  long result = -1;
+  if (fseek(fp, 0, 2) >= 0) result = ftell(fp);
+  fsetpos(fp, &saved_pos);
+  return result;
+}
