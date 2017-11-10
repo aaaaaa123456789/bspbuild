@@ -5,6 +5,7 @@
 #include "../util/pubtypes.h"
 
 // main.c
-Buffer generate_ips_from_data(const void * first, const void * second, unsigned length);
+Buffer generate_ips_patch(const void * first, const void * second, unsigned length);
+Buffer generate_ips_for_data(const void * data, unsigned length);
 
 #endif
