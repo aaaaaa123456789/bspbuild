@@ -49,9 +49,9 @@ unsigned write_next_ips_block (const char * data, unsigned length, unsigned offs
 
 void write_next_data_block (const char * data, unsigned short length, unsigned offset) {
   if (!length) return;
-  append_big_endian_number_to_buffer(ips_buffer, offset, 3);
-  append_big_endian_number_to_buffer(ips_buffer, length, 2);
-  append_data_to_buffer(ips_buffer, data, length);
+  append_big_endian_number_to_buffer(&ips_buffer, offset, 3);
+  append_big_endian_number_to_buffer(&ips_buffer, length, 2);
+  append_data_to_buffer(&ips_buffer, data, length);
 }
 
 unsigned short write_next_run_block (const char * data, unsigned length, unsigned offset) {
@@ -59,10 +59,10 @@ unsigned short write_next_run_block (const char * data, unsigned length, unsigne
   if (length > MAXIMUM_BLOCK_SIZE) length = MAXIMUM_BLOCK_SIZE;
   for (run = 1; (run < length) && (data[run] == *data); run ++);
   if (run < MINIMUM_RUN) return 0;
-  append_big_endian_number_to_buffer(ips_buffer, offset, 3);
-  append_data_to_buffer(ips_buffer, (unsigned char []) {0, 0}, 2); // just a zero, but this is faster
-  append_big_endian_number_to_buffer(ips_buffer, run, 2);
-  append_data_to_buffer(ips_buffer, data, 1);
+  append_big_endian_number_to_buffer(&ips_buffer, offset, 3);
+  append_data_to_buffer(&ips_buffer, (unsigned char []) {0, 0}, 2); // just a zero, but this is faster
+  append_big_endian_number_to_buffer(&ips_buffer, run, 2);
+  append_data_to_buffer(&ips_buffer, data, 1);
   return run;
 }
 
