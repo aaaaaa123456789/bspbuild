@@ -13,10 +13,14 @@ void append_data_to_buffer (Buffer * buffer, void * data, unsigned length) {
   (*buffer) -> length += length;
 }
 
-void append_number_to_buffer (Buffer * buffer, uintmax_t number, unsigned char length) {
-  uintmax_t buf; // use the storage space for this variable as buffer
-  write_number_to_buffer(&buf, number, length);
-  append_data_to_buffer(buffer, &buf, length);
+void append_big_endian_number_to_buffer (Buffer * buffer, uintmax_t number, unsigned char length) {
+  uintmax_t vbuf, vflip; // use the storage space for these variables as buffers
+  unsigned char * buf = (unsigned char *) &vbuf;
+  unsigned char * flipped = (unsigned char *) &vflip;
+  unsigned char pos;
+  write_number_to_buffer(buf, number, length);
+  for (pos = 0; pos < length; pos ++) flipped[pos] = buf[length - 1 - pos];
+  append_data_to_buffer(buffer, flipped, length);
 }
 
 void write_halfword_to_buffer (void * buffer, unsigned short number) {
