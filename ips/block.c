@@ -4,9 +4,9 @@ void write_ips_blocks_for_data (const void * data, unsigned length, unsigned off
   if (!(data && length)) return;
   unsigned block_size;
   while (length) {
-    if (offset == EOF_MARKER) {
+    if (offset == IPS_EOF_MARKER) {
       char * buf = malloc(length + 1);
-      *buf = ips_target[EOF_MARKER - 1];
+      *buf = ips_target[IPS_EOF_MARKER - 1];
       memcpy(buf + 1, data, length);
       block_size = write_next_ips_block(buf, length + 1, offset - 1)
       free(buf);
@@ -26,19 +26,19 @@ unsigned write_next_ips_block (const char * data, unsigned length, unsigned offs
     data += last_run;
     remaining -= last_run;
     offset += last_run;
-  } while (last_run >= MAXIMUM_BLOCK_SIZE);
+  } while (last_run >= MAXIMUM_IPS_BLOCK_SIZE);
   if (!remaining) return length;
   unsigned current = remaining;
-  if (current > MAXIMUM_BLOCK_SIZE) {
-    current = MAXIMUM_BLOCK_SIZE;
-    remaining -= MAXIMUM_BLOCK_SIZE;
+  if (current > MAXIMUM_IPS_BLOCK_SIZE) {
+    current = MAXIMUM_IPS_BLOCK_SIZE;
+    remaining -= MAXIMUM_IPS_BLOCK_SIZE;
   } else
     remaining = 0;
   int run_pos = check_runs(data, current);
   if (run_pos > 0) {
     remaining += current - run_pos;
     current = run_pos;
-    if ((offset + current) == EOF_MARKER) {
+    if ((offset + current) == IPS_EOF_MARKER) {
       remaining --;
       current ++;
     }
@@ -56,9 +56,9 @@ void write_next_data_block (const char * data, unsigned short length, unsigned o
 
 unsigned short write_next_run_block (const char * data, unsigned length, unsigned offset) {
   unsigned short run;
-  if (length > MAXIMUM_BLOCK_SIZE) length = MAXIMUM_BLOCK_SIZE;
+  if (length > MAXIMUM_IPS_BLOCK_SIZE) length = MAXIMUM_IPS_BLOCK_SIZE;
   for (run = 1; (run < length) && (data[run] == *data); run ++);
-  if (run < MINIMUM_RUN) return 0;
+  if (run < MINIMUM_IPS_RUN) return 0;
   append_big_endian_number_to_buffer(&ips_buffer, offset, 3);
   append_data_to_buffer(&ips_buffer, (unsigned char []) {0, 0}, 2); // just a zero, but this is faster
   append_big_endian_number_to_buffer(&ips_buffer, run, 2);
@@ -75,10 +75,10 @@ unsigned get_segment_length (const char * first_buffer, const char * second_buff
 
 int check_runs (const char * data, unsigned length) {
   unsigned pos, cmp;
-  if (length < MINIMUM_RUN) return -1;
-  for (pos = 0; pos <= (length - MINIMUM_RUN); pos ++) {
-    for (cmp = 0; (cmp < MINIMUM_RUN) && (data[pos] == data[pos + cmp]); cmp ++);
-    if (cmp >= MINIMUM_RUN) return pos;
+  if (length < MINIMUM_IPS_RUN) return -1;
+  for (pos = 0; pos <= (length - MINIMUM_IPS_RUN); pos ++) {
+    for (cmp = 0; (cmp < MINIMUM_IPS_RUN) && (data[pos] == data[pos + cmp]); cmp ++);
+    if (cmp >= MINIMUM_IPS_RUN) return pos;
   }
   return -1;
 }

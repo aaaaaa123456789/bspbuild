@@ -2,11 +2,11 @@
 
 #include "public.h"
 
-#define MINIMUM_RUN 8
-#define MAXIMUM_REDUNDANCY 6
-#define MAXIMUM_BLOCK_SIZE 0x7FFF
+#define MINIMUM_IPS_RUN 8
+#define MAXIMUM_IPS_REDUNDANCY 6
+#define MAXIMUM_IPS_BLOCK_SIZE 0x7FFF
 // you cannot write a patch block with an offset of 4,542,278 (0x454F46) because it is the end of file marker
-#define EOF_MARKER 4542278
+#define IPS_EOF_MARKER 0x454F46
 
 // block.c
 void write_ips_blocks_for_data(const void *, unsigned, unsigned);

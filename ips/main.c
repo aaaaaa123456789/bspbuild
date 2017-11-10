@@ -21,5 +21,16 @@ Buffer generate_ips_for_data (const void * data, unsigned length) {
 }
 
 void generate_ips_patch_from_diff (unsigned length) {
-  // ...
+  unsigned block, next, pos;
+  for (pos = 0; pos < length; pos += block)
+    if (ips_source[pos] == ips_target[pos])
+      block = get_segment_length(first_buffer + pos, second_buffer + pos, length - pos, 1);
+    else {
+      block = next = 0;
+      do {
+        block += next + get_segment_length(first_buffer + pos + block, second_buffer + pos + block, length - pos - block, 0);
+        next = get_segment_length(first_buffer + pos + block, second_buffer + pos + block, length - pos - block, 1);
+      } while (((pos + block) < length) && (next < MAXIMUM_IPS_REDUNDANCY));
+      write_ips_blocks_for_data(ips_target + pos, block, pos);
+    }
 }
