@@ -4,7 +4,7 @@ Buffer create_buffer (void) {
   return calloc(1, sizeof(struct buffer));
 }
 
-void append_data_to_buffer (Buffer * buffer, void * data, unsigned length) {
+void append_data_to_buffer (Buffer * buffer, const void * data, unsigned length) {
   *buffer = realloc(*buffer, sizeof(struct buffer) + (*buffer) -> length + length);
   if (data)
     memcpy((*buffer) -> data + (*buffer) -> length, data, length);

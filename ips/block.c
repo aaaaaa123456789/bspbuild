@@ -8,7 +8,7 @@ void write_ips_blocks_for_data (const void * data, unsigned length, unsigned off
       char * buf = malloc(length + 1);
       *buf = ips_target[IPS_EOF_MARKER - 1];
       memcpy(buf + 1, data, length);
-      block_size = write_next_ips_block(buf, length + 1, offset - 1)
+      block_size = write_next_ips_block(buf, length + 1, offset - 1);
       free(buf);
     } else
       block_size = write_next_ips_block(data, length, offset);

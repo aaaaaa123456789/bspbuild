@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "../util/public.h"
 
 #include "public.h"

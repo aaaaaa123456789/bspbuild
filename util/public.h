@@ -10,7 +10,7 @@
 
 // buffer.c
 Buffer create_buffer(void);
-void append_data_to_buffer(Buffer * buffer, void * data, unsigned length);
+void append_data_to_buffer(Buffer * buffer, const void * data, unsigned length);
 void append_big_endian_number_to_buffer(Buffer * buffer, uintmax_t number, unsigned char length);
 void write_halfword_to_buffer(void * buffer, unsigned short number);
 void write_word_to_buffer(void * buffer, unsigned number);
