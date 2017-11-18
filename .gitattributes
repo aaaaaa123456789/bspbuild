@@ -1,0 +1,4 @@
+* eol=lf
+
+*.c text
+*.h text linguist-language=C
