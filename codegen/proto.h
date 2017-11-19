@@ -13,4 +13,9 @@ unsigned count_invalid_string_characters(const char *);
 
 // labels.c
 char * generate_prefixed_label(CodeFile, const char *);
-int validate_new_label(const char *);
+
+// namedobj.c
+char * generate_prefixed_register(CodeFile, const char *);
+char * generate_prefixed_constant(CodeFile, const char *);
+char * generate_named_object(const char *, const char *);
+int validate_named_object(const char *);

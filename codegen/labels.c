@@ -2,7 +2,7 @@
 
 int add_label_to_codefile (CodeFile file, const char * label) {
   unsigned p;
-  if (!validate_new_label(label)) return -1;
+  if (!validate_named_object(label)) return -1;
   char * prefixed_label = generate_prefixed_label(file, label);
   for (p = 0; p < file -> label_count; p ++) if (!strcmp(prefixed_label, file -> labels[p])) {
     free(prefixed_label);
@@ -15,7 +15,7 @@ int add_label_to_codefile (CodeFile file, const char * label) {
 }
 
 int add_local_label_to_codefile (CodeFile file, const char * label) {
-  if (!validate_new_label(label)) return -1;
+  if (!validate_named_object(label)) return -1;
   fprintf(file -> fp, ".%s\n", label);
   return 0;
 }
@@ -37,11 +37,5 @@ int add_numeric_data_label_to_codefile (CodeFile file) {
 }
 
 char * generate_prefixed_label (CodeFile file, const char * label) {
-  return file -> label_prefix ? generate_string("%s%s", file -> label_prefix, label) : duplicate_string(label);
-}
-
-int validate_new_label (const char * label) {
-  if (!(label && *label)) return 0;
-  if (strspn(label, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_") != strlen(label)) return 0;
-  return !strchr("0123456789", *label);
+  return generate_named_object(label, file -> label_prefix);
 }

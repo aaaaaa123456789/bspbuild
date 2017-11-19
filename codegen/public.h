@@ -18,4 +18,8 @@ int add_local_label_to_codefile(CodeFile file, const char * label);
 int add_numeric_local_to_codefile(CodeFile file);
 int add_numeric_data_label_to_codefile(CodeFile file);
 
+// namedobj.c
+int add_register_definition_to_codefile(CodeFile file, const char * register_name, unsigned char register_number);
+int add_constant_to_codefile(CodeFile file, const char * constant_name, unsigned constant_value);
+
 #endif
