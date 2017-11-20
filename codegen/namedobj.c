@@ -24,7 +24,9 @@ int add_constant_to_codefile (CodeFile file, const char * constant_name, unsigne
   }
   file -> constants = realloc(file -> constants, sizeof(char *) * (file -> constant_count + 1));
   file -> constants[file -> constant_count] = prefixed;
-  fprintf(file -> fp, "\tdefine %s, 0x%08x\n", prefixed, constant_value);
+  char * fv = generate_formatted_number_for_file(constant_value);
+  fprintf(file -> fp, "\tdefine %s, %s\n", prefixed, fv);
+  free(fv);
   return file -> constant_count ++;
 }
 

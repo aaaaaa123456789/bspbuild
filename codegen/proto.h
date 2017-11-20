@@ -11,6 +11,13 @@
 const char * find_next_invalid_string_character(const char *);
 unsigned count_invalid_string_characters(const char *);
 
+// format.c
+char * generate_formatted_number_for_file(unsigned);
+
+// insttab.c
+extern const struct code_generation_instruction_entry codegen_instruction_table[];
+extern const unsigned codegen_instruction_count;
+
 // labels.c
 char * generate_prefixed_label(CodeFile, const char *);
 

@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include "pubtypes.h"
+
 struct code_file_info {
   FILE * fp;
   char * label_prefix;
@@ -14,4 +16,10 @@ struct code_file_info {
   unsigned next_numeric_local;
   unsigned next_numeric_data;
   // ...
+};
+
+struct code_generation_instruction_entry {
+  const char * name;
+  unsigned char variable_operands;
+  unsigned char any_operands;
 };
