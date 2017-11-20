@@ -15,7 +15,8 @@ void add_data_to_codefile (CodeFile file, const void * data, unsigned length) {
   putc('\n', file -> fp);
 }
 
-void add_string_to_codefile (CodeFile file, const char * string) {
+int add_string_to_codefile (CodeFile file, const char * string) {
+  if (!validate_UTF8(string)) return 0;
   const char * p;
   char * buf;
   while (p = find_next_invalid_string_character(string)) {
@@ -29,6 +30,7 @@ void add_string_to_codefile (CodeFile file, const char * string) {
     putc('\n', file -> fp);
   }
   fprintf(file -> fp, "\tstring \"%s\"\n", string);
+  return 1;
 }
 
 const char * find_next_invalid_string_character (const char * string) {

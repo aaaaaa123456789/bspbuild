@@ -6,7 +6,7 @@
 
 // data.c
 void add_data_to_codefile(CodeFile file, const void * data, unsigned length);
-void add_string_to_codefile(CodeFile file, const char * string);
+int add_string_to_codefile(CodeFile file, const char * string);
 
 // file.c
 void add_blank_line_to_codefile(CodeFile file);
