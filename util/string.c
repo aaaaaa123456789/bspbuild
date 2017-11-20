@@ -55,3 +55,29 @@ char * generate_string_from_varargs (const char * fmt, va_list varargs) {
   vsnprintf(result, rv + 1, fmt, varargs);
   return result;
 }
+
+int validate_UTF8 (const unsigned char * string) {
+  unsigned char check;
+  for (; *string; string ++) {
+    if (*string < 0x80) continue;
+    if (
+      (*string < 0xc2) ||
+      (*string > 0xf4) ||
+      ((*string == 0xe0) && (string[1] < 0xa0)) ||
+      ((*string == 0xed) && (string[1] >= 0xa0)) ||
+      ((*string == 0xf0) && (string[1] < 0x90)) ||
+      ((*string == 0xf4) && (string[1] >= 0x90))
+    ) return 0;
+    if (*string < 0xe0)
+      check = 1;
+    else if (*string < 0xf0)
+      check = 2;
+    else
+      check = 3;
+    while (check) {
+      if ((*(++ string) & 0xc0) != 0x80) return 0;
+      check --;
+    }
+  }
+  return 1;
+}

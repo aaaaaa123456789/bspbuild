@@ -38,5 +38,6 @@ char * duplicate_string(const char * string);
 unsigned convert_string_to_number(const char * string, char ** error);
 char * generate_string(const char * fmt, ...);
 char * generate_string_from_varargs(const char * fmt, va_list varargs);
+int validate_UTF8(const unsigned char * string);
 
 #endif
