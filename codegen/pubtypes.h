@@ -4,9 +4,18 @@
 
 typedef struct code_file_info * CodeFile;
 
+struct instruction_argument {
+  unsigned char type;
+  union {
+    unsigned value;
+    const char * string;
+  };
+};
+
 enum {
   // no parameter
-  ARGTYPE_NONE, // end of argument list
+  ARGTYPE_NONE,
+  ARGTYPE_END = ARGTYPE_NONE, // end of argument list
   // unsigned parameter
   ARGTYPE_IMMEDIATE,
   ARGTYPE_NAMED_CONSTANT,
