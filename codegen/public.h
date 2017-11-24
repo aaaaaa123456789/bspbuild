@@ -13,8 +13,8 @@ void add_blank_line_to_codefile(CodeFile file);
 void add_comment_to_codefile(CodeFile file, const char * comment, int indented);
 
 // inst.c
-char * add_instruction_to_codefile(unsigned instruction, ...);
-char * add_instruction_with_arguments_to_codefile(unsigned instruction, unsigned argument_count, const struct instruction_argument * arguments);
+char * add_instruction_to_codefile(CodeFile file, unsigned instruction, ...);
+char * add_instruction_with_arguments_to_codefile(CodeFile file, unsigned instruction, unsigned argument_count, const struct instruction_argument * arguments);
 
 // labels.c
 int add_label_to_codefile(CodeFile file, const char * label);

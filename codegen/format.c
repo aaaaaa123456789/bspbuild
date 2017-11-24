@@ -19,3 +19,7 @@ char * generate_formatted_number_for_file (unsigned number) {
     sprintf(result, "0x%08x", number);
   return result;
 }
+
+char * generate_formatted_argument (struct instruction_argument argument, char ** error) {
+  // ...
+}

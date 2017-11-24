@@ -14,8 +14,8 @@ struct instruction_argument {
 
 enum {
   // no parameter
-  ARGTYPE_NONE,
-  ARGTYPE_END = ARGTYPE_NONE, // end of argument list
+  ARGTYPE_NONE = 0,
+  ARGTYPE_END = 0, // end of argument list
   // unsigned parameter
   ARGTYPE_IMMEDIATE,
   ARGTYPE_NAMED_CONSTANT,
@@ -27,7 +27,9 @@ enum {
   // const char * parameter
   ARGTYPE_LOCAL_LABEL,
   ARGTYPE_GLOBAL_LABEL,
-  ARGTYPE_PASSTHROUGH // no validation, copy exactly
+  ARGTYPE_PASSTHROUGH, // no validation, copy exactly
+  // end of valid values
+  ARGTYPE_INVALID // used as sentinel
 };
 
 enum {

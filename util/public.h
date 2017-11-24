@@ -24,6 +24,9 @@ char * read_line(FILE * fp);
 int write_data_to_file(FILE * fp, const void * data, unsigned length);
 long get_file_length(FILE * fp);
 
+// generic.c
+unsigned value_in_list(unsigned value, ...);
+
 // mem.c
 void * create_memory_region(void);
 void destroy_memory_region(void * region);
