@@ -20,6 +20,40 @@ char * generate_formatted_number_for_file (unsigned number) {
   return result;
 }
 
-char * generate_formatted_argument (struct instruction_argument argument, char ** error) {
-  // ...
+char * generate_formatted_argument (CodeFile file, struct instruction_argument argument, char ** error) {
+  if (error) *error = NULL;
+  switch (argument.type) {
+    case ARGTYPE_NONE:
+      return duplicate_string("");
+    case ARGTYPE_IMMEDIATE:
+      return generate_formatted_number_for_file(argument.value);
+    case ARGTYPE_NAMED_CONSTANT:
+      // ...
+    case ARGTYPE_REGISTER:
+      if (argument.value <= 255) return generate_string("#%u", argument.value);
+      *error = generate_string("invalid variable number: %u", argument.value);
+      return NULL;
+    case ARGTYPE_NAMED_REGISTER:
+      // ...
+    case ARGTYPE_NAMED_LABEL:
+      // ...
+    case ARGTYPE_NUMERIC_LOCAL:
+      // ...
+    case ARGTYPE_NUMERIC_DATA:
+      // ...
+    case ARGTYPE_LOCAL_LABEL:
+      if (validate_named_object(argument.string)) return generate_string(".%s", argument.string);
+      *error = generate_string("invalid label: %s", argument.string);
+      return NULL;
+    case ARGTYPE_GLOBAL_LABEL:
+      if (!validate_named_object(argument.string)) {
+        *error = generate_string("invalid label: %s", argument.string);
+        return NULL;
+      }
+    case ARGTYPE_PASSTHROUGH:
+      return duplicate_string(argument.string);
+    default:
+      if (error) *error = generate_string("invalid argument type: %hhu", argument.type);
+      return NULL;
+  }
 }

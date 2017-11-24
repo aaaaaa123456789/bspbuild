@@ -49,7 +49,7 @@ char * add_instruction_with_arguments_to_codefile (CodeFile file, unsigned instr
   char * error;
   unsigned argument_length;
   for (p = 0; p < argument_count; p ++) {
-    formatted_argument = generate_formatted_argument(arguments[p], &error);
+    formatted_argument = generate_formatted_argument(file, arguments[p], &error);
     if (!formatted_argument) {
       free(result);
       return error;

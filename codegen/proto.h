@@ -14,7 +14,7 @@ unsigned count_invalid_string_characters(const char *);
 
 // format.c
 char * generate_formatted_number_for_file(unsigned);
-char * generate_formatted_argument(struct instruction_argument, char **);
+char * generate_formatted_argument(CodeFile, struct instruction_argument, char **);
 
 // insttab.c
 extern const struct code_generation_instruction_entry codegen_instruction_table[];
