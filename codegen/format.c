@@ -31,7 +31,7 @@ char * generate_formatted_argument (CodeFile file, struct instruction_argument a
       // ...
     case ARGTYPE_REGISTER:
       if (argument.value <= 255) return generate_string("#%u", argument.value);
-      *error = generate_string("invalid variable number: %u", argument.value);
+      if (error) *error = generate_string("invalid variable number: %u", argument.value);
       return NULL;
     case ARGTYPE_NAMED_REGISTER:
       // ...
