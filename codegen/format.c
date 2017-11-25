@@ -43,11 +43,11 @@ char * generate_formatted_argument (CodeFile file, struct instruction_argument a
       // ...
     case ARGTYPE_LOCAL_LABEL:
       if (validate_named_object(argument.string)) return generate_string(".%s", argument.string);
-      *error = generate_string("invalid label: %s", argument.string);
+      if (error) *error = generate_string("invalid label: %s", argument.string);
       return NULL;
     case ARGTYPE_GLOBAL_LABEL:
       if (!validate_named_object(argument.string)) {
-        *error = generate_string("invalid label: %s", argument.string);
+        if (error) *error = generate_string("invalid label: %s", argument.string);
         return NULL;
       }
     case ARGTYPE_PASSTHROUGH:
