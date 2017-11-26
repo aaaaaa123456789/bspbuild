@@ -17,9 +17,13 @@ char * add_instruction_to_codefile(CodeFile file, unsigned instruction, ...);
 char * add_instruction_with_arguments_to_codefile(CodeFile file, unsigned instruction, unsigned argument_count, const struct instruction_argument * arguments);
 
 // labels.c
+int declare_label_for_codefile(CodeFile file, const char * label);
 int add_label_to_codefile(CodeFile file, const char * label);
+int add_declared_label_to_codefile(CodeFile file, unsigned label_number);
 int add_local_label_to_codefile(CodeFile file, const char * label);
+int declare_numeric_local_for_codefile(CodeFile file);
 int add_numeric_local_to_codefile(CodeFile file);
+int add_declared_numeric_local_to_codefile(CodeFile file, unsigned numeric_local);
 int add_numeric_data_label_to_codefile(CodeFile file);
 
 // namedobj.c
