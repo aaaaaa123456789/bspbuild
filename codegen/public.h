@@ -24,7 +24,9 @@ int add_local_label_to_codefile(CodeFile file, const char * label);
 int declare_numeric_local_for_codefile(CodeFile file);
 int add_numeric_local_to_codefile(CodeFile file);
 int add_declared_numeric_local_to_codefile(CodeFile file, unsigned numeric_local);
+int declare_numeric_data_label_for_codefile(CodeFile file);
 int add_numeric_data_label_to_codefile(CodeFile file);
+int add_declared_numeric_data_label_to_codefile(CodeFile file, unsigned number);
 
 // namedobj.c
 int add_register_definition_to_codefile(CodeFile file, const char * register_name, unsigned char register_number);

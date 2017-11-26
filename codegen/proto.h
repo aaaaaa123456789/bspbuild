@@ -22,6 +22,7 @@ extern const unsigned codegen_instruction_count;
 
 // labels.c
 char * generate_prefixed_label(CodeFile, const char *);
+void flush_declared_local_labels(CodeFile);
 
 // namedobj.c
 char * generate_prefixed_register(CodeFile, const char *);
