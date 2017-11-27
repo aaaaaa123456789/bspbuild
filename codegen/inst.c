@@ -64,8 +64,7 @@ char * add_instruction_with_arguments_to_codefile (CodeFile file, unsigned instr
     memcpy(result + result_length, formatted_argument, argument_length + 1);
     free(formatted_argument);
   }
-  fputs(result, file -> fp);
-  putc('\n', file -> fp);
+  add_line_to_codefile(file, result);
   free(result);
   return NULL;
 }

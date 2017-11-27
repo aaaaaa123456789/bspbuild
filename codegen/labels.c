@@ -29,13 +29,13 @@ int add_label_to_codefile (CodeFile file, const char * label) {
 int add_declared_label_to_codefile (CodeFile file, unsigned label_number) {
   if (label_number >= file -> label_count) return -1;
   flush_declared_local_labels(file);
-  fprintf(file -> fp, "%s:\n", file -> labels[label_number]);
+  add_formatted_line_to_codefile(file, "%s:", file -> labels[label_number]);
   return 0;
 }
 
 int add_local_label_to_codefile (CodeFile file, const char * label) {
   if (!validate_named_object(label)) return -1;
-  fprintf(file -> fp, ".%s\n", label);
+  add_formatted_line_to_codefile(file, ".%s", label);
   return 0;
 }
 
@@ -71,7 +71,7 @@ int add_declared_numeric_data_label_to_codefile (CodeFile file, unsigned number)
   sprintf(buffer, "Data%u", number);
   char * prefixed = generate_prefixed_label(file, buffer);
   flush_declared_local_labels(file);
-  fprintf(file -> fp, "%s:\n", prefixed);
+  add_formatted_line_to_codefile(file, "%s:", prefixed);
   free(prefixed);
   return 0;
 }

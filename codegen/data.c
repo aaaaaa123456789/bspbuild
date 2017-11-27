@@ -1,35 +1,42 @@
 #include "proto.h"
 
 void add_data_to_codefile (CodeFile file, const void * data, unsigned length) {
+  char buffer[80] = "\thexdata ";
   const char * current = data;
-  unsigned char p;
+  unsigned char p, buffer_size = 9 /* strlen("\thexdata ") */;
   while (length > 32) {
-    fputs("\thexdata ", file -> fp);
-    for (p = 0; p < 32; p ++) fprintf(file -> fp, "%02hhx", *(current ++));
-    putc('\n', file -> fp);
+    for (p = 0; p < 32; p ++) buffer_size += sprintf(buffer + buffer_size, "%02hhx", *(current ++));
+    add_line_to_codefile(file, buffer);
     length -= 32;
+    buffer_size = 9;
   }
   if (!length) return;
-  fputs("\thexdata ", file -> fp);
-  for (p = 0; p < length; p ++) fprintf(file -> fp, "%02hhx", *(current ++));
-  putc('\n', file -> fp);
+  for (p = 0; p < length; p ++) buffer_size += sprintf(buffer + buffer_size, "%02hhx", *(current ++));
+  add_line_to_codefile(file, buffer);
 }
 
 int add_string_to_codefile (CodeFile file, const char * string) {
   if (!validate_UTF8(string)) return 0;
   const char * p;
   char * buf;
+  char * line;
+  unsigned line_length;
   while (p = find_next_invalid_string_character(string)) {
     buf = malloc(p - string + 1);
     memcpy(buf, string, p - string);
     buf[p - string] = 0;
-    fprintf(file -> fp, "\tdb \"%s\"", buf);
+    line = generate_string("\tdb \"%s\"", buf);
+    line_length = strlen(line);
     free(buf);
     string = p + count_invalid_string_characters(p);
-    while (p != string) fprintf(file -> fp, ", 0x%02hhx", *(p ++));
-    putc('\n', file -> fp);
+    while (p != string) {
+      line = realloc(line, line_length + 7);
+      line_length += sprintf(line + line_length, ", 0x%02hhx", *(p ++));
+    }
+    add_line_to_codefile(file, line);
+    free(line);
   }
-  fprintf(file -> fp, "\tstring \"%s\"\n", string);
+  add_formatted_line_to_codefile(file, "\tstring \"%s\"", string);
   return 1;
 }
 

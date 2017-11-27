@@ -10,7 +10,7 @@ int add_register_definition_to_codefile (CodeFile file, const char * register_na
   }
   file -> registers = realloc(file -> registers, sizeof(char *) * (file -> register_count + 1));
   file -> registers[file -> register_count] = prefixed;
-  fprintf(file -> fp, "\tdefine %s, %hhu\n", prefixed, register_number);
+  add_formatted_line_to_codefile(file, "\tdefine %s, %hhu", prefixed, register_number);
   return file -> register_count ++;
 }
 
@@ -25,7 +25,7 @@ int add_constant_to_codefile (CodeFile file, const char * constant_name, unsigne
   file -> constants = realloc(file -> constants, sizeof(char *) * (file -> constant_count + 1));
   file -> constants[file -> constant_count] = prefixed;
   char * fv = generate_formatted_number_for_file(constant_value);
-  fprintf(file -> fp, "\tdefine %s, %s\n", prefixed, fv);
+  add_formatted_line_to_codefile(file, "\tdefine %s, %s", prefixed, fv);
   free(fv);
   return file -> constant_count ++;
 }

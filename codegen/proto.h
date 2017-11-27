@@ -12,6 +12,10 @@
 const char * find_next_invalid_string_character(const char *);
 unsigned count_invalid_string_characters(const char *);
 
+// file.c
+void add_line_to_codefile(CodeFile, const char *);
+void add_formatted_line_to_codefile(CodeFile, const char *, ...);
+
 // format.c
 char * generate_formatted_number_for_file(unsigned);
 char * generate_formatted_argument(CodeFile, struct instruction_argument, char **);
