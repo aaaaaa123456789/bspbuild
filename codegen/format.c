@@ -28,19 +28,33 @@ char * generate_formatted_argument (CodeFile file, struct instruction_argument a
     case ARGTYPE_IMMEDIATE:
       return generate_formatted_number_for_file(argument.value);
     case ARGTYPE_NAMED_CONSTANT:
-      // ...
+      if (argument.value < file -> constant_count) return duplicate_string(file -> constants[argument.value]);
+      if (error) *error = generate_string("undefined constant (ID %u)", argument.value);
+      return NULL;
     case ARGTYPE_REGISTER:
       if (argument.value <= 255) return generate_string("#%u", argument.value);
       if (error) *error = generate_string("invalid variable number: %u", argument.value);
       return NULL;
     case ARGTYPE_NAMED_REGISTER:
-      // ...
+      if (argument.value < file -> register_count) return generate_string("#%s", file -> registers[argument.value]);
+      if (error) *error = generate_string("undefined variable (ID %u)", argument.value);
+      return NULL;
     case ARGTYPE_NAMED_LABEL:
-      // ...
+      if ((argument.value < file -> label_count) && file -> labels[argument.value]) return duplicate_string(file -> labels[argument.value]);
+      if (error) *error = generate_string("undefined label (ID %u)", argument.value);
+      return NULL;
     case ARGTYPE_NUMERIC_LOCAL:
-      // ...
+      if (argument.value && (argument.value <= file -> next_numeric_local)) return generate_string(".L%u", argument.value);
+      if (error) *error = generate_string("invalid numeric local %u", argument.value);
+      return NULL;
     case ARGTYPE_NUMERIC_DATA:
-      // ...
+      if (argument.value && (argument.value <= file -> next_numeric_data)) {
+        char buffer[16];
+        sprintf(buffer, "Data%u", argument.value);
+        return generate_prefixed_label(file, buffer);
+      }
+      if (error) *error = generate_string("invalid numeric data label %u", argument.value);
+      return NULL;
     case ARGTYPE_LOCAL_LABEL:
       if (validate_named_object(argument.string)) return generate_string(".%s", argument.string);
       if (error) *error = generate_string("invalid label: %s", argument.string);
