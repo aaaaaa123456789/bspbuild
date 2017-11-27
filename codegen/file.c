@@ -21,7 +21,8 @@ void add_comment_to_codefile (CodeFile file, const char * comment, int indented)
 }
 
 void add_line_to_codefile (CodeFile file, const char * line) {
-  // ...
+  file -> lines = realloc(file -> lines, sizeof(char *) * (file -> line_count + 1));
+  file -> lines[file -> line_count ++] = duplicate_string(line);
 }
 
 void add_formatted_line_to_codefile (CodeFile file, const char * format, ...) {

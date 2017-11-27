@@ -9,12 +9,13 @@ struct code_file_info {
   char ** labels;
   char ** registers;
   char ** constants;
+  char ** lines;
+  unsigned line_count;
   unsigned label_count;
   unsigned register_count;
   unsigned constant_count;
   unsigned next_numeric_local;
   unsigned next_numeric_data;
-  // ...
 };
 
 struct code_generation_instruction_entry {
