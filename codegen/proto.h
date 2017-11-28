@@ -28,8 +28,12 @@ extern const unsigned codegen_instruction_count;
 char * generate_prefixed_label(CodeFile, const char *);
 void flush_declared_local_labels(CodeFile);
 
+// main.c
+CodeFile create_codefile_object(void);
+
 // namedobj.c
 char * generate_prefixed_register(CodeFile, const char *);
 char * generate_prefixed_constant(CodeFile, const char *);
 char * generate_named_object(const char *, const char *);
 int validate_named_object(const char *);
+char * convert_label_prefix_to_register_prefix(const char *);

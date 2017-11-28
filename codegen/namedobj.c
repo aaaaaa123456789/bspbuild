@@ -53,3 +53,7 @@ int validate_named_object (const char * name) {
   if (strspn(name, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_") != strlen(name)) return 0;
   return !strchr("0123456789", *name);
 }
+
+char * convert_label_prefix_to_register_prefix (const char * label_prefix) {
+  // ...
+}

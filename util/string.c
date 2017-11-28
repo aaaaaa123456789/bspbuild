@@ -81,3 +81,11 @@ int validate_UTF8 (const unsigned char * string) {
   }
   return 1;
 }
+
+void string_to_uppercase (char * string) {
+  for (; *string; string ++) *string = toupper(*string);
+}
+
+void string_to_lowercase (char * string) {
+  for (; *string; string ++) *string = tolower(*string);
+}

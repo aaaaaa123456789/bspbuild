@@ -28,6 +28,14 @@ int declare_numeric_data_label_for_codefile(CodeFile file);
 int add_numeric_data_label_to_codefile(CodeFile file);
 int add_declared_numeric_data_label_to_codefile(CodeFile file, unsigned number);
 
+// main.c
+CodeFile new_codefile(void);
+CodeFile new_codefile_with_prefix(const char * prefix);
+CodeFile new_codefile_with_prefixes(const char * label_prefix, const char * register_prefix, const char * constant_prefix);
+void destroy_codefile(CodeFile file);
+char * export_codefile_data(CodeFile file, unsigned * length);
+char * convert_codefile_to_data(CodeFile file, unsigned * length);
+
 // namedobj.c
 int add_register_definition_to_codefile(CodeFile file, const char * register_name, unsigned char register_number);
 int add_constant_to_codefile(CodeFile file, const char * constant_name, unsigned constant_value);

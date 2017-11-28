@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <ctype.h>
 
 #include "struct.h"
 #include "public.h"
