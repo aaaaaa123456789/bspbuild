@@ -13,6 +13,3 @@ FILE * open_file(const char *, const char *, const char *, char **);
 
 // mem.c
 void * mr_create_node(struct memory_region **, struct memory_region *);
-
-// string.c
-unsigned char get_hex_digit(char);

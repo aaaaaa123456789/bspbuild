@@ -40,6 +40,7 @@ void mr_free(void * region, void * buffer);
 char * trim_string(char * string);
 char * duplicate_string(const char * string);
 unsigned convert_string_to_number(const char * string, char ** error);
+unsigned char get_hex_digit(char digit);
 char * generate_string(const char * fmt, ...);
 char * generate_string_from_varargs(const char * fmt, va_list varargs);
 int validate_UTF8(const unsigned char * string);
