@@ -55,5 +55,21 @@ int validate_named_object (const char * name) {
 }
 
 char * convert_label_prefix_to_register_prefix (const char * label_prefix) {
+  // definitions:
+  // 1) a word is a sequence of zero or more uppercase letters followed by one or more lowercase letters
+  // 2) a word must begin with an uppercase letter unless the preceding character is not a letter or the word occurs at the beginning of the string
+  // 3) a sequence of one or more digits is also considered a word
+  // 4) subject to the rules above, words are the substrings of maximal length that satisfy them
+  // 5) as a result of the rules above and of the valid identifier characters, every character in the string is either an underscore or part of exactly one word
+  // rules:
+  // 0) if the string is empty, the result is empty as well; no further processing is done
+  // 1) an underscore is inserted between any two consecutive words that are not separated by underscores
+  // 2) if the last character of the string is not an underscore, insert one at the end of the string
+  // 3) the whole string is converted to lowercase
+  if (!*label_prefix) return duplicate_string("");
+  char * result = malloc(strlen(label_prefix) * 2 + 1); // maximum possible length
+  *result = *label_prefix;
+  char * cw = result + 1;
+  const char * cr = label_prefix + 1;
   // ...
 }
