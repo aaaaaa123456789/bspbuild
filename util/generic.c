@@ -13,3 +13,9 @@ unsigned value_in_list (unsigned value, ...) {
   if (current == -1u) return 0;
   return count;
 }
+
+void destroy_string_array (char ** array, unsigned count) {
+  unsigned p;
+  for (p = 0; p < count; p ++) free(array[p]);
+  free(array);
+}

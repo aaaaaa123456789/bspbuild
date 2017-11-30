@@ -26,6 +26,7 @@ long get_file_length(FILE * fp);
 
 // generic.c
 unsigned value_in_list(unsigned value, ...);
+void destroy_string_array(char ** array, unsigned count);
 
 // mem.c
 void * create_memory_region(void);
