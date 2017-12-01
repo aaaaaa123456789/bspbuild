@@ -37,8 +37,8 @@ void destroy_codefile (CodeFile file) {
   free(file);
 }
 
-char * export_codefile_data (CodeFile file, unsigned * length) {
-  if (!(file -> lines && file -> line_count)) return duplicate_string("");
+Buffer export_codefile_data (CodeFile file) {
+  if (!(file -> lines && file -> line_count)) return create_buffer();
   unsigned total_length = file -> line_count; // 1 per newline
   unsigned line;
   unsigned * line_lengths = malloc(sizeof(unsigned) * file -> line_count);
@@ -46,8 +46,9 @@ char * export_codefile_data (CodeFile file, unsigned * length) {
     line_lengths[line] = strlen(file -> lines[line]);
     total_length += line_lengths[line];
   }
-  char * result = malloc(total_length + 1);
-  char * current = result;
+  Buffer result = malloc(sizeof(struct buffer) + total_length + 1);
+  result -> length = total_length;
+  char * current = result -> data;
   for (line = 0; line < file -> line_count; line ++) {
     memcpy(current, file -> lines[line], line_lengths[line]);
     current += line_lengths[line];
@@ -58,8 +59,8 @@ char * export_codefile_data (CodeFile file, unsigned * length) {
   return result;
 }
 
-char * convert_codefile_to_data (CodeFile file, unsigned * length) {
-  char * result = export_codefile_data(file, length);
+Buffer convert_codefile_to_data (CodeFile file) {
+  Buffer result = export_codefile_data(file);
   destroy_codefile(file);
   return result;
 }

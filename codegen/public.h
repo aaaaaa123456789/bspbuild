@@ -3,6 +3,7 @@
 #define ___CODEGEN
 
 #include "pubtypes.h"
+#include "../util/pubtypes.h"
 
 // data.c
 void add_data_to_codefile(CodeFile file, const void * data, unsigned length);
@@ -33,8 +34,8 @@ CodeFile new_codefile(void);
 CodeFile new_codefile_with_prefix(const char * prefix);
 CodeFile new_codefile_with_prefixes(const char * label_prefix, const char * register_prefix, const char * constant_prefix);
 void destroy_codefile(CodeFile file);
-char * export_codefile_data(CodeFile file, unsigned * length);
-char * convert_codefile_to_data(CodeFile file, unsigned * length);
+Buffer export_codefile_data(CodeFile file);
+Buffer convert_codefile_to_data(CodeFile file);
 
 // namedobj.c
 int add_register_definition_to_codefile(CodeFile file, const char * register_name, unsigned char register_number);
