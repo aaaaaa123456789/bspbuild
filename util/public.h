@@ -36,6 +36,9 @@ void * mr_calloc(void * region, unsigned size);
 void * mr_realloc(void * region, void * buffer, unsigned new_size);
 void mr_free(void * region, void * buffer);
 
+// sha1.c
+unsigned char * calculate_sha1(const void * data, unsigned length);
+
 // string.c
 char * trim_string(char * string);
 char * duplicate_string(const char * string);

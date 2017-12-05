@@ -13,3 +13,6 @@ FILE * open_file(const char *, const char *, const char *, char **);
 
 // mem.c
 void * mr_create_node(struct memory_region **, struct memory_region *);
+
+// sha1.c
+void sha1_process_block(const unsigned char *, uint32_t *);
