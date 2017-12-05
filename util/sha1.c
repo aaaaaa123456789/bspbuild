@@ -25,6 +25,44 @@ unsigned char * calculate_sha1 (const void * data, unsigned length) {
   return result;
 }
 
+inline unsigned sha1_rotate (unsigned value, unsigned count) {
+  return (value << count) | (value >> (32 - count));
+}
+
 void sha1_process_block (const unsigned char * block, uint32_t * state) {
-  // ...
+  uint32_t words[80];
+  unsigned pos, temp, count, a, b, c, d, e;
+  // constants used by SHA-1; they are actually simply the square roots of 2, 3, 5 and 10 as a fixed-point number (2.30 format)
+  const uint32_t hash_constants[4] = {0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6};
+  memset(words, 0, 16 * sizeof(uint32_t));
+  for (pos = 0; pos < 64; pos ++) words[pos >> 2] = (words[pos >> 2] << 8) | block[pos];
+  for (pos = 16; pos < 80; pos ++) words[pos] = sha1_rotate(words[pos - 3] ^ words[pos - 8] ^ words[pos - 14] ^ words[pos - 16], 1);
+  a = *state;
+  b = state[1];
+  c = state[2];
+  d = state[3];
+  e = state[4];
+  for (pos = 0; pos < 4; pos ++) for (count = 0; count < 20; count ++) {
+    temp = sha1_rotate(a, 5) + e + words[pos * 20 + count] + hash_constants[pos];
+    switch (pos) {
+      case 0:
+        temp += (b & c) | (~b & d);
+        break;
+      case 2:
+        temp += (b & c) | (b & d) | (c & d);
+        break;
+      default:
+        temp += b ^ c ^ d;
+    }
+    e = d;
+    d = c;
+    c = sha1_rotate(b, 30);
+    b = a;
+    a = temp;
+  }
+  *state += a;
+  state[1] += b;
+  state[2] += c;
+  state[3] += d;
+  state[4] += e;
 }
