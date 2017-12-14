@@ -68,8 +68,18 @@ char * convert_label_prefix_to_register_prefix (const char * label_prefix) {
   // 3) the whole string is converted to lowercase
   if (!*label_prefix) return duplicate_string("");
   char * result = malloc(strlen(label_prefix) * 2 + 1); // maximum possible length
-  *result = *label_prefix;
-  char * cw = result + 1;
-  const char * cr = label_prefix + 1;
-  // ...
+  char * cw = result;
+  const char * cr = label_prefix;
+  *(cw ++) = *(cr ++);
+  while (*cr) {
+    if ((cw[-1] != '_') && (
+      (isdigit(*cr) && !isdigit(cr[-1])) ||
+      (isupper(*cr) && !isupper(cr[-1])) ||
+      (islower(*cr) && !isalpha(cr[-1]))
+    )) *(cw ++) = '_';
+    *(cw ++) = *(cr ++);
+  }
+  if (cw[-1] != '_') *(cw ++) = '_';
+  *cw = 0;
+  return result;
 }
