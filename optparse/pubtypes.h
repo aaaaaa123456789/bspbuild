@@ -21,6 +21,12 @@ typedef struct options {
     char * compiled;
     char * source;
   } output_files;
+  struct {
+    char * global;
+    char * label;
+    char * variable;
+    char * constant;
+  } prefixes;
   char * label_file;
   unsigned input_file_count;
   unsigned fragment_size;
