@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "public.h"
+#include "struct.h"
 
 #include "../util/public.h"
 #include "../headers/version.h"
