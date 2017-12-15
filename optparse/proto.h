@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 
 #include "public.h"
@@ -12,6 +13,9 @@ Options new_options_object(void);
 // main.c
 int parse_option(Options, const char *, const char *);
 void parse_naked_argument(Options, const char *);
+
+// opttable.c
+extern const struct option_parser option_parsers[];
 
 // special.c
 Options special_option_response(const char *);

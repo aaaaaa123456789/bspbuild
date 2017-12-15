@@ -27,7 +27,30 @@ Options parse_options (char ** arguments, unsigned argument_count) {
 }
 
 int parse_option (Options options, const char * option, const char * argument) {
-  // ...
+  unsigned current;
+  for (current = 0; option_parsers[current].option; current ++) if (!strcmp(option_parsers[current].option, option)) break;
+  if (!option_parsers[current].option) {
+    options -> error_text = mr_malloc(options -> memory_region, 17 + strlen(option));
+    strcpy(options -> error_text, "unknown option: ");
+    strcat(options -> error_text, option);
+    return 0;
+  }
+  if (option_parsers[current].argument_required && !argument) {
+    options -> error_text = mr_malloc(options -> memory_region, 29 + strlen(option));
+    sprintf(options -> error_text, "option %s requires an argument", option);
+    return 0;
+  }
+  char * error;
+  if (option_parsers[current].argument_required)
+    error = option_parsers[current].argument_callback(options, argument, option_parsers[current].parameter);
+  else
+    error = option_parsers[current].no_argument_callback(options, option_parsers[current].parameter);
+  if (error) {
+    options -> error_text = mr_malloc(options -> memory_region, strlen(error) + 1);
+    strcpy(options -> error_text, error);
+    free(error);
+  }
+  return option_parsers[current].argument_required;
 }
 
 void parse_naked_argument (Options options, const char * argument) {
