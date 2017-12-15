@@ -3,7 +3,7 @@
 #include "public.h"
 
 #include "../util/public.h"
-#include "../main/version.h"
+#include "../headers/version.h"
 
 // ctordtor.c
 Options new_options_object(void);
