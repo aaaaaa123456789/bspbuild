@@ -16,9 +16,9 @@ Options parse_options (char ** arguments, unsigned argument_count) {
     } else if (!strcmp(arguments[current], "--version")) {
       destroy_options_object(result);
       return version_response();
-    } else if (*(arguments[current]) == '-')
-      parse_option(result, arguments[current], ((current + 1) == argument_count) ? NULL : arguments[current + 1]);
-    else
+    } else if (*(arguments[current]) == '-') {
+      if (parse_option(result, arguments[current], ((current + 1) == argument_count) ? NULL : arguments[current + 1])) current ++;
+    } else
       parse_naked_argument(result, arguments[current]);
     if (result -> error_text) return result;
   }
@@ -26,7 +26,7 @@ Options parse_options (char ** arguments, unsigned argument_count) {
   return result;
 }
 
-void parse_option (Options options, const char * option, const char * argument) {
+int parse_option (Options options, const char * option, const char * argument) {
   // ...
 }
 

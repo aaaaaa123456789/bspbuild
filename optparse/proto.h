@@ -9,7 +9,7 @@
 Options new_options_object(void);
 
 // main.c
-void parse_option(Options, const char *, const char *);
+int parse_option(Options, const char *, const char *);
 void parse_naked_argument(Options, const char *);
 
 // special.c
