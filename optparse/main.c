@@ -33,12 +33,12 @@ int parse_option (Options options, const char * option, const char * argument) {
     options -> error_text = generate_string_for_options(options, "unknown option: %s", option);
     return 0;
   }
-  if (option_parsers[current].argument_required && !argument) {
+  if (option_parsers[current].has_argument && !argument) {
     options -> error_text = generate_string_for_options(options, "option %s requires an argument", option);
     return 0;
   }
   char * error;
-  if (option_parsers[current].argument_required)
+  if (option_parsers[current].has_argument)
     error = option_parsers[current].argument_callback(options, argument, option_parsers[current].parameter);
   else
     error = option_parsers[current].no_argument_callback(options, option_parsers[current].parameter);
@@ -47,7 +47,7 @@ int parse_option (Options options, const char * option, const char * argument) {
     strcpy(options -> error_text, error);
     free(error);
   }
-  return option_parsers[current].argument_required;
+  return option_parsers[current].has_argument;
 }
 
 void parse_naked_argument (Options options, const char * argument) {

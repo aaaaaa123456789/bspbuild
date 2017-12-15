@@ -10,6 +10,6 @@ struct option_parser {
     char * (* no_argument_callback) (Options, int);
     char * (* argument_callback) (Options, const char *, int);
   };
-  unsigned argument_required: 1;
-  signed parameter:          31;
+  unsigned has_argument: 1;
+  signed parameter:     31;
 };
