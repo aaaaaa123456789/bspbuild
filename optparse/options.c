@@ -28,3 +28,15 @@ char * set_next_input_file_mode (Options options, int new_mode) {
   options -> current_conversion_direction = new_mode;
   return NULL;
 }
+
+char * set_input_bsp_source_option (Options options, int param) {
+  if (options -> input_bsp_source) return multiple_option_response("--bsp");
+  options -> input_bsp_source = 1;
+  return NULL;
+}
+
+char * set_compiled_output_file (Options options, const char * filename, int param) {
+  if (options -> output_files.compiled) return multiple_option_response("-o");
+  options -> output_files.compiled = copy_string_for_options(options, filename);
+  return NULL;
+}
