@@ -6,7 +6,7 @@ Options new_options_object (void) {
   result -> memory_region = mr;
   result -> current_conversion_direction = 1;
   result -> current_conversion_method = 0; // optimization hint; not otherwise needed
-  result -> current_conversion_reference = 0xffffff;
+  result -> current_conversion_reference = TARGET_TYPE_PREVIOUS;
   return result;
 }
 

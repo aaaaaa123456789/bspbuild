@@ -41,6 +41,13 @@ typedef struct options {
   unsigned output_selection_on_single_option:        1;
   unsigned suppress_error_messages:                  1;
   unsigned no_source_patches:                        1;
+  unsigned targets_per_page:                         4; // in output menu, 2-15, 0 = disabled
+  unsigned sort_targets_alphabetically:              1;
 } * Options;
+
+enum {
+  TARGET_TYPE_PREVIOUS =    0xffffff,
+  TARGET_TYPE_FROM_SOURCE = 0xfffffe
+};
 
 #endif

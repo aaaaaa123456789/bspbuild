@@ -40,3 +40,24 @@ char * set_compiled_output_file (Options options, const char * filename, int par
   options -> output_files.compiled = copy_string_for_options(options, filename);
   return NULL;
 }
+
+char * set_hide_errors_option (Options options, int param) {
+  if (options -> suppress_error_messages) return multiple_option_response("--hide-errors");
+  options -> suppress_error_messages = 1;
+  return NULL;
+}
+
+char * set_force_output_menu_option (Options options, int param) {
+  if (options -> output_selection_on_single_option) return multiple_option_response("--force-output-menu");
+  options -> output_selection_on_single_option = 1;
+  return NULL;
+}
+
+char * disable_output_validation_option (Options options, int disable_value) {
+  if (options -> disable_output_validations) {
+    if (options -> disable_output_validations != disable_value) return duplicate_string("conflicting output validation disabling options given");
+    return duplicate_string("output validation disabling option given more than once");
+  }
+  options -> disable_output_validations = disable_value;
+  return NULL;
+}
