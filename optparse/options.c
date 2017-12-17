@@ -61,3 +61,15 @@ char * disable_output_validation_option (Options options, int disable_value) {
   options -> disable_output_validations = disable_value;
   return NULL;
 }
+
+char * no_source_to_source_option (Options options, int param) {
+  if (options -> no_source_patches) return multiple_option_response("--no-source-to-source");
+  options -> no_source_patches = 1;
+  return NULL;
+}
+
+char * sort_target_list_option (Options options, int param) {
+  if (options -> sort_targets_alphabetically) return multiple_option_response("--sort-output-menu");
+  options -> sort_targets_alphabetically = 1;
+  return NULL;
+}

@@ -9,3 +9,5 @@ char * set_compiled_output_file(Options, const char *, int);
 char * set_hide_errors_option(Options, int);
 char * set_force_output_menu_option(Options, int);
 char * disable_output_validation_option(Options, int);
+char * no_source_to_source_option(Options, int);
+char * sort_target_list_option(Options, int);
