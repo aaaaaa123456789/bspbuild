@@ -14,18 +14,24 @@ char * duplicate_string (const char * string) {
   return strcpy(malloc(strlen(string) + 1), string);
 }
 
+unsigned convert_digit_string_to_number (const char * string, char ** error) {
+  if (strspn(string, "0123456789") != strlen(string)) {
+    *error = generate_string("invalid number: %s", string);
+    return 0;
+  }
+  while ((*string == '0') && string[1]) string ++;
+  return convert_string_to_number(string, error);
+}
+
 unsigned convert_string_to_number (const char * string, char ** error) {
-  *error = NULL;
   if (!*string) {
     *error = duplicate_string("argument is empty");
     return 0;
   }
+  *error = NULL;
   char * error_pointer;
   unsigned long long value = strtoull(string, &error_pointer, 0);
-  if (*error_pointer) {
-    *error = malloc(17 + strlen(string));
-    sprintf(*error, "invalid number: %s", string);
-  }
+  if (*error_pointer) *error = generate_string("invalid number: %s", string);
   return value;
 }
 
