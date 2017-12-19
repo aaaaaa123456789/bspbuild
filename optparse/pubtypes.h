@@ -45,9 +45,4 @@ typedef struct options {
   unsigned sort_targets_alphabetically:              1;
 } * Options;
 
-enum {
-  TARGET_TYPE_PREVIOUS =    0xffffff,
-  TARGET_TYPE_FROM_SOURCE = 0xfffffe
-};
-
 #endif

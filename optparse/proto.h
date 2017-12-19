@@ -4,6 +4,7 @@
 
 #include "../util/public.h"
 #include "../headers/version.h"
+#include "../headers/const.h"
 
 #include "public.h"
 #include "struct.h"
