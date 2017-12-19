@@ -37,12 +37,13 @@ typedef struct options {
   unsigned input_bsp_source:                         1;
   unsigned detect_fragment_permutation:              1;
   unsigned disable_output_validations:               2; // 0: none, 1: sha1, 2: sha1 + length
-  unsigned fragmentation_parameters_given:           1; // validation flag
+  unsigned sort_targets_alphabetically:              1;
   unsigned output_selection_on_single_option:        1;
   unsigned suppress_error_messages:                  1;
   unsigned no_source_patches:                        1;
   unsigned targets_per_page:                         4; // in output menu, 2-15, 0 = disabled
-  unsigned sort_targets_alphabetically:              1;
+  unsigned padding_size:                             2; // 3 means 4, 0 means not given
+  unsigned fragmentation_parameters_given:           1; // validation flag
 } * Options;
 
 #endif

@@ -41,6 +41,12 @@ char * set_compiled_output_file (Options options, const char * filename, int par
   return NULL;
 }
 
+char * set_bsp_output_file (Options options, const char * filename, int param) {
+  if (options -> output_files.source) return multiple_option_response("-ob");
+  options -> output_files.source = copy_string_for_options(options, filename);
+  return NULL;
+}
+
 char * set_hide_errors_option (Options options, int param) {
   if (options -> suppress_error_messages) return multiple_option_response("--hide-errors");
   options -> suppress_error_messages = 1;
@@ -83,4 +89,56 @@ char * set_target_and_reference_option (Options options, int reference_mode) {
   } else
     options -> current_conversion_reference = reference_mode;
   options -> current_conversion_direction = DIRECTION_TARGET;
+  return NULL;
+}
+
+char * title_file_option (Options options, const char * filename, int param) {
+  if (options -> label_file) return multiple_option_response("--titles");
+  options -> label_file = copy_string_for_options(options, filename);
+  return NULL;
+}
+
+char * suppress_errors_option (Options options, int param) {
+  if (options -> suppress_error_messages) return multiple_option_response("--suppress-errors");
+  options -> suppress_error_messages = 1;
+  return NULL;
+}
+
+char * targets_per_page_option (Options options, const char * new_value, int param) {
+  if (options -> targets_per_page) return multiple_option_response("--targets-per-page");
+  char * error;
+  unsigned value = convert_digit_string_to_number(new_value, &error);
+  free(error);
+  if (error) return generate_string("invalid argument to --targets-per-page: %s", new_value);
+  if ((value < 2) || (value > 15)) return duplicate_string("number of targets per page must be between 2 and 15");
+  options -> targets_per_page = value;
+  return NULL;
+}
+
+char * check_fragment_permutation_option (Options options, int param) {
+  if (options -> detect_fragment_permutation) return multiple_option_response("--check-fragment-swap");
+  options -> detect_fragment_permutation = 1;
+  return NULL;
+}
+
+char * set_fragment_size (Options options, const char * new_value, int param) {
+  if (options -> fragment_size) return multiple_option_response("-f");
+  char * error;
+  unsigned size = convert_string_to_number(new_value, &error);
+  free(error);
+  if (error) return generate_string("invalid argument to -f: %s", new_value);
+  options -> fragment_size = size;
+  options -> fragmentation_parameters_given = 1;
+  return NULL;
+}
+
+char * set_padding_value (Options options, const char * new_value, int size) {
+  if (options -> padding_size) return duplicate_string("padding value already given");
+  char * error;
+  unsigned value = convert_string_to_number(new_value, &error);
+  free(error);
+  if (error) return generate_string("invalid padding value: %s", new_value);
+  options -> padding_value = value & ((unsigned []) {0xff, 0xffff, 0xffffffff})[size - 1];
+  options -> padding_size = size;
+  return NULL;
 }
