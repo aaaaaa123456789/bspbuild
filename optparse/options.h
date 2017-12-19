@@ -11,3 +11,4 @@ char * set_force_output_menu_option(Options, int);
 char * disable_output_validation_option(Options, int);
 char * no_source_to_source_option(Options, int);
 char * sort_target_list_option(Options, int);
+char * set_target_and_reference_option(Options, int);

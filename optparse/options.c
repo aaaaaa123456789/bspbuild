@@ -73,3 +73,14 @@ char * sort_target_list_option (Options options, int param) {
   options -> sort_targets_alphabetically = 1;
   return NULL;
 }
+
+char * set_target_and_reference_option (Options options, int reference_mode) {
+  // reference mode: -1 = previous file, 0..0xffffff = set to value
+  if (reference_mode < 0) {
+    if ((!(options -> input_file_count)) || (options -> input_files[options -> input_file_count - 1].direction != DIRECTION_TARGET))
+      return duplicate_string("reference for -tl/--target-from-last must be a target file");
+    options -> current_conversion_reference = options -> input_file_count - 1;
+  } else
+    options -> current_conversion_reference = reference_mode;
+  options -> current_conversion_direction = DIRECTION_TARGET;
+}
