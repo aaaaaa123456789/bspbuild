@@ -16,6 +16,7 @@ typedef struct options {
     char * opening;
     char * success;
     char * error;
+    char * error_replacement;
   } messages;
   struct {
     char * compiled;
@@ -44,6 +45,9 @@ typedef struct options {
   unsigned targets_per_page:                         4; // in output menu, 2-15, 0 = disabled
   unsigned padding_size:                             2; // 3 means 4, 0 means not given
   unsigned fragmentation_parameters_given:           1; // validation flag
+  unsigned opening_message_from_file:                1;
+  unsigned success_message_from_file:                1;
+  unsigned error_message_from_file:                  1;
 } * Options;
 
 #endif

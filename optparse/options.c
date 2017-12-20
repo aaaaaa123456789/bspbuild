@@ -142,3 +142,51 @@ char * set_padding_value (Options options, const char * new_value, int size) {
   options -> padding_size = size;
   return NULL;
 }
+
+char * opening_banner_option (Options options, const char * banner, int param) {
+  if (options -> messages.opening) return duplicate_string("opening banner already set");
+  options -> messages.opening = copy_string_for_options(options, banner);
+  options -> opening_message_from_file = 0;
+  return NULL;
+}
+
+char * opening_banner_from_file_option (Options options, const char * filename, int param) {
+  if (options -> messages.opening) return duplicate_string("opening banner already set");
+  options -> messages.opening = copy_string_for_options(options, filename);
+  options -> opening_message_from_file = 1;
+  return NULL;
+}
+
+char * success_message_option (Options options, const char * message, int param) {
+  if (options -> messages.success) return duplicate_string("success message already set");
+  options -> messages.success = copy_string_for_options(options, message);
+  options -> success_message_from_file = 0;
+  return NULL;
+}
+
+char * success_message_from_file_option (Options options, const char * filename, int param) {
+  if (options -> messages.success) return duplicate_string("success message already set");
+  options -> messages.success = copy_string_for_options(options, filename);
+  options -> success_message_from_file = 1;
+  return NULL;
+}
+
+char * error_message_option (Options options, const char * message, int param) {
+  if (options -> messages.error) return duplicate_string("error message already set");
+  options -> messages.error = copy_string_for_options(options, message);
+  options -> error_message_from_file = 0;
+  return NULL;
+}
+
+char * error_message_from_file_option (Options options, const char * filename, int param) {
+  if (options -> messages.error) return duplicate_string("error message already set");
+  options -> messages.error = copy_string_for_options(options, filename);
+  options -> error_message_from_file = 1;
+  return NULL;
+}
+
+char * error_text_substitute_option (Options options, const char * text, int param) {
+  if (options -> messages.error_replacement) return multiple_option_response("--error-text-substitute");
+  options -> messages.error_replacement = copy_string_for_options(options, text);
+  return NULL;
+}
