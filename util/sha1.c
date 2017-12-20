@@ -25,7 +25,7 @@ unsigned char * calculate_sha1 (const void * data, unsigned length) {
   return result;
 }
 
-inline unsigned sha1_rotate (unsigned value, unsigned count) {
+static inline unsigned sha1_rotate (unsigned value, unsigned count) {
   return (value << count) | (value >> (32 - count));
 }
 
