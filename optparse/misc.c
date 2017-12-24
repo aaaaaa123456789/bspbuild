@@ -20,3 +20,7 @@ char * copy_string_for_options (Options options, const char * string) {
   memcpy(result, string, size);
   return result;
 }
+
+void parse_naked_argument (Options options, const char * argument) {
+  // ...
+}

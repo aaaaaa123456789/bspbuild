@@ -49,7 +49,3 @@ int parse_option (Options options, const char * option, const char * argument) {
   }
   return option_parsers[current].has_argument;
 }
-
-void parse_naked_argument (Options options, const char * argument) {
-  // ...
-}

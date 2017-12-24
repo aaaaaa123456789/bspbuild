@@ -15,12 +15,12 @@ Options new_options_object(void);
 
 // main.c
 int parse_option(Options, const char *, const char *);
-void parse_naked_argument(Options, const char *);
 
 // misc.c
 char * multiple_option_response(const char *);
 char * generate_string_for_options(Options, const char *, ...);
 char * copy_string_for_options(Options, const char *);
+void parse_naked_argument(Options, const char *);
 
 // opttable.c
 extern const struct option_parser option_parsers[];
