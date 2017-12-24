@@ -22,5 +22,17 @@ char * copy_string_for_options (Options options, const char * string) {
 }
 
 void parse_naked_argument (Options options, const char * argument) {
-  // ...
+  if (!*argument) return; // just in case an empty argument manages to make it through
+  if (options -> input_file_count >= 0xffff00) {
+    options -> error_text = copy_string_for_options(options, "too many input files");
+    return;
+  }
+  options -> input_files = mr_realloc(options -> memory_region, options -> input_files, (options -> input_file_count + 1) * sizeof(struct option_file));
+  options -> input_files[options -> input_file_count ++] = (struct option_file) {
+    .name = copy_string_for_options(options, argument),
+    .label = NULL,
+    .reference = options -> current_conversion_reference,
+    .method = options -> current_conversion_method,
+    .direction = options -> current_conversion_direction
+  };
 }
