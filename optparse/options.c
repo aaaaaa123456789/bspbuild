@@ -26,12 +26,7 @@ char * variable_prefix_option (Options options, const char * prefix, int param) 
 
 char * set_next_input_file_mode (Options options, int new_mode) {
   options -> current_conversion_direction = new_mode;
-  return NULL;
-}
-
-char * set_input_bsp_source_option (Options options, int param) {
-  if (options -> input_bsp_source) return multiple_option_response("--bsp");
-  options -> input_bsp_source = 1;
+  options -> direction_options_given = 1;
   return NULL;
 }
 
@@ -188,5 +183,11 @@ char * error_message_from_file_option (Options options, const char * filename, i
 char * error_text_substitute_option (Options options, const char * text, int param) {
   if (options -> messages.error_replacement) return multiple_option_response("--error-text-substitute");
   options -> messages.error_replacement = copy_string_for_options(options, text);
+  return NULL;
+}
+
+char * set_operation_mode_option (Options options, int new_mode) {
+  if (options -> operation_mode) return duplicate_string("--bsp and --ips options can only be given once and not simultaneously");
+  options -> operation_mode = new_mode;
   return NULL;
 }
