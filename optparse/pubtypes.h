@@ -5,6 +5,7 @@
 typedef struct options {
   void * memory_region;
   char * error_text;
+  char * response;
   struct option_file {
     char * name;
     char * label;
