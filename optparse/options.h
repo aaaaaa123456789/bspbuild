@@ -26,3 +26,4 @@ char * error_message_option(Options, const char *, int);
 char * error_message_from_file_option(Options, const char *, int);
 char * error_text_substitute_option(Options, const char *, int);
 char * set_operation_mode_option(Options, int);
+char * set_patch_method_option(Options, const char *, int);

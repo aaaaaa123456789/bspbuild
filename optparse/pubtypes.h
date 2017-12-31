@@ -47,6 +47,7 @@ typedef struct options {
   unsigned detect_fragment_permutation:              1;
   unsigned fragmentation_parameters_given:           1; // validation flag
   unsigned direction_options_given:                  1; // validation flag
+  unsigned patch_method_options_given:               1; // validation flag
   unsigned opening_message_from_file:                1;
   unsigned success_message_from_file:                1;
   unsigned error_message_from_file:                  1;

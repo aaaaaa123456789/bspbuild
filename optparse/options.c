@@ -191,3 +191,11 @@ char * set_operation_mode_option (Options options, int new_mode) {
   options -> operation_mode = new_mode;
   return NULL;
 }
+
+char * set_patch_method_option (Options options, const char * new_method, int param) {
+  signed char method = find_patch_method_by_name(new_method);
+  if (method < 0) return generate_string("unknown patch method: %s", new_method);
+  options -> current_conversion_method = method;
+  options -> patch_method_options_given = 1;
+  return NULL;
+}

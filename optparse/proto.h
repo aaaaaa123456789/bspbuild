@@ -5,6 +5,7 @@
 #include "../util/public.h"
 #include "../headers/version.h"
 #include "../headers/const.h"
+#include "../patch/public.h"
 
 #include "public.h"
 #include "struct.h"

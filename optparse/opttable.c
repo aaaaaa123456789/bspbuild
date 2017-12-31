@@ -4,6 +4,7 @@
 
 const struct option_parser option_parsers[] = {
   {.option = "-f",                          .argument_callback =    &set_fragment_size,                 .has_argument = 1},
+  {.option = "-m",                          .argument_callback =    &set_patch_method_option,           .has_argument = 1},
   {.option = "-o",                          .argument_callback =    &set_compiled_output_file,          .has_argument = 1},
   {.option = "-ob",                         .argument_callback =    &set_bsp_output_file,               .has_argument = 1},
   {.option = "-p",                          .argument_callback =    &set_padding_value,                 .has_argument = 1, .parameter = 3},
@@ -26,6 +27,7 @@ const struct option_parser option_parsers[] = {
   {.option = "--hide-errors",               .no_argument_callback = &set_hide_errors_option,            .has_argument = 0},
   {.option = "--ips",                       .no_argument_callback = &set_operation_mode_option,         .has_argument = 0, .parameter = OPERATION_MODE_IPS_OUTPUT},
   {.option = "--label-prefix",              .argument_callback =    &label_prefix_option,               .has_argument = 1},
+  {.option = "--patch-method",              .argument_callback =    &set_patch_method_option,           .has_argument = 1},
   {.option = "--no-output-sha1-validation", .no_argument_callback = &disable_output_validation_option,  .has_argument = 0, .parameter = VALIDATE_LENGTH},
   {.option = "--no-output-validation",      .no_argument_callback = &disable_output_validation_option,  .has_argument = 0, .parameter = VALIDATE_NONE},
   {.option = "--no-source-to-source",       .no_argument_callback = &no_source_to_source_option,        .has_argument = 0},
@@ -45,6 +47,5 @@ const struct option_parser option_parsers[] = {
   {.option = "--target-from-source",        .no_argument_callback = &set_target_and_reference_option,   .has_argument = 0, .parameter = TARGET_TYPE_FROM_SOURCE},
   {.option = "--targets-per-page",          .argument_callback =    &targets_per_page_option,           .has_argument = 1},
   {.option = "--titles",                    .argument_callback =    &title_file_option,                 .has_argument = 1},
-  // ...
   {.option = NULL}
 };
