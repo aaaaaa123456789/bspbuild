@@ -14,6 +14,9 @@
 // ctordtor.c
 Options new_options_object(void);
 
+// files.c
+void process_input_file_options(Options);
+
 // main.c
 int parse_option(Options, const char *, const char *);
 

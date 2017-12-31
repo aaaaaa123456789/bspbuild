@@ -22,7 +22,8 @@ Options parse_options (char ** arguments, unsigned argument_count) {
       parse_naked_argument(result, arguments[current]);
     if (result -> error_text) return result;
   }
-  validate_options(result);
+  process_input_file_options(result);
+  if (!(result -> error_text)) validate_options(result);
   return result;
 }
 
