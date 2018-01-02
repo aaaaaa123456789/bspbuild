@@ -25,6 +25,7 @@ const struct option_parser option_parsers[] = {
   {.option = "--error-text-substitute",     .argument_callback =    &error_text_substitute_option,      .has_argument = 1},
   {.option = "--force-output-menu",         .no_argument_callback = &set_force_output_menu_option,      .has_argument = 0},
   {.option = "--hide-errors",               .no_argument_callback = &set_hide_errors_option,            .has_argument = 0},
+  {.option = "--initial-register",          .argument_callback =    &set_initial_register_option,       .has_argument = 1},
   {.option = "--ips",                       .no_argument_callback = &set_operation_mode_option,         .has_argument = 0, .parameter = OPERATION_MODE_IPS_OUTPUT},
   {.option = "--label-prefix",              .argument_callback =    &label_prefix_option,               .has_argument = 1},
   {.option = "--patch-method",              .argument_callback =    &set_patch_method_option,           .has_argument = 1},

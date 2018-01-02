@@ -33,6 +33,7 @@ typedef struct options {
   unsigned input_file_count;
   unsigned fragment_size;
   unsigned padding_value;
+  unsigned initial_register_number:                  8;
   unsigned current_conversion_reference:            24; // initialize to 0xffffff
   unsigned current_conversion_method:                6;
   unsigned current_conversion_direction:             2; // initialize to 1
@@ -48,6 +49,7 @@ typedef struct options {
   unsigned fragmentation_parameters_given:           1; // validation flag
   unsigned direction_options_given:                  1; // validation flag
   unsigned patch_method_options_given:               1; // validation flag
+  unsigned initial_register_number_given:            1; // validation flag
   unsigned opening_message_from_file:                1;
   unsigned success_message_from_file:                1;
   unsigned error_message_from_file:                  1;
