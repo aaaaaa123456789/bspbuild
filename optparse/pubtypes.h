@@ -31,12 +31,10 @@ typedef struct options {
   } prefixes;
   char * label_file;
   unsigned input_file_count;
-  unsigned source_file_count;
-  unsigned source_target_file_count;
-  unsigned target_file_count;
+  unsigned file_count_per_direction[3];
   unsigned fragment_size;
   unsigned padding_value;
-  unsigned initial_register_number:                  8;
+  unsigned initial_register_number:                  8; // kept as a bitfield (instead of unsigned char) to avoid padding
   unsigned current_conversion_reference:            24; // initialize to 0xffffff
   unsigned current_conversion_method:                6;
   unsigned current_conversion_direction:             2; // initialize to 1

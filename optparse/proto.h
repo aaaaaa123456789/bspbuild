@@ -16,6 +16,8 @@ Options new_options_object(void);
 
 // files.c
 void process_input_file_options(Options);
+int reorder_input_files(Options);
+int convert_options_filename_to_text(Options, char **);
 
 // main.c
 int parse_option(Options, const char *, const char *);
