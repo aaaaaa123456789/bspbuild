@@ -31,6 +31,9 @@ typedef struct options {
   } prefixes;
   char * label_file;
   unsigned input_file_count;
+  unsigned source_file_count;
+  unsigned source_target_file_count;
+  unsigned target_file_count;
   unsigned fragment_size;
   unsigned padding_value;
   unsigned initial_register_number:                  8;
