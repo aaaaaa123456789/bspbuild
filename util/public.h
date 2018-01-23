@@ -21,6 +21,7 @@ FILE * open_text_file(const char * file, char ** error);
 FILE * open_binary_file(const char * file, char ** error);
 FILE * open_binary_file_for_writing(const char * file, char ** error);
 char * read_line(FILE * fp);
+char ** read_file_as_lines(FILE * fp, unsigned * line_count);
 int write_data_to_file(FILE * fp, const void * data, unsigned length);
 long get_file_length(FILE * fp);
 
@@ -28,6 +29,7 @@ long get_file_length(FILE * fp);
 unsigned value_in_list(unsigned value, ...);
 void destroy_string_array(char ** array, unsigned count);
 unsigned check_nulls(const void * buffer, unsigned length);
+void sort_number_array(unsigned * array, unsigned size);
 
 // mem.c
 void * create_memory_region(void);

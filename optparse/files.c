@@ -4,7 +4,8 @@ void process_input_file_options (Options options) {
   reorder_input_files(options)
   && (options -> opening_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.opening)) : 1)
   && (options -> success_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.success)) : 1)
-  && (options -> error_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.error)) : 1);
+  && (options -> error_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.error)) : 1)
+  && (options -> label_file ? process_label_file(options) : 1);
   // ...
 }
 
@@ -68,4 +69,62 @@ int convert_options_filename_to_text (Options options, char ** text) {
   fclose(fp);
   mr_free(options -> memory_region, original_filename);
   return 1;
+}
+
+int process_label_file (Options options) {
+  /*
+     Label file format:
+     filename=label: apply a label to a specific file
+     label: apply a label to the next unlabelled file
+     =label: same as above, but ensure that = characters are escaped
+     blank lines are ignored; to assign a blank (null) label, enter a = sign on a line of its own
+     lines starting with // are comments; the // must come at the beginning of the line (use =// to create a label beginning with //)
+     extra lines and mismatched filenames are ignored; missing lines become null labels
+  */
+  char * error;
+  FILE * fp = open_text_file(options -> label_file, &error);
+  if (error) {
+    options -> error_text = copy_string_for_options(options, error);
+    free(error);
+    return 0;
+  }
+  unsigned line_count;
+  char ** lines = read_file_as_lines(fp, &line_count);
+  fclose(fp);
+  unsigned * line_types = malloc(sizeof(unsigned) * line_count);
+  unsigned line, p;
+  for (line = 0; line < line_count; line ++) line_types[line] = line | (get_label_file_line_type(lines[line]) << 30);
+  sort_number_array(line_types, line_count);
+  for (line = 0; (line < line_count) && !(line_types[line] & (3U << 30)); line ++);
+  for (; (line < line_count) && ((line_types[line] & (3U << 30)) == 1); line ++) assign_named_file_label(options, lines[line_types[line] & 0x3fffffffU]);
+  if (line == line_count)
+    p = 1;
+  else {
+    for (p = line; p < line_count; p ++) line_types[p] &= 0x3fffffffU;
+    p = assign_unnamed_file_labels(options, lines, line_types + line, line_count - line);
+  }
+  free(line_types);
+  destroy_string_array(lines, line_count);
+  return p;
+}
+
+unsigned get_label_file_line_type (const char * line) {
+  // 0: empty/ignored, 1: named, 2: unnamed
+  switch (*line) {
+    case 0:
+      return 0;
+    case '=':
+      return 2;
+    case '/':
+      if (line[1] == '/') return 0;
+  }
+  return strchr(line, '=') ? 1 : 2;
+}
+
+void assign_named_file_label (Options options, const char * line) {
+  // ...
+}
+
+int assign_unnamed_file_labels (Options options, char ** lines, const unsigned * line_numbers, unsigned line_count) {
+  // ...
 }

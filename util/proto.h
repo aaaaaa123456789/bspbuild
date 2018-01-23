@@ -11,6 +11,9 @@
 // file.c
 FILE * open_file(const char *, const char *, const char *, char **);
 
+// generic.c
+int compare_numbers(const void *, const void *);
+
 // mem.c
 void * mr_create_node(struct memory_region **, struct memory_region *);
 

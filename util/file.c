@@ -38,6 +38,21 @@ char * read_line (FILE * fp) {
   return line;
 }
 
+char ** read_file_as_lines (FILE * fp, unsigned * line_count) {
+  char ** lines = NULL;
+  unsigned count = 0;
+  char * line;
+  while (!feof(fp)) {
+    line = read_line(fp);
+    lines = realloc(lines, sizeof(char *) * (count + 1));
+    lines[count ++] = line;
+  }
+  lines = realloc(lines, sizeof(char *) * (count + 1));
+  lines[count] = NULL;
+  if (line_count) *line_count = count;
+  return lines;
+}
+
 int write_data_to_file (FILE * fp, const void * data, unsigned length) {
   unsigned rv;
   const char * current = data;
