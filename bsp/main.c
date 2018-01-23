@@ -53,7 +53,7 @@ void bsp_throw_error (const char * fmtstring, ...) {
   va_start(ap, fmtstring);
   char * error = generate_string_from_varargs(fmtstring, ap);
   va_end(ap);
-  bsp_error = malloc(strlen(error) + 8);
+  bsp_error = malloc(strlen(error) + (current_file ? strlen(current_file) + 20 : 8));
   if (current_file)
     sprintf(bsp_error, "%s:%u: %s", current_file, current_line, error);
   else
