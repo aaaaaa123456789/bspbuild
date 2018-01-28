@@ -1,12 +1,11 @@
 #include "proto.h"
 
 void process_input_file_options (Options options) {
-  reorder_input_files(options)
+  reorder_input_files(options) // note that this is just one statement; function calls are chained by &&
   && (options -> opening_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.opening)) : 1)
   && (options -> success_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.success)) : 1)
   && (options -> error_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.error)) : 1)
   && (options -> label_file ? process_label_file(options) : 1);
-  // ...
 }
 
 int reorder_input_files (Options options) {
