@@ -27,6 +27,20 @@ Options parse_options (char ** arguments, unsigned argument_count) {
   return result;
 }
 
+Options new_options_object (void) {
+  void * mr = create_memory_region();
+  Options result = mr_calloc(mr, sizeof(struct options));
+  result -> memory_region = mr;
+  result -> current_conversion_direction = DIRECTION_SOURCE_TARGET;
+  result -> current_conversion_method = 0; // optimization hint; not strictly needed
+  result -> current_conversion_reference = TARGET_TYPE_PREVIOUS;
+  return result;
+}
+
+void destroy_options_object (Options options) {
+  destroy_memory_region(options -> memory_region);
+}
+
 int parse_option (Options options, const char * option, const char * argument) {
   unsigned current;
   for (current = 0; option_parsers[current].option; current ++) if (!strcmp(option_parsers[current].option, option)) break;

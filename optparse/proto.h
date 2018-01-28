@@ -11,9 +11,6 @@
 #include "struct.h"
 #include "options.h"
 
-// ctordtor.c
-Options new_options_object(void);
-
 // files.c
 void process_input_file_options(Options);
 int reorder_input_files(Options);
@@ -24,6 +21,7 @@ void assign_named_file_label(Options, const char *);
 void assign_unnamed_file_labels(Options, char **, const unsigned *, unsigned);
 
 // main.c
+Options new_options_object(void);
 int parse_option(Options, const char *, const char *);
 
 // misc.c
