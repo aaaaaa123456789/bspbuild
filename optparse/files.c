@@ -97,15 +97,13 @@ int process_label_file (Options options) {
   sort_number_array(line_types, line_count);
   for (line = 0; (line < line_count) && !(line_types[line] & (3U << 30)); line ++);
   for (; (line < line_count) && ((line_types[line] & (3U << 30)) == 1); line ++) assign_named_file_label(options, lines[line_types[line] & 0x3fffffffU]);
-  if (line == line_count)
-    p = 1;
-  else {
+  if (line != line_count) {
     for (p = line; p < line_count; p ++) line_types[p] &= 0x3fffffffU;
-    p = assign_unnamed_file_labels(options, lines, line_types + line, line_count - line);
+    assign_unnamed_file_labels(options, lines, line_types + line, line_count - line);
   }
   free(line_types);
   destroy_string_array(lines, line_count);
-  return p;
+  return 1;
 }
 
 unsigned get_label_file_line_type (const char * line) {
@@ -122,9 +120,21 @@ unsigned get_label_file_line_type (const char * line) {
 }
 
 void assign_named_file_label (Options options, const char * line) {
-  // ...
+  char * label_part = strchr(line, '=');
+  if (!label_part) return; // should not happen
+  unsigned file, filename_length = (label_part ++) - line;
+  for (file = 0; file < options -> input_file_count; file ++)
+    if (!(strncmp(line, options -> input_files[file].name, filename_length) || options -> input_files[file].name[filename_length]))
+      options -> input_files[file].label = copy_string_for_options(options, label_part);
 }
 
-int assign_unnamed_file_labels (Options options, char ** lines, const unsigned * line_numbers, unsigned line_count) {
-  // ...
+void assign_unnamed_file_labels (Options options, char ** lines, const unsigned * line_numbers, unsigned line_count) {
+  unsigned file, line = 0;
+  const char * label;
+  for (file = 0; (file < options -> input_file_count) && (line < line_count); file ++) {
+    if (options -> input_files[file].label) continue;
+    label = lines[line_numbers[line ++]];
+    if (*label == '=') label ++;
+    options -> input_files[file].label = copy_string_for_options(options, label);
+  }
 }

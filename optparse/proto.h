@@ -21,7 +21,7 @@ int convert_options_filename_to_text(Options, char **);
 int process_label_file(Options);
 unsigned get_label_file_line_type(const char *);
 void assign_named_file_label(Options, const char *);
-int assign_unnamed_file_labels(Options, char **, const unsigned *, unsigned);
+void assign_unnamed_file_labels(Options, char **, const unsigned *, unsigned);
 
 // main.c
 int parse_option(Options, const char *, const char *);
