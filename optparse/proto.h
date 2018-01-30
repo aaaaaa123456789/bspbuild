@@ -46,3 +46,4 @@ char * validate_output_file_options(Options);
 char * validate_nonsensical_option_combinations(Options);
 char * validate_options_in_bsp_mode(Options);
 char * validate_options_in_ips_mode(Options);
+char * validate_options_in_nonstandard_modes(Options, const char *);

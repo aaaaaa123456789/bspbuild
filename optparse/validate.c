@@ -43,9 +43,45 @@ char * validate_nonsensical_option_combinations (Options options) {
 }
 
 char * validate_options_in_bsp_mode (Options options) {
-  // ...
+  if (options -> operation_mode != OPERATION_MODE_BSP_INPUT) return NULL;
+  return validate_options_in_nonstandard_modes(options, "BSP compilation");
 }
 
 char * validate_options_in_ips_mode (Options options) {
-  // ...
+  if (options -> operation_mode != OPERATION_MODE_IPS_OUTPUT) return NULL;
+  char * error = validate_options_in_nonstandard_modes(options, "IPS generation");
+  if (error) return error;
+  if (options -> input_file_count != 2)
+    return copy_string_for_options(options, "exactly two input files must be given in IPS generation mode");
+  return NULL;
+}
+
+static inline char * invalid_nonstandard_mode_option_error_text (Options options, const char * mode_name, const char * option_name) {
+  return generate_string_for_options(options, "%s option%s not valid in %s mode", option_name, (*option_name == '-') ? "" : "s", mode_name);
+}
+
+char * validate_options_in_nonstandard_modes (Options options, const char * mode_name) {
+  if (options -> messages.opening || options -> messages.success || options -> messages.error || options -> messages.error_replacement)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "banner");
+  if (options -> output_files.source)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "-ob");
+  if (options -> prefixes.global || options -> prefixes.label || options -> prefixes.variable || options -> prefixes.constant)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "prefix");
+  if (options -> label_file)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "--titles");
+  if (options -> fragment_size || options -> fragmentation_parameters_given || options -> detect_fragment_permutation)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "fragmentation");
+  if (options -> padding_size)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "padding");
+  if (options -> disable_output_validations)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "validation");
+  if (options -> sort_targets_alphabetically || options -> output_selection_on_single_option || options -> targets_per_page)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "output menu");
+  if (options -> direction_options_given)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "input file type");
+  if (options -> patch_method_options_given)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "patching method");
+  if (options -> initial_register_number_given)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "--initial-register");
+  return NULL;
 }
