@@ -7,7 +7,7 @@ void validate_options (Options options) {
     &validate_nonsensical_option_combinations,
     &validate_options_in_bsp_mode,
     &validate_options_in_ips_mode,
-    // ...
+    &validate_invalid_values
   };
   unsigned validator;
   char * error;
@@ -83,5 +83,21 @@ char * validate_options_in_nonstandard_modes (Options options, const char * mode
     return invalid_nonstandard_mode_option_error_text(options, mode_name, "patching method");
   if (options -> initial_register_number_given)
     return invalid_nonstandard_mode_option_error_text(options, mode_name, "--initial-register");
+  return NULL;
+}
+
+char * validate_invalid_values (Options options) {
+  if (
+    (options -> operation_mode == 3) ||
+    (options -> disable_output_validations == 3) ||
+    (options -> targets_per_page == 1)
+  ) return copy_string_for_options(options, "[internal] invalid option values detected");
+  unsigned file;
+  for (file = 0; file < options -> input_file_count; file ++)
+    if (
+      (options -> input_files[file].direction == 3) ||
+      ((options -> input_files[file].reference < MAX_INPUT_FILES) && (options -> input_files[file].reference >= options -> input_file_count)) ||
+      (options -> input_files[file].method >= NUM_PATCHING_METHODS)
+    ) return generate_string_for_options(options, "[internal] invalid parameters for file %s detected", options -> input_files[file].name);
   return NULL;
 }

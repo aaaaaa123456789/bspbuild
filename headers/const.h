@@ -2,6 +2,11 @@
 
 #define ___CONSTANTS
 
+// ...
+#define NUM_PATCHING_METHODS 3 // FIXME: update with real value after patching methods have been defined
+
+#define MAX_INPUT_FILES 0xff0000
+
 enum {
   OPERATION_MODE_NORMAL     = 0,
   OPERATION_MODE_BSP_INPUT  = 1,

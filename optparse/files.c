@@ -25,7 +25,8 @@ int reorder_input_files (Options options) {
   struct option_file * files = malloc(sizeof(struct option_file) * options -> input_file_count);
   for (pos = 0; pos < options -> input_file_count; pos ++) {
     files[new_file_numbers[pos]] = options -> input_files[pos];
-    if (files[new_file_numbers[pos]].reference < 0xff0000) files[new_file_numbers[pos]].reference = new_file_numbers[files[new_file_numbers[pos]].reference];
+    if (files[new_file_numbers[pos]].reference < MAX_INPUT_FILES)
+      files[new_file_numbers[pos]].reference = new_file_numbers[files[new_file_numbers[pos]].reference];
   }
   free(new_file_numbers);
   memcpy(options -> input_files, files, sizeof(struct option_file) * options -> input_file_count);
