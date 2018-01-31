@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "../headers/const.h"
 #include "../optparse/public.h"
 
 // altmodes.c

@@ -9,9 +9,9 @@ int main (int argc, char ** argv) {
     fprintf(stderr, "%s: error: %s\n", *argv, options -> error_text);
   else
     exit_status = ((int (* [])(Options)) {
-      &normal_operation_mode,
-      &bsp_input_operation_mode,
-      &ips_output_operation_mode
+      [OPERATION_MODE_NORMAL] = &normal_operation_mode,
+      [OPERATION_MODE_BSP_INPUT] = &bsp_input_operation_mode,
+      [OPERATION_MODE_IPS_OUTPUT] = &ips_output_operation_mode
     })[options -> operation_mode](options);
   destroy_options_object(options);
   return exit_status;
