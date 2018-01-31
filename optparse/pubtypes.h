@@ -18,6 +18,7 @@ typedef struct options {
     char * success;
     char * error;
     char * error_replacement;
+    char * source_detection;
   } messages;
   struct {
     char * compiled;
@@ -43,7 +44,7 @@ typedef struct options {
   unsigned sort_targets_alphabetically:              1;
   unsigned output_selection_on_single_option:        1;
   unsigned suppress_error_messages:                  1;
-  unsigned no_source_patches:                        1;
+  unsigned suppress_source_detection_message:        1;
   unsigned targets_per_page:                         4; // in output menu, 2-15, 0 = disabled
   unsigned padding_size:                             2; // 3 means 4, 0 means not given
   unsigned detect_fragment_permutation:              1;
@@ -54,6 +55,7 @@ typedef struct options {
   unsigned opening_message_from_file:                1;
   unsigned success_message_from_file:                1;
   unsigned error_message_from_file:                  1;
+  unsigned no_source_patches:                        1;
 } * Options;
 
 #endif

@@ -37,6 +37,8 @@ char * validate_nonsensical_option_combinations (Options options) {
     return copy_string_for_options(options, "error text substitution given without error text");
   if (options -> suppress_error_messages && options -> messages.error)
     return copy_string_for_options(options, "error message suppression requested along with an error message");
+  if (options -> suppress_source_detection_message && options -> messages.source_detection)
+    return copy_string_for_options(options, "source detection message suppression requested along with a source detection message");
   if (options -> prefixes.global && (options -> prefixes.label || options -> prefixes.variable || options -> prefixes.constant))
     return copy_string_for_options(options, "--prefix cannot be given with other --*-prefix options");
   return NULL;
