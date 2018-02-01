@@ -68,7 +68,7 @@ void include_command (int is_binary, char ** arguments) {
   if (is_binary)
     append_binary_file_to_script(filename);
   else
-    push_file(filename);
+    bsp_push_file(filename);
   mr_free(bsp_memory_region, filename);
 }
 

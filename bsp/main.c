@@ -16,7 +16,10 @@ char * bsp_build (const char * output, char ** inputs) {
     initialize_script_data();
     file_stack = NULL;
     file_stack_length = 0;
-    while (*inputs) bsp_parse_file(*(inputs ++));
+    while (*inputs) {
+      bsp_parse_file(*(inputs ++));
+      flush_locals();
+    }
     flush_all_symbols();
     bsp_write_output(output);
   }
@@ -27,7 +30,7 @@ char * bsp_build (const char * output, char ** inputs) {
 void bsp_parse_file (const char * file) {
   char * line;
   int comment_start;
-  push_file(file);
+  bsp_push_file(file);
   while (file_stack_length) {
     current_line ++;
     line = get_line_from_input();
@@ -35,7 +38,7 @@ void bsp_parse_file (const char * file) {
     if (comment_start >= 0) line[comment_start] = 0;
     process_input_line(line);
     free(line);
-    if (feof(file_stack -> fp)) pop_file();
+    if (feof(file_stack -> fp)) bsp_pop_file();
   }
   current_file = NULL;
 }

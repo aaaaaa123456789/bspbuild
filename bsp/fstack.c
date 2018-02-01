@@ -1,6 +1,6 @@
 #include "proto.h"
 
-void push_file (const char * file) {
+void bsp_push_file (const char * file) {
   current_file = NULL;
   char * error;
   FILE * fp = open_text_file(file, &error);
@@ -15,7 +15,7 @@ void push_file (const char * file) {
   current_line = 0;
 }
 
-void pop_file (void) {
+void bsp_pop_file (void) {
   fclose(file_stack -> fp);
   mr_free(bsp_memory_region, file_stack -> name);
   file_stack_length --;

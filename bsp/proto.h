@@ -24,8 +24,8 @@ char * get_string_argument(const char *);
 extern struct bsp_command script_commands[];
 
 // fstack.c
-void push_file(const char *);
-void pop_file(void);
+void bsp_push_file(const char *);
+void bsp_pop_file(void);
 char * get_line_from_input(void);
 
 // globals.c
