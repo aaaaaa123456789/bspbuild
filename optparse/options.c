@@ -211,3 +211,15 @@ char * set_initial_register_option (Options options, const char * new_value, int
   options -> initial_register_number_given = 1;
   return NULL;
 }
+
+char * source_detection_message_option (Options options, const char * text, int param) {
+  if (options -> messages.source_detection) return multiple_option_response("--source-detection-message");
+  options -> messages.source_detection = copy_string_for_options(options, text);
+  return NULL;
+}
+
+char * suppress_source_message_option (Options options, int param) {
+  if (options -> suppress_source_detection_message) return multiple_option_response("--suppress-source-message");
+  options -> suppress_source_detection_message = 1;
+  return NULL;
+}

@@ -16,6 +16,7 @@ void validate_options (Options options) {
       options -> error_text = error;
       return;
     }
+  fill_in_missing_options(options);
 }
 
 char * validate_input_file_options (Options options) {
@@ -63,8 +64,11 @@ static inline char * invalid_nonstandard_mode_option_error_text (Options options
 }
 
 char * validate_options_in_nonstandard_modes (Options options, const char * mode_name) {
-  if (options -> messages.opening || options -> messages.success || options -> messages.error || options -> messages.error_replacement)
-    return invalid_nonstandard_mode_option_error_text(options, mode_name, "banner");
+  if (options -> messages.opening)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "opening banner");
+  if (options -> messages.success || options -> messages.error || options -> messages.error_replacement || options -> suppress_error_messages ||
+      options -> messages.source_detection || options -> suppress_source_detection_message)
+    return invalid_nonstandard_mode_option_error_text(options, mode_name, "status message");
   if (options -> output_files.source)
     return invalid_nonstandard_mode_option_error_text(options, mode_name, "-ob");
   if (options -> prefixes.global || options -> prefixes.label || options -> prefixes.variable || options -> prefixes.constant)
@@ -102,4 +106,15 @@ char * validate_invalid_values (Options options) {
       (options -> input_files[file].method >= NUM_PATCHING_METHODS)
     ) return generate_string_for_options(options, "[internal] invalid parameters for file %s detected", options -> input_files[file].name);
   return NULL;
+}
+
+void fill_in_missing_options (Options options) {
+  fill_in_missing_option_string(options, &(options -> messages.error_replacement), "###");
+  fill_in_missing_option_string(options, &(options -> messages.error), "Error: ###");
+  fill_in_missing_option_string(options, &(options -> messages.source_detection), "Detected input file: ");
+}
+
+void fill_in_missing_option_string (Options options, char ** string, const char * new_value) {
+  if (*string) return;
+  *string = copy_string_for_options(options, new_value);
 }

@@ -28,3 +28,5 @@ char * error_text_substitute_option(Options, const char *, int);
 char * set_operation_mode_option(Options, int);
 char * set_patch_method_option(Options, const char *, int);
 char * set_initial_register_option(Options, const char *, int);
+char * source_detection_message_option(Options, const char *, int);
+char * suppress_source_message_option(Options, int);
