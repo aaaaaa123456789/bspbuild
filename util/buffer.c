@@ -4,6 +4,12 @@ Buffer create_buffer (void) {
   return calloc(1, sizeof(struct buffer));
 }
 
+Buffer create_buffer_from_size (unsigned size) {
+  Buffer buffer = malloc(sizeof(struct buffer) + size);
+  buffer -> length = size;
+  return buffer;
+}
+
 void append_data_to_buffer (Buffer * buffer, const void * data, unsigned length) {
   *buffer = realloc(*buffer, sizeof(struct buffer) + (*buffer) -> length + length);
   if (data)
@@ -11,6 +17,11 @@ void append_data_to_buffer (Buffer * buffer, const void * data, unsigned length)
   else
     memset((*buffer) -> data + (*buffer) -> length, 0, length);
   (*buffer) -> length += length;
+}
+
+void resize_buffer (Buffer * buffer, unsigned new_length) {
+  *buffer = realloc(*buffer, sizeof(struct buffer) + new_length);
+  (*buffer) -> length = new_length;
 }
 
 void append_big_endian_number_to_buffer (Buffer * buffer, uintmax_t number, unsigned char length) {
