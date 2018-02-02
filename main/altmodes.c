@@ -16,5 +16,29 @@ int bsp_input_operation_mode (Options options) {
 }
 
 int ips_output_operation_mode (Options options) {
+  char * error;
+  FILE * source = open_binary_file(options -> input_files -> name, &error);
+  FILE * target = NULL;
+  if (!error) target = open_binary_file(options -> input_files[1].name, &error);
+  if (error) {
+    if (source) fclose(source);
+    fprintf(stderr, "error: %s\n", error);
+    free(error);
+    return 2;
+  }
+  unsigned long long source_length = get_file_length(source), target_length = get_file_length(target);
+  error = NULL;
+  if (source_length > MAX_IPS_BLOCK_SIZE)
+    error = "source file is too large";
+  else if (target_length > MAX_IPS_BLOCK_SIZE)
+    error = "target file is too large";
+  else if (source_length > target_length)
+    error = "source file is larger than target file";
+  if (error) {
+    fprintf(stderr, "error: %s\n", error);
+    fclose(source);
+    fclose(target);
+    return 2;
+  }
   // ...
 }
