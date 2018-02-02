@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <setjmp.h>
 
 #include "struct.h"
@@ -18,3 +19,5 @@ jmp_buf bsp_return_point;
 char * volatile bsp_error;
 
 void * volatile bsp_memory_region = NULL;
+
+FILE * bsp_temporary_file = NULL;

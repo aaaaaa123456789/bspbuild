@@ -26,7 +26,7 @@ extern struct bsp_command script_commands[];
 // fstack.c
 void bsp_push_file(const char *);
 void bsp_pop_file(void);
-char * get_line_from_input(void);
+char * get_line_from_bsp_input(void);
 
 // globals.c
 extern char * current_file;
@@ -37,6 +37,7 @@ extern struct script_data * script_data;
 extern jmp_buf bsp_return_point;
 extern char * volatile bsp_error;
 extern void * bsp_memory_region;
+extern FILE * bsp_temporary_file;
 
 // labels.c
 void declare_label(const char *);

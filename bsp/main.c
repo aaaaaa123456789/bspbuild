@@ -1,5 +1,12 @@
 #include "proto.h"
 
+char * bsp_build_temporary_file (const char * output, FILE * input) {
+  bsp_temporary_file = input;
+  char * result = bsp_build_file(output, "");
+  bsp_temporary_file = NULL;
+  return result;
+}
+
 char * bsp_build_file (const char * output, const char * input) {
   char * files[2];
   *files = (char *) input;
@@ -33,7 +40,7 @@ void bsp_parse_file (const char * file) {
   bsp_push_file(file);
   while (file_stack_length) {
     current_line ++;
-    line = get_line_from_input();
+    line = get_line_from_bsp_input();
     comment_start = find_unquoted_character(line, ';');
     if (comment_start >= 0) line[comment_start] = 0;
     process_input_line(line);
@@ -58,7 +65,7 @@ void bsp_throw_error (const char * fmtstring, ...) {
   va_end(ap);
   bsp_error = malloc(strlen(error) + (current_file ? strlen(current_file) + 20 : 8));
   if (current_file)
-    sprintf(bsp_error, "%s:%u: %s", current_file, current_line, error);
+    sprintf(bsp_error, "%s:%u: %s", *current_file ? current_file : "<generated BSP file>", current_line, error);
   else
     sprintf(bsp_error, "error: %s", error);
   free(error);

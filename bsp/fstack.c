@@ -3,8 +3,12 @@
 void bsp_push_file (const char * file) {
   current_file = NULL;
   char * error;
-  FILE * fp = open_text_file(file, &error);
-  if (error) bsp_throw_error("%s", error);
+  FILE * fp;
+  if (*file) {
+    fp = open_text_file(file, &error);
+    if (error) bsp_throw_error("%s", error);
+  } else
+    fp = bsp_temporary_file;
   char * filename = duplicate_string(file);
   if (file_stack_length) file_stack -> line = current_line;
   file_stack = mr_realloc(bsp_memory_region, file_stack, sizeof(struct file_stack_entry) * (file_stack_length + 1));
@@ -16,7 +20,7 @@ void bsp_push_file (const char * file) {
 }
 
 void bsp_pop_file (void) {
-  fclose(file_stack -> fp);
+  if (*(file_stack -> name)) fclose(file_stack -> fp);
   mr_free(bsp_memory_region, file_stack -> name);
   file_stack_length --;
   memmove(file_stack, file_stack + 1, file_stack_length * sizeof(struct file_stack_entry));
@@ -32,6 +36,6 @@ void bsp_pop_file (void) {
   }
 }
 
-char * get_line_from_input (void) {
+char * get_line_from_bsp_input (void) {
   return read_line(file_stack -> fp);
 }
