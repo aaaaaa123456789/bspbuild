@@ -14,6 +14,10 @@ char * duplicate_string (const char * string) {
   return strcpy(malloc(strlen(string) + 1), string);
 }
 
+char * mr_duplicate_string (void * region, const char * string) {
+  return strcpy(mr_malloc(region, strlen(string) + 1), string);
+}
+
 unsigned convert_digit_string_to_number (const char * string, char ** error) {
   if (strspn(string, "0123456789") != strlen(string)) {
     *error = generate_string("invalid number: %s", string);

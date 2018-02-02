@@ -33,7 +33,7 @@ struct bsp_argument * get_argument (const char * string) {
 
 char * get_string_argument (const char * argument) {
   if (*argument != '"') bsp_throw_error("unquoted string");
-  char * result = duplicate_string(argument + 1);
+  char * result = mr_duplicate_string(bsp_memory_region, argument + 1);
   unsigned length = strlen(result) - 1;
   if (result[length] != '"') bsp_throw_error("unquoted string");
   result[length] = 0;

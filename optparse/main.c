@@ -58,8 +58,7 @@ int parse_option (Options options, const char * option, const char * argument) {
   else
     error = option_parsers[current].no_argument_callback(options, option_parsers[current].parameter);
   if (error) {
-    options -> error_text = mr_malloc(options -> memory_region, strlen(error) + 1);
-    strcpy(options -> error_text, error);
+    options -> error_text = copy_string_for_options(options, error);
     free(error);
   }
   return option_parsers[current].has_argument;

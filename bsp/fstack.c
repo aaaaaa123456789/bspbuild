@@ -9,7 +9,7 @@ void bsp_push_file (const char * file) {
     if (error) bsp_throw_error("%s", error);
   } else
     fp = bsp_temporary_file;
-  char * filename = duplicate_string(file);
+  char * filename = mr_duplicate_string(bsp_memory_region, file);
   if (file_stack_length) file_stack -> line = current_line;
   file_stack = mr_realloc(bsp_memory_region, file_stack, sizeof(struct file_stack_entry) * (file_stack_length + 1));
   memmove(file_stack + 1, file_stack, file_stack_length * sizeof(struct file_stack_entry));

@@ -12,7 +12,7 @@ void process_input_line (const char * line) {
       copy[pos - line] = 0;
       line = pos + 1;
     } else {
-      copy = duplicate_string(line);
+      copy = mr_duplicate_string(bsp_memory_region, line);
       line = NULL;
     }
     declare_label(copy);
@@ -28,7 +28,7 @@ void process_input_line (const char * line) {
 }
 
 char ** extract_components_from_line (const char * line) {
-  char * copy = duplicate_string(line);
+  char * copy = mr_duplicate_string(bsp_memory_region, line);
   int pos = find_unquoted_character(copy, ';');
   if (pos >= 0) copy[pos] = 0;
   char * current = copy + strspn(copy, " \t");
@@ -40,13 +40,13 @@ char ** extract_components_from_line (const char * line) {
   char ** result;
   if (!current[pos]) {
     result = mr_malloc(bsp_memory_region, sizeof(char *) * 2);
-    *result = duplicate_string(current);
+    *result = mr_duplicate_string(bsp_memory_region, current);
     result[1] = NULL;
     return result;
   }
   result = mr_malloc(bsp_memory_region, sizeof(char *));
   current[pos] = 0;
-  *result = duplicate_string(current);
+  *result = mr_duplicate_string(bsp_memory_region, current);
   current += pos + 1;
   unsigned components = 1;
   char * component;
