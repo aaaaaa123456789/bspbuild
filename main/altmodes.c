@@ -40,5 +40,33 @@ int ips_output_operation_mode (Options options) {
     fclose(target);
     return 2;
   }
-  // ...
+  Buffer source_data = create_buffer_from_size(source_length), target_data = create_buffer_from_size(target_length);
+  source_length = fread(source_data -> data, 1, source_length, source);
+  target_length = fread(target_data -> data, 1, target_length, target);
+  fclose(source);
+  fclose(target);
+  if ((source_length != source_data -> length) || (target_length != target_data -> length)) {
+    fputs("error: could not read from input files\n", stderr);
+    free(source_data);
+    free(target_data);
+    return 2;
+  }
+  Buffer result = generate_ips_patch_from_buffers(source_data, target_data);
+  free(source_data);
+  free(target_data);
+  if (!result) {
+    fputs("error: could not generate IPS patch\n", stderr);
+    return 2;
+  }
+  target = open_binary_file_for_writing(options -> output_files.compiled, &error);
+  if (error) {
+    fprintf(stderr, "error: %s\n", error);
+    free(result);
+    return 2;
+  }
+  int rv = write_data_to_file(target, result -> data, result -> length);
+  free(result);
+  fclose(target);
+  if (!rv) fprintf(stderr, "error: could not write to %s\n", options -> output_files.compiled);
+  return rv ? 0 : 2;
 }
