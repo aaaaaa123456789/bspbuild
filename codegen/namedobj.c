@@ -50,8 +50,8 @@ char * generate_named_object (const char * object, const char * prefix) {
 
 int validate_named_object (const char * name) {
   if (!(name && *name)) return 0;
-  if (strspn(name, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_") != strlen(name)) return 0;
-  return !strchr("0123456789", *name);
+  if (strspn(name, VALID_ID_CHARACTERS) != strlen(name)) return 0;
+  return !strchr(DIGITS, *name);
 }
 
 char * convert_label_prefix_to_register_prefix (const char * label_prefix) {

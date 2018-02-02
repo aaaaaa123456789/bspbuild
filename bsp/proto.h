@@ -4,17 +4,12 @@
 #include <stdarg.h>
 #include <setjmp.h>
 
+#include "../headers/const.h"
 #include "../util/public.h"
 
 #include "struct.h"
 #include "commands.h"
 #include "public.h"
-
-#define LETTERS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-#define LETTERS_OR_UNDERSCORE LETTERS "_"
-#define DIGITS "0123456789"
-#define VALID_ID_CHARACTERS LETTERS_OR_UNDERSCORE DIGITS
-#define NUMERIC_CHARACTERS DIGITS "+-"
 
 // args.c
 struct bsp_argument * get_argument(const char *);

@@ -7,6 +7,7 @@
 #include "public.h"
 #include "struct.h"
 
+#include "../headers/const.h"
 #include "../util/public.h"
 
 // data.c
