@@ -17,6 +17,22 @@ Buffer generate_ips_patch (const void * source, const void * target, unsigned le
   return result;
 }
 
+Buffer generate_ips_patch_from_buffers (const Buffer source, const Buffer target) {
+  if (source -> length > target -> length) return NULL;
+  if (!(source -> length)) return generate_ips_for_data(target -> data, target -> length);
+  Buffer result = generate_ips_patch(source -> data, target -> data, source -> length);
+  if (source -> length == target -> length) return result;
+  resize_buffer(&result, result -> length - 3); // remove the EOF
+  ips_buffer = result;
+  ips_target = target -> data;
+  write_ips_blocks_for_data(target -> data + source -> length, target -> length - source -> length, source -> length);
+  append_data_to_buffer(&ips_buffer, (unsigned char []) {0x45, 0x4F, 0x46}, 3); // "EOF"
+  ips_target = NULL;
+  result = ips_buffer;
+  ips_buffer = NULL;
+  return result;
+}
+
 Buffer generate_ips_for_data (const void * data, unsigned length) {
   return generate_ips_patch(NULL, data, length);
 }

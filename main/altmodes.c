@@ -28,9 +28,9 @@ int ips_output_operation_mode (Options options) {
   }
   unsigned long long source_length = get_file_length(source), target_length = get_file_length(target);
   error = NULL;
-  if (source_length > MAX_IPS_BLOCK_SIZE)
+  if (source_length > MAX_IPS_PATCH_SIZE)
     error = "source file is too large";
-  else if (target_length > MAX_IPS_BLOCK_SIZE)
+  else if (target_length > MAX_IPS_PATCH_SIZE)
     error = "target file is too large";
   else if (source_length > target_length)
     error = "source file is larger than target file";
