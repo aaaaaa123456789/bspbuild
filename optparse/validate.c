@@ -112,6 +112,11 @@ void fill_in_missing_options (Options options) {
   fill_in_missing_option_string(options, &(options -> messages.error_replacement), "###");
   fill_in_missing_option_string(options, &(options -> messages.error), "Error: ###");
   fill_in_missing_option_string(options, &(options -> messages.source_detection), "Detected input file: ");
+  if (options -> prefixes.label || options -> prefixes.variable || options -> prefixes.constant) {
+    fill_in_missing_option_string(options, &(options -> prefixes.label), "");
+    fill_in_missing_option_string(options, &(options -> prefixes.variable), "");
+    fill_in_missing_option_string(options, &(options -> prefixes.constant), "");
+  }
 }
 
 void fill_in_missing_option_string (Options options, char ** string, const char * new_value) {
