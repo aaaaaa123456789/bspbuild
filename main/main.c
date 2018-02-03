@@ -29,7 +29,7 @@ int normal_operation_mode (Options options) {
     fputs("error: invalid prefix specified\n", stderr);
     return EXIT_STATUS_INVALID_OPTIONS;
   }
-  char * error = generate_code(options, cf);
+  char * error = generate_patch_code(options, cf);
   if (error) {
     destroy_codefile(cf);
     fprintf(stderr, "error: %s\n", error);
