@@ -2,7 +2,7 @@
 
 int main (int argc, char ** argv) {
   Options options = parse_options(argv + 1, argc - 1);
-  int exit_status = 1; // default to 1 for the errors below
+  int exit_status = EXIT_STATUS_INVALID_OPTIONS; // default for the errors below
   if (options -> response)
     fprintf(stderr, "%s\n", options -> response);
   else if (options -> error_text)
@@ -27,14 +27,14 @@ int normal_operation_mode (Options options) {
     cf = new_codefile();
   if (!cf) {
     fputs("error: invalid prefix specified\n", stderr);
-    return 1;
+    return EXIT_STATUS_INVALID_OPTIONS;
   }
   char * error = generate_code(options, cf);
   if (error) {
     destroy_codefile(cf);
     fprintf(stderr, "error: %s\n", error);
     free(error);
-    return 2;
+    return EXIT_STATUS_ERROR;
   }
   Buffer code = convert_codefile_to_data(cf);
   FILE * tempfile = NULL;
@@ -45,25 +45,25 @@ int normal_operation_mode (Options options) {
     if (error) {
       fprintf(stderr, "error: %s\n", error);
       free(error);
-      return 2;
+      return EXIT_STATUS_ERROR;
     }
   } else {
     tempfile = tmpfile();
     if (!tempfile) {
       free(code);
       fputs("error: could not create temporary file\n", stderr);
-      return 2;
+      return EXIT_STATUS_ERROR;
     }
     rv = write_data_to_file(tempfile, code -> data, code -> length);
     free(code);
     if (!rv) {
       fclose(tempfile);
       fputs("error: could not write to temporary file\n", stderr);
-      return 2;
+      return EXIT_STATUS_ERROR;
     }
     rewind(tempfile);
   }
-  if (!(options -> output_files.compiled)) return 0;
+  if (!(options -> output_files.compiled)) return EXIT_STATUS_OK;
   if (tempfile) {
     error = bsp_build_temporary_file(options -> output_files.compiled, tempfile);
     fclose(tempfile);
@@ -72,7 +72,7 @@ int normal_operation_mode (Options options) {
   if (error) {
     fprintf(stderr, "%s\n", error);
     free(error);
-    return 2;
+    return EXIT_STATUS_ERROR;
   }
-  return 0;
+  return EXIT_STATUS_OK;
 }

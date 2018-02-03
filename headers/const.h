@@ -44,4 +44,10 @@ enum {
   VALIDATE_NONE   = 2
 };
 
+enum {
+  EXIT_STATUS_OK = 0,
+  EXIT_STATUS_INVALID_OPTIONS = 1,
+  EXIT_STATUS_ERROR = 2
+};
+
 #endif
