@@ -14,10 +14,9 @@ FILE * open_binary_file_for_writing (const char * file, char ** error) {
 
 FILE * open_file (const char * file, const char * mode, const char * mode_description, char ** error) {
   FILE * fp = fopen(file, mode);
-  if (!fp) {
-    *error = malloc(strlen(file) + strlen(mode_description) + 26);
-    sprintf(*error, "could not open file %s for %s", file, mode_description);
-  } else
+  if (!fp)
+    *error = generate_string("could not open file %s for %s", file, mode_description);
+  else
     *error = NULL;
   return fp;
 }
@@ -72,4 +71,14 @@ long get_file_length (FILE * fp) {
   if (fseek(fp, 0, 2) >= 0) result = ftell(fp);
   fsetpos(fp, &saved_pos);
   return result;
+}
+
+char * write_buffer_to_new_file (const char * filename, Buffer buffer) {
+  char * error;
+  FILE * fp = open_binary_file_for_writing(filename, &error);
+  if (error) return error;
+  int rv = write_data_to_file(fp, buffer -> data, buffer -> length);
+  fclose(fp);
+  if (!rv) return generate_string("could not write data to %s", filename);
+  return NULL;
 }

@@ -18,5 +18,61 @@ int main (int argc, char ** argv) {
 }
 
 int normal_operation_mode (Options options) {
-  // ...
+  CodeFile cf;
+  if (options -> prefixes.label || options -> prefixes.constant || options -> prefixes.variable)
+    cf = new_codefile_with_prefixes(options -> prefixes.label, options -> prefixes.variable, options -> prefixes.constant);
+  else if (options -> prefixes.global)
+    cf = new_codefile_with_prefix(options -> prefixes.global);
+  else
+    cf = new_codefile();
+  if (!cf) {
+    fputs("error: invalid prefix specified\n", stderr);
+    return 1;
+  }
+  char * error = generate_code(options, cf);
+  if (error) {
+    destroy_codefile(cf);
+    fprintf(stderr, "error: %s\n", error);
+    free(error);
+    return 2;
+  }
+  Buffer code = convert_codefile_to_data(cf);
+  FILE * tempfile = NULL;
+  int rv;
+  if (options -> output_files.source) {
+    error = write_buffer_to_new_file(options -> output_files.source, code);
+    free(code);
+    if (error) {
+      fprintf(stderr, "error: %s\n", error);
+      free(error);
+      return 2;
+    }
+  } else {
+    tempfile = tmpfile();
+    if (!tempfile) {
+      free(code);
+      fputs("error: could not create temporary file\n", stderr);
+      return 2;
+    }
+    rv = write_data_to_file(tempfile, code -> data, code -> length);
+    free(code);
+    if (!rv) {
+      fclose(tempfile);
+      fputs("error: could not write to temporary file\n", stderr);
+      return 2;
+    }
+    rewind(tempfile);
+  }
+  if (!(options -> output_files.compiled)) return 0;
+  if (tempfile) {
+    error = bsp_build_temporary_file(options -> output_files.compiled, tempfile);
+    fclose(tempfile);
+  } else
+    error = bsp_build_file(options -> output_files.compiled, options -> output_files.source);
+  if (error) {
+    fprintf(stderr, "%s\n", error);
+    free(error);
+    return 2;
+  }
+  return 0;
 }

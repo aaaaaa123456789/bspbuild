@@ -26,6 +26,7 @@ char * read_line(FILE * fp);
 char ** read_file_as_lines(FILE * fp, unsigned * line_count);
 int write_data_to_file(FILE * fp, const void * data, unsigned length);
 long get_file_length(FILE * fp);
+char * write_buffer_to_new_file(const char * filename, Buffer buffer);
 
 // generic.c
 unsigned value_in_list(unsigned value, ...);
