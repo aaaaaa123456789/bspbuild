@@ -1,6 +1,7 @@
 #include "struct.h"
 #include "options.h"
 #include "../headers/const.h"
+#include "../headers/null.h"
 
 const struct option_parser option_parsers[] = {
   {.option = "-f",                          .argument_callback =    &set_fragment_size,                 .has_argument = 1},

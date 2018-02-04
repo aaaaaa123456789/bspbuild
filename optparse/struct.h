@@ -1,9 +1,5 @@
 #include "pubtypes.h"
 
-#ifndef NULL
-  #define NULL ((void *) 0)
-#endif
-
 struct option_parser {
   const char * option;
   union {

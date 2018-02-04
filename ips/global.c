@@ -1,8 +1,5 @@
 #include "../util/pubtypes.h"
-
-#ifndef NULL
-  #define NULL ((void *) 0)
-#endif
+#include "../headers/null.h"
 
 Buffer ips_buffer = NULL;
 

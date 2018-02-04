@@ -2,10 +2,7 @@
 #include <setjmp.h>
 
 #include "struct.h"
-
-#ifndef NULL
-  #define NULL ((void *) 0)
-#endif
+#include "../headers/null.h"
 
 char * current_file = NULL;
 unsigned current_line = 0;
