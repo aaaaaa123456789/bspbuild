@@ -1,9 +1,7 @@
 #include "proto.h"
 
 char * generate_patch_code (Options options, CodeFile codefile) {
-  builder_state = calloc(1, sizeof(struct code_generation_state));
-  builder_state -> options = options;
-  builder_state -> codefile = codefile;
+  initialize_builder_state(options, codefile);
   builder_error = NULL;
   int rv = setjmp(builder_return_point);
   if (!rv) {

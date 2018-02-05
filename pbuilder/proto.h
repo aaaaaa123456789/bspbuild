@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdarg.h>
 #include <setjmp.h>
 
@@ -15,6 +16,7 @@ extern jmp_buf builder_return_point;
 extern char * builder_error;
 
 // init.c
+void initialize_builder_state(Options, CodeFile);
 void initialize_code_generator(void);
 int declare_register(const char *, unsigned char);
 
