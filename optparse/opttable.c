@@ -1,6 +1,6 @@
 #include "struct.h"
 #include "options.h"
-#include "../headers/const.h"
+#include "../headers/enum.h"
 #include "../headers/null.h"
 
 const struct option_parser option_parsers[] = {

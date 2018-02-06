@@ -3,8 +3,9 @@
 #include <stdarg.h>
 
 #include "../util/public.h"
-#include "../headers/version.h"
 #include "../headers/const.h"
+#include "../headers/enum.h"
+#include "../headers/version.h"
 #include "../patch/public.h"
 
 #include "public.h"

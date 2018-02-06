@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "../headers/const.h"
+#include "../headers/enum.h"
 #include "../bsp/public.h"
 #include "../codegen/public.h"
 #include "../ips/public.h"
