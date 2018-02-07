@@ -16,14 +16,20 @@ struct code_generation_state {
     int detect_input; // TODO
     int print_detected_input; // TODO
     int select_output; // TODO
-    int error; // TODO
+    int error;
     int generate_output; // TODO
     int validate_output; // TODO
+    int get_nth_string; // TODO
     // ...
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
     // ...
   } constants;
+  struct {
+    unsigned get_nth_string:       1;
+    unsigned print_detected_input: 1;
+    unsigned validate_output:      1;
+  } needed_functions;
   // ...
 };

@@ -19,8 +19,10 @@ void define_main_function (void) {
     for (pos = 0; pos < opening_banner_line_count; pos ++) inst(INST_PRINT, ARGTYPE_NUMERIC_LOCAL, opening_banner_labels[pos]);
   }
   inst(INST_CALL, ARGTYPE_NAMED_LABEL, get_label(detect_input, "DetectInput"));
-  if (!(builder_state -> options -> suppress_source_detection_message))
+  if (!(builder_state -> options -> suppress_source_detection_message)) {
+    builder_state -> needed_functions.print_detected_input = 1;
     inst(INST_CALL, ARGTYPE_NAMED_LABEL, get_label(print_detected_input, "PrintDetectedInput"));
+  }
   inst(INST_CALL, ARGTYPE_NAMED_LABEL, get_label(select_output, "SelectOutput"));
   inst(INST_SET, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument,
                  ARGTYPE_NAMED_CONSTANT, builder_state -> constants.errors[CODE_ERROR_SOURCE_EQUALS_TARGET]);
@@ -33,6 +35,7 @@ void define_main_function (void) {
   inst(INST_CALL, ARGTYPE_NAMED_LABEL, get_label(generate_output, "GenerateOutput"));
   if (builder_state -> options -> disable_output_validations != VALIDATE_NONE) {
     inst(INST_POP, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
+    builder_state -> needed_functions.validate_output = 1;
     inst(INST_CALL, ARGTYPE_NAMED_LABEL, get_label(validate_output, "ValidateOutput"));
   }
   char ** success_banner_lines;

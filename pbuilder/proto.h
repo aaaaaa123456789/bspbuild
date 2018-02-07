@@ -15,6 +15,11 @@
 #define get_label(member_name, label_name) get_defined_label(&(builder_state -> labels.member_name), label_name)
 #define inst(...) add_instruction_to_codefile(builder_state -> codefile, __VA_ARGS__, ARGTYPE_END)
 
+// errorfn.c
+void define_error_function(void);
+void simple_error_message_function(char **, unsigned);
+void descriptive_error_message_function(char **, unsigned);
+
 // global.c
 extern struct code_generation_state * builder_state;
 extern jmp_buf builder_return_point;

@@ -2,6 +2,7 @@
 
 void generate_runtime (void) {
   define_main_function();
+  define_error_function();
   // ...
 }
 
