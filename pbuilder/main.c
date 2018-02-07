@@ -6,6 +6,7 @@ char * generate_patch_code (Options options, CodeFile codefile) {
   int rv = setjmp(builder_return_point);
   if (!rv) {
     initialize_code_generator();
+    generate_runtime();
     // ...
   }
   // ...
