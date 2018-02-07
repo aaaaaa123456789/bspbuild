@@ -13,12 +13,12 @@ struct code_generation_state {
   } registers;
   struct {
     int main;
-    int detect_input;
-    int print_detected_input;
-    int select_output;
-    int error;
-    int generate_output;
-    int validate_output;
+    int detect_input; // TODO
+    int print_detected_input; // TODO
+    int select_output; // TODO
+    int error; // TODO
+    int generate_output; // TODO
+    int validate_output; // TODO
     // ...
   } labels;
   struct {

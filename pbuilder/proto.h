@@ -31,10 +31,8 @@ void builder_throw(const char *, ...);
 
 // mainfn.c
 void define_main_function(void);
-int generate_banner_lines(const char *, char ***);
 
 // runtime.c
 void generate_runtime(void);
-
-// util.c
 int get_defined_label(int *, const char *);
+int generate_banner_lines(const char *, char ***);
