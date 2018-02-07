@@ -11,7 +11,16 @@ void define_error_function (void) {
     add_blank_line_to_codefile(builder_state -> codefile);
     return;
   }
-  // ...
+  unsigned current_line = error_message_line_count;
+  if (builder_state -> options -> messages.error_replacement && *(builder_state -> options -> messages.error_replacement))
+    for (current_line = 0; current_line < error_message_line_count; current_line ++)
+      if (strstr(error_message_lines[current_line], builder_state -> options -> messages.error_replacement)) break;
+  if (current_line == error_message_line_count)
+    simple_error_message_function(error_message_lines, error_message_line_count);
+  else
+    descriptive_error_message_function(error_message_lines, error_message_line_count);
+  add_blank_line_to_codefile(builder_state -> codefile);
+  destroy_string_array(error_message_lines, error_message_line_count);
 }
 
 void simple_error_message_function (char ** message_lines, unsigned message_line_count) {
