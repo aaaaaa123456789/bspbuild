@@ -17,8 +17,8 @@
 
 // errorfn.c
 void define_error_function(void);
-void simple_error_message_function(char **, unsigned);
-void descriptive_error_message_function(char **, unsigned);
+const char * simple_error_message_function(char **, unsigned);
+const char * descriptive_error_message_function(char **, unsigned);
 
 // global.c
 extern struct code_generation_state * builder_state;
