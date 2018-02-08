@@ -11,9 +11,9 @@
 #include "../util/public.h"
 
 // altmodes.c
-int bsp_input_operation_mode(Options);
-int ips_output_operation_mode(Options);
+int bsp_input_operation_mode(Options, const char *);
+int ips_output_operation_mode(Options, const char *);
 
 // main.c
 int main(int, char **);
-int normal_operation_mode(Options);
+int normal_operation_mode(Options, const char *);

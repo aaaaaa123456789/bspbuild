@@ -1,6 +1,6 @@
 #include "proto.h"
 
-int bsp_input_operation_mode (Options options) {
+int bsp_input_operation_mode (Options options, const char * executable_name) {
   char ** input_files = malloc(sizeof(char *) * (options -> input_file_count + 1));
   unsigned pos;
   for (pos = 0; pos < options -> input_file_count; pos ++) input_files[pos] = options -> input_files[pos].name;
@@ -8,21 +8,21 @@ int bsp_input_operation_mode (Options options) {
   char * result = bsp_build(options -> output_files.compiled, input_files);
   free(input_files);
   if (result) {
-    fprintf(stderr, "%s\n", result);
+    fprintf(stderr, "%s: %s\n", executable_name, result);
     free(result);
     return EXIT_STATUS_ERROR;
   }
   return EXIT_STATUS_OK;
 }
 
-int ips_output_operation_mode (Options options) {
+int ips_output_operation_mode (Options options, const char * executable_name) {
   char * error;
   FILE * source = open_binary_file(options -> input_files -> name, &error);
   FILE * target = NULL;
   if (!error) target = open_binary_file(options -> input_files[1].name, &error);
   if (error) {
     if (source) fclose(source);
-    fprintf(stderr, "error: %s\n", error);
+    fprintf(stderr, "%s: error: %s\n", executable_name, error);
     free(error);
     return EXIT_STATUS_ERROR;
   }
@@ -35,7 +35,7 @@ int ips_output_operation_mode (Options options) {
   else if (source_length > target_length)
     error = "source file is larger than target file";
   if (error) {
-    fprintf(stderr, "error: %s\n", error);
+    fprintf(stderr, "%s: error: %s\n", executable_name, error);
     fclose(source);
     fclose(target);
     return EXIT_STATUS_ERROR;
@@ -46,7 +46,7 @@ int ips_output_operation_mode (Options options) {
   fclose(source);
   fclose(target);
   if ((source_length != source_data -> length) || (target_length != target_data -> length)) {
-    fputs("error: could not read from input files\n", stderr);
+    fprintf(stderr, "%s: error: could not read from input files\n", executable_name);
     free(source_data);
     free(target_data);
     return EXIT_STATUS_ERROR;
@@ -55,18 +55,18 @@ int ips_output_operation_mode (Options options) {
   free(source_data);
   free(target_data);
   if (!result) {
-    fputs("error: could not generate IPS patch\n", stderr);
+    fprintf(stderr, "%s: error: could not generate IPS patch\n", executable_name);
     return EXIT_STATUS_ERROR;
   }
   target = open_binary_file_for_writing(options -> output_files.compiled, &error);
   if (error) {
-    fprintf(stderr, "error: %s\n", error);
+    fprintf(stderr, "%s: error: %s\n", executable_name, error);
     free(result);
     return EXIT_STATUS_ERROR;
   }
   int rv = write_data_to_file(target, result -> data, result -> length);
   free(result);
   fclose(target);
-  if (!rv) fprintf(stderr, "error: could not write to %s\n", options -> output_files.compiled);
+  if (!rv) fprintf(stderr, "%s: error: could not write to %s\n", executable_name, options -> output_files.compiled);
   return rv ? EXIT_STATUS_OK : EXIT_STATUS_ERROR;
 }
