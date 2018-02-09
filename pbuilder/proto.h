@@ -17,11 +17,12 @@
 
 // errorfn.c
 void define_error_function(void);
-const char * simple_error_message_function(char **, unsigned);
-const char * descriptive_error_message_function(char **, unsigned);
+void simple_error_message_function(char **, unsigned);
+void descriptive_error_message_function(char **, unsigned);
 int add_string_to_printed_error_messages(int **, char ***, unsigned *, char *);
 
 // global.c
+extern void * builder_memory_region;
 extern struct code_generation_state * builder_state;
 extern jmp_buf builder_return_point;
 extern char * builder_error;
@@ -43,3 +44,4 @@ void define_main_function(void);
 void generate_runtime(void);
 int get_defined_label(int *, const char *);
 int generate_banner_lines(const char *, char ***);
+void destroy_banner_lines(char **, unsigned);

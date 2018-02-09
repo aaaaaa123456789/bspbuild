@@ -7,14 +7,10 @@ void define_main_function (void) {
   int opening_banner_line_count = generate_banner_lines(builder_state -> options -> messages.opening, &opening_banner_lines);
   unsigned pos;
   if (opening_banner_line_count > 0) {
-    opening_banner_labels = malloc(sizeof(int) * opening_banner_line_count);
+    opening_banner_labels = mr_malloc(builder_memory_region, sizeof(int) * opening_banner_line_count);
     for (pos = 0; pos < opening_banner_line_count; pos ++) {
       opening_banner_labels[pos] = declare_numeric_local_for_codefile(builder_state -> codefile);
-      if (opening_banner_labels[pos] < 0) {
-        free(opening_banner_labels);
-        destroy_string_array(opening_banner_lines, opening_banner_line_count);
-        builder_throw("could not declare numeric local");
-      }
+      if (opening_banner_labels[pos] < 0) builder_throw("could not declare numeric local");
     }
     for (pos = 0; pos < opening_banner_line_count; pos ++) inst(INST_PRINT, ARGTYPE_NUMERIC_LOCAL, opening_banner_labels[pos]);
   }
@@ -42,18 +38,10 @@ void define_main_function (void) {
   int * success_banner_labels = NULL;
   int success_banner_line_count = generate_banner_lines(builder_state -> options -> messages.success, &success_banner_lines);
   if (success_banner_line_count > 0) {
-    success_banner_labels = malloc(sizeof(int) * success_banner_line_count);
+    success_banner_labels = mr_malloc(builder_memory_region, sizeof(int) * success_banner_line_count);
     for (pos = 0; pos < success_banner_line_count; pos ++) {
       success_banner_labels[pos] = declare_numeric_local_for_codefile(builder_state -> codefile);
-      if (success_banner_labels[pos] < 0) {
-        if (opening_banner_line_count > 0) {
-          free(opening_banner_labels);
-          destroy_string_array(opening_banner_lines, opening_banner_line_count);
-        }
-        free(success_banner_labels);
-        destroy_string_array(success_banner_lines, success_banner_line_count);
-        builder_throw("could not declare numeric local");
-      }
+      if (success_banner_labels[pos] < 0) builder_throw("could not declare numeric local");
     }
     for (pos = 0; pos < success_banner_line_count; pos ++) inst(INST_PRINT, ARGTYPE_NUMERIC_LOCAL, success_banner_labels[pos]);
   }
@@ -65,8 +53,8 @@ void define_main_function (void) {
       add_declared_numeric_local_to_codefile(builder_state -> codefile, opening_banner_labels[pos]);
       keep_going = add_string_to_codefile(builder_state -> codefile, opening_banner_lines[pos]);
     }
-    free(opening_banner_labels);
-    destroy_string_array(opening_banner_lines, opening_banner_line_count);
+    mr_free(builder_memory_region, opening_banner_labels);
+    destroy_banner_lines(opening_banner_lines, opening_banner_line_count);
     add_blank_line_to_codefile(builder_state -> codefile);
   }
   if (success_banner_line_count > 0) {
@@ -74,8 +62,8 @@ void define_main_function (void) {
       add_declared_numeric_local_to_codefile(builder_state -> codefile, success_banner_labels[pos]);
       keep_going = add_string_to_codefile(builder_state -> codefile, success_banner_lines[pos]);
     }
-    free(success_banner_labels);
-    destroy_string_array(success_banner_lines, success_banner_line_count);
+    mr_free(builder_memory_region, success_banner_labels);
+    destroy_banner_lines(success_banner_lines, success_banner_line_count);
     add_blank_line_to_codefile(builder_state -> codefile);
   }
   if (!keep_going) builder_throw("could not add banner strings to output");

@@ -1,7 +1,7 @@
 #include "proto.h"
 
 void initialize_builder_state (Options options, CodeFile codefile) {
-  builder_state = calloc(1, sizeof(struct code_generation_state));
+  builder_state = mr_calloc(builder_memory_region, sizeof(struct code_generation_state));
   builder_state -> options = options;
   builder_state -> codefile = codefile;
   memset(&(builder_state -> labels), -1, sizeof (builder_state -> labels)); // this should be enough to set them all to some negative value

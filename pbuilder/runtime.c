@@ -21,12 +21,12 @@ int generate_banner_lines (const char * banner, char *** lines) {
   const char * pos;
   while (*banner) {
     pos = strchr(banner, '\n');
-    result = realloc(result, sizeof(char *) * (count + 1));
+    result = mr_realloc(builder_memory_region, result, sizeof(char *) * (count + 1));
     if (!pos) {
       result[count ++] = duplicate_string(banner);
       break;
     }
-    result[count] = memcpy(malloc(pos - banner + 1), banner, pos - banner);
+    result[count] = memcpy(mr_malloc(builder_memory_region, pos - banner + 1), banner, pos - banner);
     result[count ++][pos - banner] = 0;
     banner = pos + 1;
   }
@@ -38,4 +38,10 @@ int generate_banner_lines (const char * banner, char *** lines) {
   }
   *lines = result;
   return count;
+}
+
+void destroy_banner_lines (char ** banner_lines, unsigned count) {
+  unsigned current;
+  for (current = 0; current < count; current ++) mr_free(builder_memory_region, banner_lines[count]);
+  mr_free(builder_memory_region, banner_lines);
 }

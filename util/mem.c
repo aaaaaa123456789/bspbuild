@@ -23,7 +23,7 @@ void * mr_malloc (void * region, unsigned size) {
 }
 
 void * mr_calloc (void * region, unsigned size) {
-  return mr_create_node(region, calloc(1 + size / sizeof(struct memory_region), sizeof(struct memory_region)));
+  return mr_create_node(region, calloc(size ? 2 + (size - 1) / sizeof(struct memory_region) : 1, sizeof(struct memory_region)));
 }
 
 void * mr_create_node (struct memory_region ** region, struct memory_region * node) {

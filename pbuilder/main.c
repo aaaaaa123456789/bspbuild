@@ -1,6 +1,7 @@
 #include "proto.h"
 
 char * generate_patch_code (Options options, CodeFile codefile) {
+  builder_memory_region = create_memory_region();
   initialize_builder_state(options, codefile);
   builder_error = NULL;
   int rv = setjmp(builder_return_point);
