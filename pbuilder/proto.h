@@ -19,11 +19,13 @@
 void define_error_function(void);
 const char * simple_error_message_function(char **, unsigned);
 const char * descriptive_error_message_function(char **, unsigned);
+int add_string_to_printed_error_messages(int **, char ***, unsigned *, char *);
 
 // global.c
 extern struct code_generation_state * builder_state;
 extern jmp_buf builder_return_point;
 extern char * builder_error;
+extern const char * const code_error_messages[];
 
 // init.c
 void initialize_builder_state(Options, CodeFile);
