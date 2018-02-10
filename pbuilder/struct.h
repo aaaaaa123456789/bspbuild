@@ -19,7 +19,7 @@ struct code_generation_state {
     int error;
     int generate_output; // TODO
     int validate_output; // TODO
-    int get_nth_string; // TODO
+    int get_nth_string;
     // ...
   } labels;
   struct {
