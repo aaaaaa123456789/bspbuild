@@ -45,3 +45,6 @@ void generate_runtime(void);
 int get_defined_label(int *, const char *);
 int generate_banner_lines(const char *, char ***);
 void destroy_banner_lines(char **, unsigned);
+
+// utilfn.c
+void define_get_nth_string_function(void);
