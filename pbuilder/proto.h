@@ -13,7 +13,14 @@
 #include "public.h"
 
 #define get_label(member_name, label_name) get_defined_label(&(builder_state -> labels.member_name), label_name)
-#define inst(...) add_instruction_to_codefile(builder_state -> codefile, __VA_ARGS__, ARGTYPE_END)
+
+#define inst(...) do {                                                                                    \
+  char * ___result = add_instruction_to_codefile(builder_state -> codefile, __VA_ARGS__, ARGTYPE_END);    \
+  if (!___result) break;                                                                                  \
+  char * ___copy = mr_duplicate_string(builder_memory_region, ___result);                                 \
+  free(___result);                                                                                        \
+  builder_throw("could not generate instruction: %s", ___copy);                                           \
+} while (0);
 
 // errorfn.c
 void define_error_function(void);
