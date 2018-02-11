@@ -106,4 +106,11 @@ const struct code_generation_instruction_entry codegen_instruction_table[] = {
   {"xordata",         0, 2}
 };
 
+const char * const codegen_directive_names[] = {
+  "db",
+  "dh",
+  "dw"
+};
+
 const unsigned codegen_instruction_count = sizeof codegen_instruction_table / sizeof(struct code_generation_instruction_entry);
+const unsigned codegen_directive_count = sizeof codegen_directive_names / sizeof(const char *);

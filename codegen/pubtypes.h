@@ -33,6 +33,13 @@ enum {
 };
 
 enum {
+  // directives take negative values
+  INST_DB = -1,
+  INST_DH = -2,
+  INST_DW = -3
+};
+
+enum {
   INST_ADD,
   INST_ADD2,
   INST_ADDCARRY,

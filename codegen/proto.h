@@ -24,7 +24,9 @@ char * generate_formatted_argument(CodeFile, struct instruction_argument, char *
 
 // insttab.c
 extern const struct code_generation_instruction_entry codegen_instruction_table[];
+extern const char * const codegen_directive_names[];
 extern const unsigned codegen_instruction_count;
+extern const unsigned codegen_directive_count;
 
 // labels.c
 char * generate_prefixed_label(CodeFile, const char *);

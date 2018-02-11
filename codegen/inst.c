@@ -1,6 +1,6 @@
 #include "proto.h"
 
-char * add_instruction_to_codefile (CodeFile file, unsigned instruction, ...) {
+char * add_instruction_to_codefile (CodeFile file, int instruction, ...) {
   struct instruction_argument * arguments = NULL;
   struct instruction_argument next_argument;
   unsigned argument_count = 0;
@@ -30,21 +30,34 @@ char * add_instruction_to_codefile (CodeFile file, unsigned instruction, ...) {
   return result;
 }
 
-char * add_instruction_with_arguments_to_codefile (CodeFile file, unsigned instruction, unsigned argument_count, const struct instruction_argument * arguments) {
-  if (instruction >= codegen_instruction_count) return generate_string("unknown instruction: %u", instruction);
-  const struct code_generation_instruction_entry * instdata = codegen_instruction_table + instruction;
-  if (argument_count != (instdata -> variable_operands + instdata -> any_operands))
-    return generate_string("wrong number of operands for %s(%u): expected %d, got %u", instdata -> name, instruction,
-                           instdata -> variable_operands + instdata -> any_operands, argument_count);
+char * add_instruction_with_arguments_to_codefile (CodeFile file, int instruction, unsigned argument_count, const struct instruction_argument * arguments) {
   unsigned p;
-  for (p = 0; p < argument_count; p ++) if (arguments[p].type >= ARGTYPE_INVALID) return generate_string("invalid argument type: %hhu", arguments[p].type);
-  for (p = 0; p < instdata -> variable_operands; p ++) if (!value_in_list(arguments[p].type, ARGTYPE_REGISTER, ARGTYPE_NAMED_REGISTER, ARGTYPE_PASSTHROUGH, -1))
-    return generate_string("first %u operands for %s(%u) must be variables, but operand %u isn't", instdata -> variable_operands,
-                           instdata -> name, instruction, p + 1);
-  unsigned result_length = strlen(instdata -> name) + 1;
+  const char * instruction_name;
+  if (instruction >= 0) {
+    if (instruction >= codegen_instruction_count) return generate_string("unknown instruction: %d", instruction);
+    const struct code_generation_instruction_entry * instdata = codegen_instruction_table + instruction;
+    if (argument_count != (instdata -> variable_operands + instdata -> any_operands))
+      return generate_string("wrong number of operands for %s(%d): expected %d, got %u", instdata -> name, instruction,
+                             instdata -> variable_operands + instdata -> any_operands, argument_count);
+    for (p = 0; p < argument_count; p ++) if (arguments[p].type >= ARGTYPE_INVALID) return generate_string("invalid argument type: %hhu", arguments[p].type);
+    for (p = 0; p < instdata -> variable_operands; p ++) if (!value_in_list(arguments[p].type, ARGTYPE_REGISTER, ARGTYPE_NAMED_REGISTER, ARGTYPE_PASSTHROUGH, -1))
+      return generate_string("first %u operands for %s(%d) must be variables, but operand %u isn't", instdata -> variable_operands,
+                             instdata -> name, instruction, p + 1);
+    instruction_name = instdata -> name;
+  } else {
+    if ((-instruction) > codegen_directive_count) return generate_string("unknown directive: %d", -instruction);
+    instruction_name = codegen_directive_names[~instruction];
+    if (!argument_count) return generate_string("no arguments passed to directive %s(%d)", instruction_name, -instruction);
+    for (p = 0; p < argument_count; p ++) {
+      if (arguments[p].type >= ARGTYPE_INVALID) return generate_string("invalid argument type: %hhu", arguments[p].type);
+      if (value_in_list(arguments[p].type, ARGTYPE_REGISTER, ARGTYPE_NAMED_REGISTER, -1))
+        return generate_string("argument %u for directive %s(%d) is a variable", p + 1, instruction_name, -instruction);
+    }
+  }
+  unsigned result_length = strlen(instruction_name) + 1;
   char * result = malloc(result_length + 1);
   *result = '\t';
-  memcpy(result + 1, instdata -> name, result_length); // the +1 in result_length already includes the trailing null
+  memcpy(result + 1, instruction_name, result_length); // the +1 in result_length already includes the trailing null
   char * formatted_argument;
   char * error;
   unsigned argument_length;
