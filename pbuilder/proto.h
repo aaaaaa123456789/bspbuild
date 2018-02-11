@@ -20,7 +20,7 @@
   char * ___copy = mr_duplicate_string(builder_memory_region, ___result);                                 \
   free(___result);                                                                                        \
   builder_throw("could not generate instruction: %s", ___copy);                                           \
-} while (0);
+} while (0)
 
 #define reg(name) ARGTYPE_NAMED_REGISTER, builder_state -> registers.name
 #define imm(...) ARGTYPE_IMMEDIATE, (unsigned) (__VA_ARGS__)
@@ -63,4 +63,5 @@ void destroy_banner_lines(char **, unsigned);
 
 // utilfn.c
 void define_detect_input_function(void);
+void define_print_detected_input_function(void);
 void define_get_nth_string_function(void);

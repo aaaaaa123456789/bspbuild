@@ -5,6 +5,7 @@ void generate_runtime (void) {
   define_error_function();
   define_detect_input_function();
   // ...
+  if (builder_state -> needed_functions.print_detected_input) define_print_detected_input_function();
   if (builder_state -> needed_functions.get_nth_string) define_get_nth_string_function();
   // ...
 }

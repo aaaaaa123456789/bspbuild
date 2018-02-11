@@ -14,7 +14,7 @@ struct code_generation_state {
   struct {
     int main;
     int detect_input;
-    int print_detected_input; // TODO
+    int print_detected_input;
     int select_output; // TODO
     int error;
     int generate_output; // TODO
@@ -22,6 +22,7 @@ struct code_generation_state {
     int get_nth_string;
     int file_sizes; // TODO
     int file_hashes; // TODO
+    int file_names; // TODO
     // ...
   } labels;
   struct {
@@ -34,6 +35,7 @@ struct code_generation_state {
     unsigned get_nth_string:       1;
     unsigned print_detected_input: 1;
     unsigned validate_output:      1;
+    unsigned file_names:           1; // not strictly a function, but...
   } needed_functions;
   // ...
 };
