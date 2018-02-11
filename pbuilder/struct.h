@@ -13,17 +13,21 @@ struct code_generation_state {
   } registers;
   struct {
     int main;
-    int detect_input; // TODO
+    int detect_input;
     int print_detected_input; // TODO
     int select_output; // TODO
     int error;
     int generate_output; // TODO
     int validate_output; // TODO
     int get_nth_string;
+    int file_sizes; // TODO
+    int file_hashes; // TODO
     // ...
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
+    int num_input_files;
+    int hash_size;
     // ...
   } constants;
   struct {

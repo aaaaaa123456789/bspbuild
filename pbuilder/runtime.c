@@ -3,6 +3,7 @@
 void generate_runtime (void) {
   define_main_function();
   define_error_function();
+  define_detect_input_function();
   // ...
   if (builder_state -> needed_functions.get_nth_string) define_get_nth_string_function();
   // ...

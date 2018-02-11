@@ -47,4 +47,5 @@ int generate_banner_lines(const char *, char ***);
 void destroy_banner_lines(char **, unsigned);
 
 // utilfn.c
+void define_detect_input_function(void);
 void define_get_nth_string_function(void);
