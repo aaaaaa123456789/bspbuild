@@ -22,6 +22,14 @@
   builder_throw("could not generate instruction: %s", ___copy);                                           \
 } while (0);
 
+#define reg(name) ARGTYPE_NAMED_REGISTER, builder_state -> registers.name
+#define imm(...) ARGTYPE_IMMEDIATE, (unsigned) (__VA_ARGS__)
+#define lbl(...) ARGTYPE_NAMED_LABEL, get_label(__VA_ARGS__)
+#define loc(...) ARGTYPE_LOCAL_LABEL, (__VA_ARGS__)
+#define cnst(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.name
+#define err(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.errors[name]
+#define nloc(...) ARGTYPE_NUMERIC_LOCAL, (unsigned) (__VA_ARGS__)
+
 // errorfn.c
 void define_error_function(void);
 void simple_error_message_function(char **, unsigned);

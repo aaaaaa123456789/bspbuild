@@ -7,7 +7,7 @@ void define_error_function (void) {
   if (!(builder_state -> options -> suppress_error_messages))
     error_message_line_count = generate_banner_lines(builder_state -> options -> messages.error, &error_message_lines);
   if (error_message_line_count <= 0) {
-    inst(INST_EXIT, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
+    inst(INST_EXIT, reg(argument));
     add_blank_line_to_codefile(builder_state -> codefile);
     return;
   }
@@ -29,8 +29,9 @@ void simple_error_message_function (char ** message_lines, unsigned message_line
   for (current = 0; current < message_line_count; current ++)
     if ((message_labels[current] = declare_numeric_local_for_codefile(builder_state -> codefile)) < 0) break;
   if (current < message_line_count) builder_throw("could not declare numeric local");
-  for (current = 0; current < message_line_count; current ++) inst(INST_PRINT, ARGTYPE_NUMERIC_LOCAL, message_labels[current]);
-  inst(INST_EXIT, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
+  for (current = 0; current < message_line_count; current ++)
+    inst(INST_PRINT, nloc(message_labels[current]));
+  inst(INST_EXIT, reg(argument));
   add_blank_line_to_codefile(builder_state -> codefile);
   for (current = 0; current < message_line_count; current ++) {
     add_declared_numeric_local_to_codefile(builder_state -> codefile, message_labels[current]);
@@ -40,11 +41,11 @@ void simple_error_message_function (char ** message_lines, unsigned message_line
 }
 
 void descriptive_error_message_function (char ** message_lines, unsigned message_line_count) {
-  inst(INST_PUSH, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
-  inst(INST_DECREMENT, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
+  inst(INST_PUSH, reg(argument));
+  inst(INST_DECREMENT, reg(argument));
   builder_state -> needed_functions.get_nth_string = 1;
-  inst(INST_SET, ARGTYPE_NAMED_REGISTER, builder_state -> registers.result, ARGTYPE_LOCAL_LABEL, "error_strings");
-  inst(INST_CALL, ARGTYPE_NAMED_LABEL, get_label(get_nth_string, "GetNthString"));
+  inst(INST_SET, reg(result), loc("error_strings"));
+  inst(INST_CALL, lbl(get_nth_string, "GetNthString"));
   unsigned pos, label_count = 0;
   char ** strings = NULL;
   int * labels = NULL;
@@ -61,24 +62,24 @@ void descriptive_error_message_function (char ** message_lines, unsigned message
           *match_pos = 0;
           if ((label = add_string_to_printed_error_messages(&labels, &strings, &label_count, remaining)) < 0)
             builder_throw("could not declare numeric local");
-          inst(INST_BUFSTRING, ARGTYPE_NUMERIC_LOCAL, label);
+          inst(INST_BUFSTRING, nloc(label));
         }
-        inst(INST_BUFSTRING, ARGTYPE_NAMED_REGISTER, builder_state -> registers.result);
+        inst(INST_BUFSTRING, reg(result));
         remaining = match_pos + replacement_length;
       }
       if (*remaining) {
         if ((label = add_string_to_printed_error_messages(&labels, &strings, &label_count, remaining)) < 0)
           builder_throw("could not declare numeric local");
-        inst(INST_BUFSTRING, ARGTYPE_NUMERIC_LOCAL, label);
+        inst(INST_BUFSTRING, nloc(label));
       }
       inst(INST_PRINTBUF);
     } else {
       if ((label = add_string_to_printed_error_messages(&labels, &strings, &label_count, message_lines[pos])) < 0)
         builder_throw("could not declare numeric local");
-      inst(INST_PRINT, ARGTYPE_NUMERIC_LOCAL, label);
+      inst(INST_PRINT, nloc(label));
     }
-  inst(INST_POP, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
-  inst(INST_EXIT, ARGTYPE_NAMED_REGISTER, builder_state -> registers.argument);
+  inst(INST_POP, reg(argument));
+  inst(INST_EXIT, reg(argument));
   add_blank_line_to_codefile(builder_state -> codefile);
   if (add_local_label_to_codefile(builder_state -> codefile, "error_strings") < 0) builder_throw("could not declare local label '.error_strings'");
   for (pos = 0; pos < NUM_CODE_ERRORS; pos ++)
