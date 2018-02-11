@@ -17,6 +17,8 @@ void initialize_code_generator (void) {
   *(builder_state -> constants.errors) = declare_constant("NO_ERRORS", 0);
   builder_state -> constants.errors[CODE_ERROR_INVALID_SOURCE] = declare_constant("ERROR_INVALID_SOURCE", CODE_ERROR_INVALID_SOURCE);
   builder_state -> constants.errors[CODE_ERROR_SOURCE_EQUALS_TARGET] = declare_constant("ERROR_SOURCE_EQUALS_TARGET", CODE_ERROR_SOURCE_EQUALS_TARGET);
+  builder_state -> constants.errors[CODE_ERROR_INVALID_OUTPUT_SIZE] = declare_constant("ERROR_INVALID_OUTPUT_SIZE", CODE_ERROR_INVALID_OUTPUT_SIZE);
+  builder_state -> constants.errors[CODE_ERROR_INVALID_OUTPUT_HASH] = declare_constant("ERROR_INVALID_OUTPUT_HASH", CODE_ERROR_INVALID_OUTPUT_HASH);
   add_blank_line_to_codefile(builder_state -> codefile);
   builder_state -> constants.num_input_files = declare_constant("NUM_INPUT_FILES",
                                                                 builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE] +

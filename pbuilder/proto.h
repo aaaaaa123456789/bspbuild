@@ -64,4 +64,5 @@ void destroy_banner_lines(char **, unsigned);
 // utilfn.c
 void define_detect_input_function(void);
 void define_print_detected_input_function(void);
+void define_validate_output_function(void);
 void define_get_nth_string_function(void);

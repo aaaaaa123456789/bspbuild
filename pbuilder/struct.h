@@ -18,7 +18,7 @@ struct code_generation_state {
     int select_output; // TODO
     int error;
     int generate_output; // TODO
-    int validate_output; // TODO
+    int validate_output;
     int get_nth_string;
     int file_sizes; // TODO
     int file_hashes; // TODO
@@ -36,6 +36,8 @@ struct code_generation_state {
     unsigned print_detected_input: 1;
     unsigned validate_output:      1;
     unsigned file_names:           1; // not strictly a function, but...
+    unsigned full_file_sizes:      1; // include pure targets' file sizes
+    unsigned full_file_hashes:     1; // include pure targets' file hashes
   } needed_functions;
   // ...
 };

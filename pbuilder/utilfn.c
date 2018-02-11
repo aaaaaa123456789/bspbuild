@@ -55,6 +55,30 @@ void define_print_detected_input_function (void) {
   add_blank_line_to_codefile(builder_state -> codefile);
 }
 
+void define_validate_output_function (void) {
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(validate_output, "ValidateOutput"));
+  inst(INST_SHIFTLEFT, reg(temp), reg(argument), imm(2));
+  builder_state -> needed_functions.full_file_sizes = 1;
+  inst(INST_ADD2, reg(temp), lbl(file_sizes, "FileSizes"));
+  inst(INST_GETWORD, reg(temp), reg(temp));
+  inst(INST_LENGTH, reg(result));
+  if (builder_state -> options -> disable_output_validations == VALIDATE_ALL)
+    inst(INST_PUSH, reg(argument));
+  inst(INST_SET, reg(argument), err(CODE_ERROR_INVALID_OUTPUT_SIZE));
+  inst(INST_IFNE, reg(temp), reg(result), lbl(error, "Error"));
+  if (builder_state -> options -> disable_output_validations == VALIDATE_ALL) {
+    inst(INST_POP, reg(temp));
+    inst(INST_MULTIPLY2, reg(temp), cnst(hash_size));
+    builder_state -> needed_functions.full_file_hashes = 1;
+    inst(INST_ADD2, reg(temp), lbl(file_hashes, "FileHashes"));
+    inst(INST_CHECKSHA1, reg(temp), reg(temp));
+    inst(INST_SET, reg(argument), err(CODE_ERROR_INVALID_OUTPUT_HASH));
+    inst(INST_JUMPNZ, reg(temp), lbl(error, "Error"));
+  }
+  inst(INST_RETURN);
+  add_blank_line_to_codefile(builder_state -> codefile);
+}
+
 void define_get_nth_string_function (void) {
   add_declared_label_to_codefile(builder_state -> codefile, get_label(get_nth_string, "GetNthString"));
   inst(INST_RETZ, reg(argument));
