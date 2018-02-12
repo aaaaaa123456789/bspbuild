@@ -12,7 +12,7 @@ void define_select_output_function (void) {
     int sorted = 0;
     for (p = 0; p < target_count; p ++) targets[p] = p;
     if (builder_state -> options -> sort_targets_alphabetically) {
-      sort_target_files_by_name(targets, target_count);
+      qsort(targets, target_count, sizeof(unsigned), &compare_target_names);
       sorted = 1;
     }
     if (builder_state -> options -> targets_per_page && (target_count > (builder_state -> options -> targets_per_page + 1)))
@@ -45,14 +45,16 @@ int check_for_single_output (unsigned target_count) {
   return 0;
 }
 
-void sort_target_files_by_name (unsigned * targets, unsigned count) {
-  // ...
-}
-
 void show_output_selection (const unsigned * targets, unsigned target_count, int alpha_sorted) {
   // ...
 }
 
 void show_paged_output_selection (const unsigned * targets, unsigned target_count) {
   // ...
+}
+
+int compare_target_names (const void * first, const void * second) {
+  unsigned first_index = *(const unsigned *) first + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+  unsigned second_index = *(const unsigned *) second + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+  return strcmp(builder_state -> options -> input_files[first_index].label, builder_state -> options -> input_files[second_index].label);
 }
