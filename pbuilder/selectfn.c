@@ -25,7 +25,24 @@ void define_select_output_function (void) {
 }
 
 int check_for_single_output (unsigned target_count) {
-  // ...
+  if (target_count > 2) return 0; // nothing to do here
+  unsigned target1, target2;
+  target1 = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+  if (target_count == 1) {
+    inst(INST_SET, reg(result), imm(target1));
+    inst(INST_RETURN);
+    return 1;
+  }
+  target2 = target1 + 1;
+  char * comment = generate_string("valid targets: %u, %u", target1, target2);
+  add_comment_to_codefile(builder_state -> codefile, comment, 1);
+  free(comment);
+  inst(INST_SUBTRACT, reg(temp), reg(file), imm(target1));
+  inst(INST_IFGT, reg(temp), imm(1), loc("multiple_available"));
+  inst(INST_SUBTRACT, reg(result), imm(target1 + target2), reg(file));
+  inst(INST_RETURN);
+  if (add_local_label_to_codefile(builder_state -> codefile, "multiple_available") < 0) builder_throw("could not declare local label '.multiple_available'");
+  return 0;
 }
 
 void sort_target_files_by_name (unsigned * targets, unsigned count) {
