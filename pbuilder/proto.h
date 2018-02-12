@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -60,6 +61,13 @@ void generate_runtime(void);
 int get_defined_label(int *, const char *);
 int generate_banner_lines(const char *, char ***);
 void destroy_banner_lines(char **, unsigned);
+
+// selectfn.c
+void define_select_output_function(void);
+int check_for_single_output(unsigned);
+void sort_target_files_by_name(unsigned *, unsigned);
+void show_output_selection(const unsigned *, unsigned, int);
+void show_paged_output_selection(const unsigned *, unsigned);
 
 // utilfn.c
 void define_detect_input_function(void);

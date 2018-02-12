@@ -9,6 +9,17 @@ void initialize_builder_state (Options options, CodeFile codefile) {
 }
 
 void initialize_code_generator (void) {
+  unsigned targets = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET] +
+                     builder_state -> options -> file_count_per_direction[DIRECTION_TARGET];
+  builder_state -> file_name_labels = mr_malloc(builder_memory_region, sizeof(int) * targets);
+  unsigned p;
+  char label_text[20];
+  for (p = 0; p < targets; p ++) {
+    sprintf(label_text, "Filename%u", p + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE]);
+    builder_state -> file_name_labels[p] = declare_label_for_codefile(builder_state -> codefile, label_text);
+    if (builder_state -> file_name_labels[p] < 0)
+      builder_throw("could not declare label '%s'", label_text);
+  }
   builder_state -> registers.file = declare_register("file", 0);
   builder_state -> registers.argument = declare_register("argument", 1);
   builder_state -> registers.temp = declare_register("temp", 2);

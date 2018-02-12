@@ -5,6 +5,7 @@
 struct code_generation_state {
   Options options;
   CodeFile codefile;
+  int * file_name_labels; // outside of the labels struct so it doesn't get initialized to -1
   struct {
     unsigned char file;
     unsigned char result;
@@ -15,7 +16,7 @@ struct code_generation_state {
     int main;
     int detect_input;
     int print_detected_input;
-    int select_output; // TODO
+    int select_output;
     int error;
     int generate_output; // TODO
     int validate_output;
