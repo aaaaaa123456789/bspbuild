@@ -26,6 +26,7 @@
 #define reg(name) ARGTYPE_NAMED_REGISTER, builder_state -> registers.name
 #define imm(...) ARGTYPE_IMMEDIATE, (unsigned) (__VA_ARGS__)
 #define lbl(...) ARGTYPE_NAMED_LABEL, get_label(__VA_ARGS__)
+#define flbl(...) ARGTYPE_NAMED_LABEL, builder_state -> file_name_labels[__VA_ARGS__]
 #define loc(...) ARGTYPE_LOCAL_LABEL, (__VA_ARGS__)
 #define cnst(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.name
 #define err(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.errors[name]
