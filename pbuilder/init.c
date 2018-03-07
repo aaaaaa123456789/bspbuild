@@ -34,6 +34,7 @@ void initialize_code_generator (void) {
   builder_state -> constants.num_input_files = declare_constant("NUM_INPUT_FILES",
                                                                 builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE] +
                                                                 builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET]);
+  builder_state -> constants.first_output_file = declare_constant("FIRST_OUTPUT_FILE", builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE]);
   builder_state -> constants.hash_size = declare_constant("HASH_SIZE", 20);
   add_blank_line_to_codefile(builder_state -> codefile);
   // ...

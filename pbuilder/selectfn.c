@@ -7,19 +7,18 @@ void define_select_output_function (void) {
                           builder_state -> options -> file_count_per_direction[DIRECTION_TARGET];
   if (!(builder_state -> options -> output_selection_on_single_option)) done = check_for_single_output(target_count);
   if (!done) {
-    unsigned * targets = mr_malloc(builder_memory_region, sizeof(unsigned) * target_count);
+    unsigned * targets = NULL;
     unsigned p;
-    int sorted = 0;
-    for (p = 0; p < target_count; p ++) targets[p] = p;
     if (builder_state -> options -> sort_targets_alphabetically) {
+      targets = mr_malloc(builder_memory_region, sizeof(unsigned) * target_count);
+      for (p = 0; p < target_count; p ++) targets[p] = p;
       qsort(targets, target_count, sizeof(unsigned), &compare_target_names);
-      sorted = 1;
     }
     if (builder_state -> options -> targets_per_page && (target_count > (builder_state -> options -> targets_per_page + 1)))
       show_paged_output_selection(targets, target_count);
     else
-      show_output_selection(targets, target_count, sorted);
-    mr_free(builder_memory_region, targets);
+      show_output_selection(targets, target_count);
+    if (targets) mr_free(builder_memory_region, targets);
   }
   add_blank_line_to_codefile(builder_state -> codefile);
 }
@@ -45,8 +44,41 @@ int check_for_single_output (unsigned target_count) {
   return 0;
 }
 
-void show_output_selection (const unsigned * targets, unsigned target_count, int alpha_sorted) {
-  // ...
+void show_output_selection (const unsigned * targets, unsigned target_count) {
+  unsigned char selected_instruction_width;
+  if (builder_state -> options -> input_file_count < 0x100)
+    selected_instruction_width = 0;
+  else if (builder_state -> options -> input_file_count < 0x10000)
+    selected_instruction_width = 1;
+  else
+    selected_instruction_width = 2;
+  inst(INST_MENU, reg(result), loc("menu"));
+  if (!targets) {
+    if (builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE])
+      inst(INST_ADD2, reg(result), cnst(first_output_file));
+  } else {
+    if (selected_instruction_width)
+      inst(INST_SHIFTLEFT2, reg(result), imm(selected_instruction_width));
+    inst(INST_ADD2, reg(result), loc("file_IDs"));
+    inst(selected_instruction_width[(int []) {INST_GETBYTE, INST_GETHALFWORD, INST_GETWORD}], reg(result), reg(result));
+  }
+  inst(INST_RETURN);
+  add_blank_line_to_codefile(builder_state -> codefile);
+  if (add_local_label_to_codefile(builder_state -> codefile, "menu") < 0) builder_throw("could not declare local label '.menu'");
+  if (!targets) {
+    unsigned * target_numbers = mr_malloc(builder_memory_region, sizeof(unsigned) * target_count);
+    unsigned target;
+    for (target = 0; target < target_count; target ++) target_numbers[target] = target;
+    generate_filename_menu(target_numbers, target_count);
+    mr_free(builder_memory_region, target_numbers);
+    inst(INST_DW, imm(-1)); 
+  } else {
+    generate_filename_menu(targets, target_count);
+    inst(INST_DW, imm(-1));
+    add_blank_line_to_codefile(builder_state -> codefile);
+    if (add_local_label_to_codefile(builder_state -> codefile, "file_IDs") < 0) builder_throw("could not declare local label '.file_IDs'");
+    generate_file_numbers_for_menu(targets, target_count, selected_instruction_width[(int []) {INST_DB, INST_DH, INST_DW}]);
+  }
 }
 
 void show_paged_output_selection (const unsigned * targets, unsigned target_count) {
@@ -57,4 +89,12 @@ int compare_target_names (const void * first, const void * second) {
   unsigned first_index = *(const unsigned *) first + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
   unsigned second_index = *(const unsigned *) second + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
   return strcmp(builder_state -> options -> input_files[first_index].label, builder_state -> options -> input_files[second_index].label);
+}
+
+void generate_filename_menu (const unsigned * targets, unsigned target_count) {
+  // ...
+}
+
+void generate_file_numbers_for_menu (const unsigned * targets, unsigned target_count, int data_instruction) {
+  // ...
 }

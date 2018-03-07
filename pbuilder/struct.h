@@ -29,6 +29,7 @@ struct code_generation_state {
   struct {
     int errors[NUM_CODE_ERRORS + 1];
     int num_input_files;
+    int first_output_file;
     int hash_size;
     // ...
   } constants;

@@ -65,9 +65,11 @@ void destroy_banner_lines(char **, unsigned);
 // selectfn.c
 void define_select_output_function(void);
 int check_for_single_output(unsigned);
-void show_output_selection(const unsigned *, unsigned, int);
+void show_output_selection(const unsigned *, unsigned);
 void show_paged_output_selection(const unsigned *, unsigned);
 int compare_target_names(const void *, const void *);
+void generate_filename_menu(const unsigned *, unsigned);
+void generate_file_numbers_for_menu(const unsigned *, unsigned, int);
 
 // utilfn.c
 void define_detect_input_function(void);
