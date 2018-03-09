@@ -31,3 +31,9 @@ void define_generate_output_function (void) {
   inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
 }
+
+void define_generate_reverse_output_function (void) {
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(generate_reverse_output, "GenerateReverseOutput"));
+  // ...
+  add_blank_line_to_codefile(builder_state -> codefile);
+}

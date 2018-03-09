@@ -40,6 +40,7 @@ int add_string_to_printed_error_messages(int **, char ***, unsigned *, char *);
 
 // genoutfn.c
 void define_generate_output_function(void);
+void define_generate_reverse_output_function(void);
 
 // global.c
 extern void * builder_memory_region;

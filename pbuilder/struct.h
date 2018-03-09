@@ -19,7 +19,7 @@ struct code_generation_state {
     int select_output;
     int error;
     int generate_output;
-    int generate_reverse_output; // TODO
+    int generate_reverse_output;
     int apply_patch; // TODO
     int validate_output;
     int get_nth_string;
