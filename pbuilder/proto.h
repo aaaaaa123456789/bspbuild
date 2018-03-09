@@ -38,6 +38,9 @@ void simple_error_message_function(char **, unsigned);
 void descriptive_error_message_function(char **, unsigned);
 int add_string_to_printed_error_messages(int **, char ***, unsigned *, char *);
 
+// genoutfn.c
+void define_generate_output_function(void);
+
 // global.c
 extern void * builder_memory_region;
 extern struct code_generation_state * builder_state;

@@ -18,12 +18,15 @@ struct code_generation_state {
     int print_detected_input;
     int select_output;
     int error;
-    int generate_output; // TODO
+    int generate_output;
+    int generate_reverse_output; // TODO
+    int apply_patch; // TODO
     int validate_output;
     int get_nth_string;
     int file_sizes; // TODO
     int file_hashes; // TODO
     int file_names; // TODO
+    int patch_list; // TODO
     // ...
   } labels;
   struct {
@@ -34,12 +37,14 @@ struct code_generation_state {
     // ...
   } constants;
   struct {
-    unsigned get_nth_string:       1;
-    unsigned print_detected_input: 1;
-    unsigned validate_output:      1;
-    unsigned file_names:           1; // not strictly a function, but...
-    unsigned full_file_sizes:      1; // include pure targets' file sizes
-    unsigned full_file_hashes:     1; // include pure targets' file hashes
+    unsigned get_nth_string:          1;
+    unsigned print_detected_input:    1;
+    unsigned generate_reverse_output: 1;
+    unsigned validate_output:         1;
+    unsigned file_names:              1; // not strictly a function, but...
+    unsigned full_file_sizes:         1; // include pure targets' file sizes
+    unsigned full_file_hashes:        1; // include pure targets' file hashes
+    unsigned full_patch_list:         1; // patch list starts at file #1, instead of the first output file
   } needed_functions;
   // ...
 };

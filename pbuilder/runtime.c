@@ -5,6 +5,7 @@ void generate_runtime (void) {
   define_error_function();
   define_detect_input_function();
   define_select_output_function();
+  define_generate_output_function();
   // ...
   if (builder_state -> needed_functions.print_detected_input) define_print_detected_input_function();
   if (builder_state -> needed_functions.validate_output) define_validate_output_function();
