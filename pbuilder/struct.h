@@ -21,6 +21,7 @@ struct code_generation_state {
     int generate_output;
     int generate_reverse_output;
     int apply_patch; // TODO
+    int apply_reverse_patch; // TODO
     int validate_output;
     int get_nth_string;
     int file_sizes; // TODO
@@ -40,6 +41,7 @@ struct code_generation_state {
     unsigned get_nth_string:          1;
     unsigned print_detected_input:    1;
     unsigned generate_reverse_output: 1;
+    unsigned apply_reverse_patch:     1;
     unsigned validate_output:         1;
     unsigned file_names:              1; // not strictly a function, but...
     unsigned full_file_sizes:         1; // include pure targets' file sizes
