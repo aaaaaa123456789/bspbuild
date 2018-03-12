@@ -24,10 +24,12 @@ void define_generate_output_function (void) {
   inst(INST_IFNE, reg(argument), imm(-1), loc("loop"));
   inst(INST_MULACUM, reg(temp), reg(file), imm(4));
   inst(INST_GETWORD, reg(temp), reg(temp));
-  if (add_local_label_to_codefile(builder_state -> codefile, "run_patch") < 0) builder_throw("could not declare local label '.add_patch'");
+  if (add_local_label_to_codefile(builder_state -> codefile, "run_patch") < 0) builder_throw("could not declare local label '.run_patch'");
+  inst(INST_SET, reg(argument), reg(temp));
+  if (add_local_label_to_codefile(builder_state -> codefile, "next_patch") < 0) builder_throw("could not declare local label '.next_patch'");
   inst(INST_CALL, lbl(apply_patch, "ApplyPatch"));
-  inst(INST_POP, reg(temp));
-  inst(INST_JUMPNZ, reg(temp), loc("run_patch"));
+  inst(INST_POP, reg(argument));
+  inst(INST_JUMPNZ, reg(argument), loc("next_patch"));
   inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
 }
