@@ -70,6 +70,7 @@ void generate_runtime(void);
 int get_defined_label(int *, const char *);
 int generate_banner_lines(const char *, char ***);
 void destroy_banner_lines(char **, unsigned);
+void builder_declare_local(const char *);
 
 // selectfn.c
 void define_select_output_function(void);

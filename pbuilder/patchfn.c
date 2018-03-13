@@ -25,7 +25,7 @@ void define_apply_reverse_patch_function (void) {
   inst(INST_GETWORD, reg(argument), reg(argument));
   inst(INST_JUMP, lbl(execute_patch, "ExecutePatch"));
   add_blank_line_to_codefile(builder_state -> codefile);
-  if (add_local_label_to_codefile(builder_state -> codefile, "not_reversible") < 0) builder_throw("could not declare local label '.not_reversible'");
+  builder_declare_local("not_reversible");
   inst(INST_SET, reg(argument), err(CODE_ERROR_PATCH_NOT_REVERSIBLE));
   inst(INST_JUMP, lbl(error, "Error"));
   add_blank_line_to_codefile(builder_state -> codefile);

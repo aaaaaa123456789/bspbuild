@@ -81,7 +81,7 @@ void descriptive_error_message_function (char ** message_lines, unsigned message
   inst(INST_POP, reg(argument));
   inst(INST_EXIT, reg(argument));
   add_blank_line_to_codefile(builder_state -> codefile);
-  if (add_local_label_to_codefile(builder_state -> codefile, "error_strings") < 0) builder_throw("could not declare local label '.error_strings'");
+  builder_declare_local("error_strings");
   for (pos = 0; pos < NUM_CODE_ERRORS; pos ++)
     if (!add_string_to_codefile(builder_state -> codefile, code_error_messages[pos])) builder_throw("could not add error messages to output");
   add_blank_line_to_codefile(builder_state -> codefile);

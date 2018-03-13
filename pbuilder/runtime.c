@@ -56,3 +56,8 @@ void destroy_banner_lines (char ** banner_lines, unsigned count) {
   for (current = 0; current < count; current ++) mr_free(builder_memory_region, banner_lines[count]);
   mr_free(builder_memory_region, banner_lines);
 }
+
+void builder_declare_local (const char * local_label) {
+  if (add_local_label_to_codefile(builder_state -> codefile, local_label) < 0)
+    builder_throw("could not declare local label '.%s'", local_label);
+}

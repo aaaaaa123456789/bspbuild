@@ -40,7 +40,7 @@ int check_for_single_output (unsigned target_count) {
   inst(INST_IFGT, reg(temp), imm(1), loc("multiple_available"));
   inst(INST_SUBTRACT, reg(result), imm(target1 + target2), reg(file));
   inst(INST_RETURN);
-  if (add_local_label_to_codefile(builder_state -> codefile, "multiple_available") < 0) builder_throw("could not declare local label '.multiple_available'");
+  builder_declare_local("multiple_available");
   return 0;
 }
 
@@ -62,12 +62,12 @@ void show_output_selection (const unsigned * targets, unsigned target_count) {
     inst(INST_ADD2, reg(result), cnst(first_output_file));
   inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
-  if (add_local_label_to_codefile(builder_state -> codefile, "menu") < 0) builder_throw("could not declare local label '.menu'");
+  builder_declare_local("menu");
   if (targets) {
     generate_filename_menu(targets, target_count);
     inst(INST_DW, imm(-1));
     add_blank_line_to_codefile(builder_state -> codefile);
-    if (add_local_label_to_codefile(builder_state -> codefile, "file_IDs") < 0) builder_throw("could not declare local label '.file_IDs'");
+    builder_declare_local("file_IDs");
     generate_file_numbers_for_menu(targets, target_count, selected_instruction_width[(int []) {INST_DB, INST_DH, INST_DW}]);
   } else {
     unsigned * target_numbers = mr_malloc(builder_memory_region, sizeof(unsigned) * target_count);
@@ -100,7 +100,7 @@ void show_paged_output_selection (const unsigned * targets, unsigned target_coun
     last_page --;
   }
   inst(INST_XOR2, reg(argument), reg(argument));
-  if (add_local_label_to_codefile(builder_state -> codefile, "loop") < 0) builder_throw("could not declare local label '.loop'");
+  builder_declare_local("loop");
   inst(INST_SHIFTLEFT, reg(temp), reg(argument), imm(3));
   inst(INST_ADD2, reg(temp), loc("menudata"));
   inst(INST_GETWORDINC, reg(result), reg(temp));
@@ -114,7 +114,7 @@ void show_paged_output_selection (const unsigned * targets, unsigned target_coun
   inst(INST_SUBTRACT, reg(temp), reg(result), imm(prevID));
   inst(INST_IFLT, reg(temp), imm(2), loc("next_menu"));
   inst(INST_RETURN);
-  if (add_local_label_to_codefile(builder_state -> codefile, "next_menu") < 0) builder_throw("could not declare local label '.next_menu");
+  builder_declare_local("next_menu");
   inst(INST_DECREMENT, reg(argument));
   inst(INST_JUMPZ, reg(temp), loc("loop"));
   inst(INST_INCREMENT, reg(argument));
@@ -137,7 +137,7 @@ void show_paged_output_selection (const unsigned * targets, unsigned target_coun
     if ((menu_content_labels[page] < 0) || (menu_file_number_labels[page] < 0))
       builder_throw("could not declare numeric local");
   }
-  if (add_local_label_to_codefile(builder_state -> codefile, "menudata") < 0) builder_throw("could not declare local label '.menudata'");
+  builder_declare_local("menudata");
   for (page = 0; page <= last_page; page ++) inst(INST_DW, nloc(menu_content_labels[page]), nloc(menu_file_number_labels[page]));
   add_blank_line_to_codefile(builder_state -> codefile);
   for (page = 0; page <= last_page; page ++) {
@@ -163,9 +163,9 @@ void show_paged_output_selection (const unsigned * targets, unsigned target_coun
   mr_free(builder_memory_region, menu_file_number_labels);
   if (!targets) mr_free(builder_memory_region, target_list);
   add_blank_line_to_codefile(builder_state -> codefile);
-  if (add_local_label_to_codefile(builder_state -> codefile, "prev") < 0) builder_throw("could not declare local label '.prev'");
+  builder_declare_local("prev");
   if (!add_string_to_codefile(builder_state -> codefile, "<-- Previous")) builder_throw("could not add string to codefile");
-  if (add_local_label_to_codefile(builder_state -> codefile, "next") < 0) builder_throw("could not declare local label '.next'");
+  builder_declare_local("next");
   if (!add_string_to_codefile(builder_state -> codefile, "Next -->")) builder_throw("could not add string to codefile");
 }
 

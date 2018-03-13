@@ -15,7 +15,7 @@ void define_generate_output_function (void) {
     inst(INST_IFLT, reg(argument), reg(file), lbl(generate_reverse_output, "GenerateReverseOutput"));
   }
   inst(INST_XOR2, reg(temp), reg(temp));
-  if (add_local_label_to_codefile(builder_state -> codefile, "loop") < 0) builder_throw("could not declare local label '.loop'");
+  builder_declare_local("loop");
   inst(INST_PUSH, reg(temp));
   unsigned first_patch_entry;
   if (!(builder_state -> options -> no_source_patches)) {
@@ -32,9 +32,9 @@ void define_generate_output_function (void) {
   inst(INST_IFNE, reg(argument), imm(-1), loc("loop"));
   inst(INST_MULACUM, reg(temp), reg(file), imm(4));
   inst(INST_GETWORD, reg(temp), reg(temp));
-  if (add_local_label_to_codefile(builder_state -> codefile, "run_patch") < 0) builder_throw("could not declare local label '.run_patch'");
+  builder_declare_local("run_patch");
   inst(INST_SET, reg(argument), reg(temp));
-  if (add_local_label_to_codefile(builder_state -> codefile, "next_patch") < 0) builder_throw("could not declare local label '.next_patch'");
+  builder_declare_local("next_patch");
   inst(INST_CALL, lbl(apply_patch, "ApplyPatch"));
   inst(INST_POP, reg(argument));
   inst(INST_JUMPNZ, reg(argument), loc("next_patch"));
@@ -64,7 +64,7 @@ void define_generate_reverse_output_function (void) {
   inst(INST_IFNE, reg(file), reg(argument), lbl(generate_reverse_output, "GenerateReverseOutput"));
   inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
-  if (add_local_label_to_codefile(builder_state -> codefile, "last_patch") < 0) builder_throw("could not declare local label '.last_patch'");
+  builder_declare_local("last_patch");
   inst(INST_MULACUM, reg(temp), reg(argument), imm(4));
   inst(INST_GETWORD, reg(argument), reg(temp));
   inst(INST_JUMP, lbl(apply_reverse_patch, "ApplyReversePatch"));
