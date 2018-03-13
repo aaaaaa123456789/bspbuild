@@ -164,9 +164,9 @@ void show_paged_output_selection (const unsigned * targets, unsigned target_coun
   if (!targets) mr_free(builder_memory_region, target_list);
   add_blank_line_to_codefile(builder_state -> codefile);
   builder_declare_local("prev");
-  if (!add_string_to_codefile(builder_state -> codefile, "<-- Previous")) builder_throw("could not add string to codefile");
+  if (!add_string_to_codefile(builder_state -> codefile, "<-- Previous")) builder_throw("could not add previous menu page string to codefile");
   builder_declare_local("next");
-  if (!add_string_to_codefile(builder_state -> codefile, "Next -->")) builder_throw("could not add string to codefile");
+  if (!add_string_to_codefile(builder_state -> codefile, "Next -->")) builder_throw("could not add next menu page string to codefile");
 }
 
 int compare_target_names (const void * first, const void * second) {
