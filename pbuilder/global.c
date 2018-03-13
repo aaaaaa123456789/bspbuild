@@ -15,6 +15,7 @@ const char * const code_error_messages[] = {
   "Invalid source file",
   "Selected target matches source file",
   "Output file size mismatch",
-  "Output file hash mismatch"
+  "Output file hash mismatch",
+  "Patch cannot be applied in reverse"
   // ...
 };

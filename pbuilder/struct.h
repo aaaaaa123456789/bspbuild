@@ -20,14 +20,15 @@ struct code_generation_state {
     int error;
     int generate_output;
     int generate_reverse_output;
-    int apply_patch; // TODO
-    int apply_reverse_patch; // TODO
+    int apply_patch;
+    int apply_reverse_patch;
     int validate_output;
     int get_nth_string;
     int file_sizes; // TODO
     int file_hashes; // TODO
     int file_names;
     int patch_list; // TODO
+    int execute_patch; // TODO (jumptable #result followed by patch engines)
     // ...
   } labels;
   struct {

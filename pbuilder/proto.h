@@ -61,6 +61,10 @@ void builder_throw(const char *, ...);
 // mainfn.c
 void define_main_function(void);
 
+// patchfn.c
+void define_apply_patch_function(void);
+void define_apply_reverse_patch_function(void);
+
 // runtime.c
 void generate_runtime(void);
 int get_defined_label(int *, const char *);

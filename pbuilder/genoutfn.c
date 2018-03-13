@@ -1,5 +1,13 @@
 #include "proto.h"
 
+/*
+   Patch list format:
+   4 bytes: source file (target when patch is reversed), -1 if the patch is for all source files
+   4 bytes: pointer
+
+   If the source is -1, the patch begins with a pointer array to the patches for each source file
+*/
+
 void define_generate_output_function (void) {
   add_declared_label_to_codefile(builder_state -> codefile, get_label(main, "GenerateOutput"));
   if (builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET] > 1) {
