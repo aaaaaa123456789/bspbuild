@@ -26,7 +26,7 @@ struct code_generation_state {
     int get_nth_string;
     int file_sizes; // TODO
     int file_hashes; // TODO
-    int file_names; // TODO
+    int file_names;
     int patch_list; // TODO
     // ...
   } labels;

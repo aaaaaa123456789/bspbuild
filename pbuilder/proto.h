@@ -76,6 +76,9 @@ int compare_target_names(const void *, const void *);
 void generate_filename_menu(const unsigned *, unsigned);
 void generate_file_numbers_for_menu(const unsigned *, unsigned, int);
 
+// utildata.c
+void define_file_names_data(void);
+
 // utilfn.c
 void define_detect_input_function(void);
 void define_print_detected_input_function(void);
