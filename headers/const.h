@@ -8,13 +8,12 @@
 #define VALID_ID_CHARACTERS LETTERS_OR_UNDERSCORE DIGITS
 #define NUMERIC_CHARACTERS DIGITS "+-"
 
-// ...
 #define NUM_PATCHING_METHODS 3 // FIXME: update with real value after patching methods have been defined
 #define NUM_CODE_ERRORS 10 // FIXME: update with real value after error constants have been defined
 
-#define MAX_INPUT_FILES 0xff0000
+#define MAX_INPUT_FILES 0xFF0000
 
-// configurable parameters
+// IPS configurable parameters
 #define MINIMUM_IPS_RUN 8
 #define MAXIMUM_IPS_REDUNDANCY 6
 #define MAXIMUM_IPS_BLOCK_SIZE 0x7FFF
