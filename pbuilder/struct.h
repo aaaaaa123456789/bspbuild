@@ -28,15 +28,13 @@ struct code_generation_state {
     int file_hashes; // TODO
     int file_names;
     int patch_list; // TODO
-    int execute_patch; // TODO (jumptable #result followed by patch engines)
-    // ...
+    int execute_patch;
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
     int num_input_files;
     int first_output_file;
     int hash_size;
-    // ...
   } constants;
   struct {
     unsigned get_nth_string:          1;
@@ -49,5 +47,9 @@ struct code_generation_state {
     unsigned full_file_hashes:        1; // include pure targets' file hashes
     unsigned full_patch_list:         1; // patch list starts at file #1, instead of the first output file
   } needed_functions;
-  // ...
+  struct {
+    int labels[NUM_PATCHING_METHODS]; // TODO
+    signed char methods[NUM_PATCHING_METHODS]; // TODO
+    unsigned char count;
+  } patch_engines;
 };

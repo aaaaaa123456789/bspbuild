@@ -6,6 +6,8 @@ void initialize_builder_state (Options options, CodeFile codefile) {
   builder_state -> codefile = codefile;
   memset(&(builder_state -> labels), -1, sizeof (builder_state -> labels)); // this should be enough to set them all to some negative value
   memset(&(builder_state -> constants), -1, sizeof (builder_state -> constants));
+  memset(&(builder_state -> patch_engines), -1, sizeof (builder_state -> patch_engines));
+  builder_state -> patch_engines.count = 0;
 }
 
 void initialize_code_generator (void) {

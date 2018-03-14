@@ -8,6 +8,8 @@ void generate_runtime (void) {
   define_generate_output_function();
   define_apply_patch_function();
   if (builder_state -> needed_functions.apply_reverse_patch) define_apply_reverse_patch_function();
+  // ...
+  define_execute_patch_function();
   if (builder_state -> needed_functions.print_detected_input) define_print_detected_input_function();
   if (builder_state -> needed_functions.generate_reverse_output) define_generate_reverse_output_function();
   if (builder_state -> needed_functions.validate_output) define_validate_output_function();
