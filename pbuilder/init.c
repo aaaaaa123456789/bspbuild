@@ -12,6 +12,7 @@ void initialize_builder_state (Options options, CodeFile codefile) {
 
 void initialize_code_generator (void) {
   declare_filename_labels();
+  declare_patch_engine_labels();
   builder_state -> registers.file = declare_register("file", 0);
   builder_state -> registers.argument = declare_register("argument", 1);
   builder_state -> registers.temp = declare_register("temp", 2);
@@ -55,5 +56,23 @@ void declare_filename_labels (void) {
     builder_state -> file_name_labels[p] = declare_label_for_codefile(builder_state -> codefile, label_text);
     if (builder_state -> file_name_labels[p] < 0)
       builder_throw("could not declare label '%s'", label_text);
+  }
+}
+
+void declare_patch_engine_labels (void) {
+  unsigned target = 1;
+  int labelID;
+  unsigned char patching_method;
+  char label_text[15];
+  if (builder_state -> options -> no_source_patches) target = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+  for (; target < builder_state -> options -> input_file_count; target ++) {
+    patching_method = builder_state -> options -> input_files[target].method;
+    if (builder_state -> patch_engines.IDs[patching_method] >= 0) continue;
+    builder_state -> patch_engines.IDs[patching_method] = builder_state -> patch_engines.count;
+    builder_state -> patch_engines.methods[builder_state -> patch_engines.count] = patching_method;
+    sprintf(label_text, "PatchEngine%hhu", patching_method);
+    labelID = declare_label_for_codefile(builder_state -> codefile, label_text);
+    if (labelID < 0) builder_throw("could not declare label '%s'", label_text);
+    builder_state -> patch_engines.labels[builder_state -> patch_engines.count ++] = labelID;
   }
 }

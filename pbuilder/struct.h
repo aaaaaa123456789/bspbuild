@@ -48,8 +48,9 @@ struct code_generation_state {
     unsigned full_patch_list:         1; // patch list starts at file #1, instead of the first output file
   } needed_functions;
   struct {
-    int labels[NUM_PATCHING_METHODS]; // TODO
-    signed char methods[NUM_PATCHING_METHODS]; // TODO
+    int labels[NUM_PATCHING_METHODS];
+    signed char methods[NUM_PATCHING_METHODS];
+    signed char IDs[NUM_PATCHING_METHODS];
     unsigned char count;
   } patch_engines;
 };

@@ -55,6 +55,7 @@ void initialize_code_generator(void);
 int declare_register(const char *, unsigned char);
 int declare_constant(const char *, unsigned);
 void declare_filename_labels(void);
+void declare_patch_engine_labels(void);
 
 // main.c
 void builder_throw(const char *, ...);
