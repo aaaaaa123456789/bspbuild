@@ -54,6 +54,7 @@ void initialize_builder_state(Options, CodeFile);
 void initialize_code_generator(void);
 int declare_register(const char *, unsigned char);
 int declare_constant(const char *, unsigned);
+void declare_filename_labels(void);
 
 // main.c
 void builder_throw(const char *, ...);

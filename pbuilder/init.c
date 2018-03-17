@@ -11,17 +11,7 @@ void initialize_builder_state (Options options, CodeFile codefile) {
 }
 
 void initialize_code_generator (void) {
-  unsigned targets = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET] +
-                     builder_state -> options -> file_count_per_direction[DIRECTION_TARGET];
-  builder_state -> file_name_labels = mr_malloc(builder_memory_region, sizeof(int) * targets);
-  unsigned p;
-  char label_text[20];
-  for (p = 0; p < targets; p ++) {
-    sprintf(label_text, "Filename%u", p + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE]);
-    builder_state -> file_name_labels[p] = declare_label_for_codefile(builder_state -> codefile, label_text);
-    if (builder_state -> file_name_labels[p] < 0)
-      builder_throw("could not declare label '%s'", label_text);
-  }
+  declare_filename_labels();
   builder_state -> registers.file = declare_register("file", 0);
   builder_state -> registers.argument = declare_register("argument", 1);
   builder_state -> registers.temp = declare_register("temp", 2);
@@ -39,7 +29,6 @@ void initialize_code_generator (void) {
   builder_state -> constants.first_output_file = declare_constant("FIRST_OUTPUT_FILE", builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE]);
   builder_state -> constants.hash_size = declare_constant("HASH_SIZE", 20);
   add_blank_line_to_codefile(builder_state -> codefile);
-  // ...
 }
 
 int declare_register (const char * register_name, unsigned char register_offset) {
@@ -53,4 +42,18 @@ int declare_constant (const char * constant_name, unsigned constant_value) {
   int result = add_constant_to_codefile(builder_state -> codefile, constant_name, constant_value);
   if (result < 0) builder_throw("could not declare constant '%s'", constant_name);
   return result;
+}
+
+void declare_filename_labels (void) {
+  unsigned targets = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET] +
+                     builder_state -> options -> file_count_per_direction[DIRECTION_TARGET];
+  builder_state -> file_name_labels = mr_malloc(builder_memory_region, sizeof(int) * targets);
+  unsigned p;
+  char label_text[20];
+  for (p = 0; p < targets; p ++) {
+    sprintf(label_text, "Filename%u", p + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE]);
+    builder_state -> file_name_labels[p] = declare_label_for_codefile(builder_state -> codefile, label_text);
+    if (builder_state -> file_name_labels[p] < 0)
+      builder_throw("could not declare label '%s'", label_text);
+  }
 }
