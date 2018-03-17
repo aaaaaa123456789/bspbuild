@@ -48,6 +48,7 @@ extern struct code_generation_state * builder_state;
 extern jmp_buf builder_return_point;
 extern char * builder_error;
 extern const char * const code_error_messages[];
+extern void (* const patch_engine_generator_functions[])(void);
 
 // init.c
 void initialize_builder_state(Options, CodeFile);
@@ -67,6 +68,7 @@ void define_main_function(void);
 void define_apply_patch_function(void);
 void define_apply_reverse_patch_function(void);
 void define_execute_patch_function(void);
+void define_patch_engine_functions(void);
 
 // runtime.c
 void generate_runtime(void);

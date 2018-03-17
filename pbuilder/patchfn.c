@@ -39,3 +39,12 @@ void define_execute_patch_function (void) {
     inst(INST_DW, ARGTYPE_GLOBAL_LABEL, builder_state -> patch_engines.labels[engine]); // no point in defining a macro for an argument type only used here
   add_blank_line_to_codefile(builder_state -> codefile);
 }
+
+void define_patch_engine_functions (void) {
+  unsigned char current;
+  for (current = 0; current < builder_state -> patch_engines.count; current ++) {
+    add_declared_label_to_codefile(builder_state -> codefile, builder_state -> patch_engines.labels[current]);
+    patch_engine_generator_functions[builder_state -> patch_engines.methods[current]]();
+    add_blank_line_to_codefile(builder_state -> codefile);
+  }
+}

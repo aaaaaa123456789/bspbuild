@@ -19,3 +19,7 @@ const char * const code_error_messages[] = {
   "Patch cannot be applied in reverse"
   // ...
 };
+
+void (* const patch_engine_generator_functions[])(void) = {
+  // ...
+};
