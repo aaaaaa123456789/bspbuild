@@ -8,9 +8,7 @@
 #include "pubtypes.h"
 
 // main.c
-char * write_patch_to_codefile(CodeFile codefile, Buffer source, Buffer target, struct patching_flags * flags);
-
-// misc.c
+char * write_patch_to_codefile(CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags);
 signed char find_patch_method_by_name(const char * method_name);
 
 #endif
