@@ -39,4 +39,10 @@ enum {
   CODE_ERROR_PATCH_NOT_REVERSIBLE = 5
 };
 
+enum {
+  METHOD_XOR = 0,
+  METHOD_XOR_RLE = 1,
+  METHOD_IPS = 2
+};
+
 #endif

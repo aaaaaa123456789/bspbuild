@@ -12,6 +12,7 @@
 #define NUM_CODE_ERRORS 10 // FIXME: update with real value after error constants have been defined
 
 #define MAX_INPUT_FILES 0xFF0000
+#define MAX_PATCHING_METHODS 64 // maximum allowable due to the number of bits allocated to this value
 
 // IPS configurable parameters
 #define MINIMUM_IPS_RUN 8
