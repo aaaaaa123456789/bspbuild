@@ -5,6 +5,7 @@
 #include "../codegen/public.h"
 #include "../util/public.h"
 
+#include "patchgen.h"
 #include "public.h"
 
 // global.c

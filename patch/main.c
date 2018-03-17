@@ -1,6 +1,7 @@
 #include "proto.h"
 
 char * write_patch_to_codefile (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags) {
+  if (flags -> patching_method >= NUM_PATCHING_METHODS) return generate_string("unknown patching method %hhu", flags -> patching_method);
   return patch_generator_functions[flags -> patching_method](codefile, source, target, flags);
 }
 
