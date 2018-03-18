@@ -16,3 +16,13 @@ signed char find_patch_method_by_name (const char * method_name) {
   free(lowercase_name);
   return -1;
 }
+
+char * write_patch_data_to_codefile (CodeFile codefile, unsigned count, const unsigned * values, const char * label) {
+  struct instruction_argument * arguments = calloc(count + 1, sizeof(struct instruction_argument));
+  unsigned current;
+  for (current = 0; current < count; current ++) arguments[current] = (struct instruction_argument) {.type = ARGTYPE_IMMEDIATE, .value = values[current]};
+  if (label) arguments[count ++] = (struct instruction_argument) {.type = ARGTYPE_LOCAL_LABEL, .string = label};
+  char * result = add_instruction_with_arguments_to_codefile(codefile, INST_DW, count, arguments);
+  free(arguments);
+  return result;
+}
