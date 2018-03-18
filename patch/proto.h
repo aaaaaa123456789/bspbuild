@@ -3,6 +3,7 @@
 
 #include "../headers/const.h"
 #include "../codegen/public.h"
+#include "../ips/public.h"
 #include "../util/public.h"
 
 #include "patchgen.h"
