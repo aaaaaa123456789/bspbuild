@@ -14,12 +14,14 @@
 #define MAX_INPUT_FILES 0xFF0000
 #define MAX_PATCHING_METHODS 64 // maximum allowable due to the number of bits allocated to this value
 
-// IPS configurable parameters
+#define IPS_EOF_MARKER 0x454F46 /* 4,542,278 (0x454F46) is the end of file marker, and thus not a valid block offset */
+#define MAX_IPS_PATCH_SIZE 0x1000000 /* maximum size for the input files to IPS */
+
+// configurable parameters
 #define MINIMUM_IPS_RUN 8
 #define MAXIMUM_IPS_REDUNDANCY 6
 #define MAXIMUM_IPS_BLOCK_SIZE 0x7FFF
 
-#define IPS_EOF_MARKER 0x454F46 /* 4,542,278 (0x454F46) is the end of file marker, and thus not a valid block offset */
-#define MAX_IPS_PATCH_SIZE 0x1000000 /* maximum size for the input files to IPS */
+#define MINIMUM_FRAGMENT_SIZE 64
 
 #endif

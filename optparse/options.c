@@ -122,6 +122,7 @@ char * set_fragment_size (Options options, const char * new_value, int param) {
   unsigned size = convert_string_to_number(new_value, &error);
   free(error);
   if (error) return generate_string("invalid argument to -f: %s", new_value);
+  if (size < MINIMUM_FRAGMENT_SIZE) return generate_string("fragment size must be at least %u bytes", MINIMUM_FRAGMENT_SIZE);
   options -> fragment_size = size;
   options -> fragmentation_parameters_given = 1;
   return NULL;
