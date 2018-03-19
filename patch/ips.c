@@ -1,5 +1,11 @@
 #include "proto.h"
 
+/*
+   4 bytes: initial file pointer
+   4 bytes: pointer to IPS data
+   repeat until ifp = -1, then 4 bytes: length
+*/
+
 char * write_ips_patch_data (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags) {
   if (!(flags -> reversible_patch)) return write_ips_patch_data_for_buffers(codefile, source, target);
   char * result = write_patch_data_to_codefile(codefile, 0, NULL, "reverse");
