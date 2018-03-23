@@ -1,7 +1,4 @@
-#include "../codegen/pubtypes.h"
-#include "../util/pubtypes.h"
-#include "pubtypes.h"
-
+#include "struct.h"
 #include "patchgen.h"
 
 const char * const patching_method_names[] = {
