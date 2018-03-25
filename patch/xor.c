@@ -14,23 +14,13 @@
 
 char * write_xor_patch_data (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags) {
   if (!flags -> fragmentation_enabled) return write_xor_patch_data_without_fragments(codefile, source, target, flags);
-  struct fragment_permutation_table * fragment_table;
-  char * result;
-  if (flags -> fragment_reordering)
-    result = generate_fragment_permutation_table(source, target, flags, &fragment_table);
-  else
-    result = generate_identity_fragment_permutation_table(source -> length, target -> length, flags, &fragment_table);
-  if (result) return result;
-  result = write_xor_patch_data_with_fragments(codefile, source, target, flags, fragment_table);
-  destroy_fragment_permutation_table(fragment_table);
-  return result;
+  return write_xor_like_fragmented_patch_data(codefile, source, target, flags, &write_xor_patch_fragment_data);
 }
 
 char * write_xor_patch_data_without_fragments (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags) {
   // ...
 }
 
-char * write_xor_patch_data_with_fragments (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags,
-                                            const struct fragment_permutation_table * fragment_table) {
+char * write_xor_patch_fragment_data (CodeFile codefile, const unsigned char * data, unsigned length) {
   // ...
 }

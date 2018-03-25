@@ -28,4 +28,10 @@ char * write_patch_data_to_codefile(CodeFile, unsigned, const unsigned *, const 
 
 // xor.c
 char * write_xor_patch_data_without_fragments(CodeFile, Buffer, Buffer, const struct patching_flags *);
-char * write_xor_patch_data_with_fragments(CodeFile, Buffer, Buffer, const struct patching_flags *, const struct fragment_permutation_table *);
+char * write_xor_patch_fragment_data(CodeFile, const unsigned char *, unsigned);
+
+// xorlike.c
+char * write_xor_like_fragmented_patch_data(CodeFile, Buffer, Buffer, const struct patching_flags *, char * (*) (CodeFile, const unsigned char *, unsigned));
+char * write_xor_like_patch_data_with_fragments(CodeFile, Buffer, Buffer, const struct patching_flags *, const struct fragment_permutation_table *,
+                                                char * (*) (CodeFile, const unsigned char *, unsigned));
+unsigned calculate_fragment_length(const unsigned char *, const unsigned char *, const struct patching_flags *, int);
