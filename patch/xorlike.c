@@ -82,7 +82,21 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
     if (result) goto done;
     add_blank_line_to_codefile(codefile);
   }
-  // ...
+  for (fragment = 0; fragment < target_fragment_count; fragment ++) {
+    result = write_xor_like_fragment(codefile,
+      select_fragment_data(fragment_table -> source_to_target_fragments[fragment], source, source_fragment_data, null_fragment_data, flags -> fragment_size),
+      select_fragment_data(fragment, target, target_fragment_data, NULL, flags -> fragment_size),
+      forward_fragment_lengths[fragment], forward_fragment_labels[fragment], data_writer);
+    if (result) goto done;
+  }
+  if (flags -> reversible_patch) for (fragment = 0; fragment < source_fragment_count; fragment ++) {
+    if (!reverse_fragment_data_needed[fragment]) continue;
+    result = write_xor_like_fragment(codefile,
+      select_fragment_data(fragment_table -> target_to_source_fragments[fragment], target, target_fragment_data, null_fragment_data, flags -> fragment_size),
+      select_fragment_data(fragment, source, source_fragment_data, NULL, flags -> fragment_size),
+      reverse_fragment_lengths[fragment], reverse_fragment_labels[fragment], data_writer);
+    if (result) goto done;
+  }
   done:
   free(source_fragment_data);
   free(target_fragment_data);
@@ -97,6 +111,11 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
 
 char * write_xor_like_fragmented_header (CodeFile codefile, unsigned length, int reverse, const int * fragment_labels, const unsigned * fragment_lengths,
                                          const struct patching_flags * flags, const struct fragment_permutation_table * fragment_table) {
+  // ...
+}
+
+char * write_xor_like_fragment (CodeFile codefile, const unsigned char * source, const unsigned char * target, unsigned length, int label,
+                                char * (* data_writer) (CodeFile, const unsigned char *, unsigned)) {
   // ...
 }
 
