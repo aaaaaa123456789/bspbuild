@@ -27,6 +27,7 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
   unsigned fragment, p;
   int * forward_fragment_labels = malloc(sizeof(int) * target_fragment_count);
   int * reverse_fragment_labels = NULL;
+  unsigned char * reverse_fragment_data_needed = NULL;
   for (fragment = 0; fragment < target_fragment_count; fragment ++) {
     if ((forward_fragment_labels[fragment] = declare_numeric_local_for_codefile(codefile)) >= 0) continue;
     free(forward_fragment_labels);
@@ -35,6 +36,7 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
   if (flags -> reversible_patch) {
     reverse_fragment_labels = malloc(sizeof(int) * source_fragment_count);
     for (fragment = 0; fragment < source_fragment_count; fragment ++) reverse_fragment_labels[fragment] = -1;
+    reverse_fragment_data_needed = calloc(1, source_fragment_count);
   }
   unsigned * forward_fragment_lengths = malloc(sizeof(unsigned) * target_fragment_count);
   unsigned * reverse_fragment_lengths = NULL;
@@ -43,7 +45,11 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
   void * target_fragment_data = generate_last_fragment_data(target, flags -> fragment_size);
   void * null_fragment_data = calloc(1, flags -> fragment_size);
   for (fragment = 0; fragment < target_fragment_count; fragment ++) {
-    if (flags -> reversible_patch && (fragment_table -> target_to_source_fragments[fragment_table -> source_to_target_fragments[fragment]] == fragment)) {
+    if (
+      flags -> reversible_patch &&
+      (fragment_table -> source_to_target_fragments[fragment] >= 0) &&
+      (fragment_table -> target_to_source_fragments[fragment_table -> source_to_target_fragments[fragment]] == fragment)
+    ) {
       reverse_fragment_labels[fragment_table -> source_to_target_fragments[fragment]] = forward_fragment_labels[fragment];
       p = 1;
     } else
@@ -56,6 +62,26 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
   result = write_xor_like_fragmented_header(codefile, target -> length, 0, forward_fragment_labels, forward_fragment_lengths, flags, fragment_table);
   if (result) goto done;
   add_blank_line_to_codefile(codefile);
+  if (flags -> reversible_patch) {
+    for (fragment = 0; fragment < source_fragment_count; fragment ++) {
+      if (reverse_fragment_labels[fragment] >= 0) continue;
+      if ((reverse_fragment_labels[fragment] = declare_numeric_local_for_codefile(codefile)) < 0) {
+        result = duplicate_string("could not declare local labels for fragments");
+        goto done;
+      }
+      reverse_fragment_data_needed[fragment] = 1;
+      reverse_fragment_lengths[fragment] = calculate_fragment_length(
+        select_fragment_data(fragment_table -> target_to_source_fragments[fragment], target, target_fragment_data, null_fragment_data, flags -> fragment_size),
+        select_fragment_data(fragment, source, source_fragment_data, NULL, flags -> fragment_size), flags, 0);
+    }
+    if (add_local_label_to_codefile(codefile, "reverse") < 0) {
+      result = duplicate_string("could not declare local label '.reverse'");
+      goto done;
+    }
+    result = write_xor_like_fragmented_header(codefile, source -> length, 1, reverse_fragment_labels, reverse_fragment_lengths, flags, fragment_table);
+    if (result) goto done;
+    add_blank_line_to_codefile(codefile);
+  }
   // ...
   done:
   free(source_fragment_data);
@@ -65,6 +91,7 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
   free(reverse_fragment_lengths);
   free(forward_fragment_labels);
   free(reverse_fragment_labels);
+  free(reverse_fragment_data_needed);
   return result;
 }
 
