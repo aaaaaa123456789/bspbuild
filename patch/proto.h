@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "../headers/const.h"
 #include "../codegen/public.h"

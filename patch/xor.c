@@ -7,7 +7,7 @@
      4 bytes length, 4 bytes data length, pointer to data
    Fragmentation: (assumes padding = 0 if missing)
      4 bytes length, pointer to fragment table
-     fragment table: 4 bytes data length, pointer to data
+     fragment table: 4 bytes data length, pointer to data (if length != 0)
    Fragmentation with detect fragment permutation:
      4 bytes length, pointer to fragment table, fragment permutation table
    Files not multiple of the fragment size are rounded up by zero-padding prior to patching
