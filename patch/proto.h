@@ -39,5 +39,6 @@ char * write_xor_like_fragmented_header(CodeFile, unsigned, int, const int *, co
                                         const struct fragment_permutation_table *);
 char * write_xor_like_fragment(CodeFile, const unsigned char *, const unsigned char *, unsigned, int, char * (*) (CodeFile, const unsigned char *, unsigned));
 unsigned calculate_fragment_length(const unsigned char *, const unsigned char *, const struct patching_flags *);
+unsigned calculate_unpadded_data_length(const unsigned char *, unsigned, const struct patching_flags *);
 void * generate_last_fragment_data(Buffer, unsigned);
 const void * select_fragment_data(int, Buffer, const void *, const void *, unsigned);

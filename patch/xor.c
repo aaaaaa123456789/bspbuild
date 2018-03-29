@@ -23,5 +23,7 @@ char * write_xor_patch_data_without_fragments (CodeFile codefile, Buffer source,
 }
 
 char * write_xor_patch_fragment_data (CodeFile codefile, const unsigned char * data, unsigned length) {
-  // ...
+  // this wrapper is needed because of the differing return types
+  add_data_to_codefile(codefile, data, length);
+  return NULL;
 }

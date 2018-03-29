@@ -152,39 +152,43 @@ char * write_xor_like_fragment (CodeFile codefile, const unsigned char * source,
 }
 
 unsigned calculate_fragment_length (const unsigned char * source, const unsigned char * target, const struct patching_flags * flags) {
-  unsigned char padding_value[4] = {0};
   unsigned length, result = -1;
   while (target) {
-    length = flags -> fragment_size;
-    switch (flags -> padding_length) {
-      case 1:
-        *padding_value = flags -> padding_value;
-      case 0:
-        while (length) {
-          if (target[length - 1] != *padding_value) break;
-          length --;
-        }
-        break;
-      case 2:
-        write_number_to_buffer(padding_value, flags -> padding_value, 2);
-        while (length > 1) {
-          if (target[length - 2] != *padding_value) break;
-          if (target[length - 1] != padding_value[1]) break;
-          length -= 2;
-        }
-        break;
-      case 3:
-        write_number_to_buffer(padding_value, flags -> padding_value, 4);
-        while (length > 3) {
-          if (memcmp(target + (length - 4), padding_value, 4)) break;
-          length -= 4;
-        }
-    }
+    length = calculate_unpadded_data_length(target, flags -> fragment_size, flags);
     if (length < result) result = length;
     target = source;
     source = NULL;
   }
   return result;
+}
+
+unsigned calculate_unpadded_data_length (const unsigned char * data, unsigned length, const struct patching_flags * flags) {
+  unsigned char padding_value[4] = {0};
+  switch (flags -> padding_length) {
+    case 1:
+      *padding_value = flags -> padding_value;
+    case 0:
+      while (length) {
+        if (data[length - 1] != *padding_value) break;
+        length --;
+      }
+      break;
+    case 2:
+      write_number_to_buffer(padding_value, flags -> padding_value, 2);
+      while (length > 1) {
+        if (data[length - 2] != *padding_value) break;
+        if (data[length - 1] != padding_value[1]) break;
+        length -= 2;
+      }
+      break;
+    case 3:
+      write_number_to_buffer(padding_value, flags -> padding_value, 4);
+      while (length > 3) {
+        if (memcmp(data + (length - 4), padding_value, 4)) break;
+        length -= 4;
+      }
+  }
+  return length;
 }
 
 void * generate_last_fragment_data (Buffer buffer, unsigned fragment_size) {
