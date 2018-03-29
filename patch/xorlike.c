@@ -42,20 +42,18 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
   void * source_fragment_data = generate_last_fragment_data(source, flags -> fragment_size);
   void * target_fragment_data = generate_last_fragment_data(target, flags -> fragment_size);
   void * null_fragment_data = calloc(1, flags -> fragment_size);
+  int sttf;
   for (fragment = 0; fragment < fragment_table -> target_fragments; fragment ++) {
-    if (
-      flags -> reversible_patch &&
-      (fragment_table -> source_to_target_fragments[fragment] >= 0) &&
-      (fragment_table -> target_to_source_fragments[fragment_table -> source_to_target_fragments[fragment]] == fragment)
-    ) {
-      reverse_fragment_labels[fragment_table -> source_to_target_fragments[fragment]] = forward_fragment_labels[fragment];
+    sttf = fragment_table -> source_to_target_fragments[fragment];
+    if (flags -> reversible_patch && (sttf >= 0) && (fragment_table -> target_to_source_fragments[sttf] == fragment)) {
+      reverse_fragment_labels[sttf] = forward_fragment_labels[fragment];
       p = 1;
     } else
       p = 0;
     forward_fragment_lengths[fragment] = calculate_fragment_length(
-      select_fragment_data(fragment_table -> source_to_target_fragments[fragment], source, source_fragment_data, null_fragment_data, flags -> fragment_size),
-      select_fragment_data(fragment, target, target_fragment_data, NULL, flags -> fragment_size), flags, p);
-    if (p) reverse_fragment_lengths[fragment_table -> source_to_target_fragments[fragment]] = forward_fragment_lengths[fragment];
+      p ? select_fragment_data(sttf, source, source_fragment_data, null_fragment_data, flags -> fragment_size) : NULL,
+      select_fragment_data(fragment, target, target_fragment_data, NULL, flags -> fragment_size), flags);
+    if (p) reverse_fragment_lengths[sttf] = forward_fragment_lengths[fragment];
   }
   result = write_xor_like_fragmented_header(codefile, target -> length, 0, forward_fragment_labels, forward_fragment_lengths, flags, fragment_table);
   if (result) goto done;
@@ -68,8 +66,7 @@ char * write_xor_like_patch_data_with_fragments (CodeFile codefile, Buffer sourc
       }
       reverse_fragment_data_needed[fragment] = 1;
       reverse_fragment_lengths[fragment] = calculate_fragment_length(
-        select_fragment_data(fragment_table -> target_to_source_fragments[fragment], target, target_fragment_data, null_fragment_data, flags -> fragment_size),
-        select_fragment_data(fragment, source, source_fragment_data, NULL, flags -> fragment_size), flags, 0);
+        NULL, select_fragment_data(fragment, source, source_fragment_data, NULL, flags -> fragment_size), flags);
     }
     if (add_local_label_to_codefile(codefile, "reverse") < 0) {
       result = duplicate_string("could not declare local label '.reverse'");
@@ -154,8 +151,40 @@ char * write_xor_like_fragment (CodeFile codefile, const unsigned char * source,
   return result;
 }
 
-unsigned calculate_fragment_length (const unsigned char * source, const unsigned char * target, const struct patching_flags * flags, int reversible) {
-  // ...
+unsigned calculate_fragment_length (const unsigned char * source, const unsigned char * target, const struct patching_flags * flags) {
+  unsigned char padding_value[4] = {0};
+  unsigned length, result = -1;
+  while (target) {
+    length = flags -> fragment_size;
+    switch (flags -> padding_length) {
+      case 1:
+        *padding_value = flags -> padding_value;
+      case 0:
+        while (length) {
+          if (target[length - 1] != *padding_value) break;
+          length --;
+        }
+        break;
+      case 2:
+        write_number_to_buffer(padding_value, flags -> padding_value, 2);
+        while (length > 1) {
+          if (target[length - 2] != *padding_value) break;
+          if (target[length - 1] != padding_value[1]) break;
+          length -= 2;
+        }
+        break;
+      case 3:
+        write_number_to_buffer(padding_value, flags -> padding_value, 4);
+        while (length > 3) {
+          if (memcmp(target + (length - 4), padding_value, 4)) break;
+          length -= 4;
+        }
+    }
+    if (length < result) result = length;
+    target = source;
+    source = NULL;
+  }
+  return result;
 }
 
 void * generate_last_fragment_data (Buffer buffer, unsigned fragment_size) {
