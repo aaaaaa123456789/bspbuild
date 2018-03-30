@@ -46,5 +46,7 @@ void * generate_last_fragment_data(Buffer, unsigned);
 const void * select_fragment_data(int, Buffer, const void *, const void *, unsigned);
 
 // xornf.c
+char * write_xor_like_unfragmented_patch(CodeFile, Buffer, Buffer, const struct patching_flags *, char * (*) (CodeFile, const unsigned char *, unsigned));
+char * write_xor_like_unfragmented_header(CodeFile, Buffer, Buffer, const struct patching_flags *, const char *, unsigned);
 unsigned calculate_xor_like_unfragmented_data_length(Buffer, Buffer, const struct patching_flags *);
 char * write_xor_like_unfragmented_patch_data(CodeFile, Buffer, Buffer, unsigned, const char *, char * (*) (CodeFile, const unsigned char *, unsigned));
