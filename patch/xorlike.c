@@ -133,6 +133,14 @@ char * write_xor_like_fragmented_header (CodeFile codefile, unsigned length, int
 char * write_xor_like_fragment (CodeFile codefile, const unsigned char * source, const unsigned char * target, unsigned length, int label,
                                 char * (* data_writer) (CodeFile, const unsigned char *, unsigned)) {
   if (add_declared_numeric_local_to_codefile(codefile, label) < 0) return duplicate_string("could not declare local label for data");
+  void * data = generate_xor_data_buffer(source, target, length);
+  char * result = data_writer(codefile, data, length);
+  free(data);
+  if (!result) add_blank_line_to_codefile(codefile);
+  return result;
+}
+
+void * generate_xor_data_buffer (const unsigned char * source, const unsigned char * target, unsigned length) {
   uint_fast8_t * xor_data = malloc(length);
   unsigned count = length / sizeof(uint_fast8_t);
   const uint_fast8_t * fast_source = (const void *) source;
@@ -145,10 +153,7 @@ char * write_xor_like_fragment (CodeFile codefile, const unsigned char * source,
     unsigned char * slow_xor_data = (void *) xor_data;
     while (count --) *(slow_xor_data ++) = *(source ++) ^ *(target ++);
   }
-  char * result = data_writer(codefile, (const void *) xor_data, length);
-  free(xor_data);
-  if (!result) add_blank_line_to_codefile(codefile);
-  return result;
+  return xor_data;
 }
 
 unsigned calculate_fragment_length (const unsigned char * source, const unsigned char * target, const struct patching_flags * flags) {

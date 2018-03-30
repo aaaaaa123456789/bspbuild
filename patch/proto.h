@@ -37,6 +37,7 @@ char * write_xor_like_patch_data_with_fragments(CodeFile, Buffer, Buffer, const 
 char * write_xor_like_fragmented_header(CodeFile, unsigned, int, const int *, const unsigned *, const struct patching_flags *,
                                         const struct fragment_permutation_table *);
 char * write_xor_like_fragment(CodeFile, const unsigned char *, const unsigned char *, unsigned, int, char * (*) (CodeFile, const unsigned char *, unsigned));
+void * generate_xor_data_buffer(const unsigned char *, const unsigned char *, unsigned);
 unsigned calculate_fragment_length(const unsigned char *, const unsigned char *, const struct patching_flags *);
 unsigned calculate_unpadded_data_length(const unsigned char *, unsigned, const struct patching_flags *);
 void * generate_last_fragment_data(Buffer, unsigned);
