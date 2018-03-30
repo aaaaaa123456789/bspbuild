@@ -31,7 +31,47 @@ char * write_xor_patch_data (CodeFile codefile, Buffer source, Buffer target, co
     data_length = (source -> length > target -> length) ? source -> length : target -> length;
   else
     data_length = target -> length;
-  // ...
+  if (flags -> padding_length) {
+    p = (data_length > target -> length) ? target -> length : data_length;
+    result = write_patch_data_to_codefile(codefile, 2, (unsigned []) {target -> length, p}, "data");
+  } else
+    result = write_patch_data_to_codefile(codefile, 1, &(target -> length), "data");
+  if (result) return result;
+  add_blank_line_to_codefile(codefile);
+  if (flags -> reversible_patch) {
+    if (add_local_label_to_codefile(codefile, "reverse") < 0) return duplicate_string("could not declare local label '.reverse'");
+    if (flags -> padding_length) {
+      p = (data_length > source -> length) ? source -> length : data_length;
+      result = write_patch_data_to_codefile(codefile, 2, (unsigned []) {source -> length, p}, "data");
+    } else
+      result = write_patch_data_to_codefile(codefile, 1, &(source -> length), "data");
+    if (result) return result;
+    add_blank_line_to_codefile(codefile);
+  }
+  if (add_local_label_to_codefile(codefile, "data") < 0) return duplicate_string("could not declare local label '.data'");
+  void * data;
+  const void * extra;
+  unsigned extra_length;
+  if ((data_length <= source -> length) && (data_length <= target -> length)) {
+    data = generate_xor_data_buffer(source -> data, target -> data, data_length);
+    extra = NULL;
+  } else {
+    if (data_length > source -> length) {
+      p = source -> length;
+      extra = target -> data + p;
+    } else {
+      p = target -> length;
+      extra = source -> data + p;
+    }
+    extra_length = data_length - p;
+    data_length = p;
+    data = generate_xor_data_buffer(source -> data, target -> data, data_length);
+  }
+  add_data_to_codefile(codefile, data, data_length);
+  free(data);
+  if (extra) add_data_to_codefile(codefile, extra, extra_length);
+  add_blank_line_to_codefile(codefile);
+  return NULL;
 }
 
 char * write_xor_patch_fragment_data (CodeFile codefile, const unsigned char * data, unsigned length) {
