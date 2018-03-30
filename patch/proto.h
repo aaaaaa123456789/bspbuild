@@ -28,7 +28,6 @@ char * write_ips_patch_data_for_buffers(CodeFile, Buffer, Buffer);
 char * write_patch_data_to_codefile(CodeFile, unsigned, const unsigned *, const char *);
 
 // xor.c
-char * write_xor_patch_data_without_fragments(CodeFile, Buffer, Buffer, const struct patching_flags *);
 char * write_xor_patch_fragment_data(CodeFile, const unsigned char *, unsigned);
 
 // xorlike.c
