@@ -14,8 +14,7 @@
 */
 
 char * write_xor_patch_data (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags) {
-  if (flags -> fragmentation_enabled) return write_xor_like_fragmented_patch_data(codefile, source, target, flags, &write_xor_patch_buffer_data);
-  return write_xor_like_unfragmented_patch(codefile, source, target, flags, &write_xor_patch_buffer_data);
+  return write_xor_like_patch(codefile, source, target, flags, &write_xor_patch_buffer_data);
 }
 
 char * write_xor_patch_buffer_data (CodeFile codefile, const unsigned char * data, unsigned length) {

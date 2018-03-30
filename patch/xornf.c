@@ -1,13 +1,5 @@
 #include "proto.h"
 
-char * write_xor_like_unfragmented_patch (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags,
-                                          char * (* data_writer) (CodeFile, const unsigned char *, unsigned)) {
-  unsigned data_length = calculate_xor_like_unfragmented_data_length(source, target, flags);
-  char * result = write_xor_like_unfragmented_header(codefile, source, target, flags, "data", data_length);
-  if (result) return result;
-  return write_xor_like_unfragmented_patch_data(codefile, source, target, data_length, "data", data_writer);
-}
-
 char * write_xor_like_unfragmented_header (CodeFile codefile, Buffer source, Buffer target, const struct patching_flags * flags, const char * data_label,
                                            unsigned data_length) {
   char * result = NULL;
