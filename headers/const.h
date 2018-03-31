@@ -8,7 +8,7 @@
 #define VALID_ID_CHARACTERS LETTERS_OR_UNDERSCORE DIGITS
 #define NUMERIC_CHARACTERS DIGITS "+-"
 
-#define NUM_PATCHING_METHODS 3 // FIXME: update with real value after patching methods have been defined
+#define NUM_PATCHING_METHODS 3
 #define NUM_CODE_ERRORS 10 // FIXME: update with real value after error constants have been defined
 
 #define MAX_INPUT_FILES 0xFF0000
