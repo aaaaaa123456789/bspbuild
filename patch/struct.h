@@ -9,3 +9,12 @@ struct fragment_permutation_table {
   int * source_to_target_fragments; // index = target, value = source
   int * target_to_source_fragments; // index = source, value = target
 };
+
+struct rle_run_data {
+  unsigned distance;
+  unsigned length;
+  unsigned long long value;
+  unsigned offset;
+  unsigned char type;
+  unsigned char data_length;
+};
