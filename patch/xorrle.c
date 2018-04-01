@@ -17,7 +17,7 @@ char * write_xor_rle_patch_data (CodeFile codefile, Buffer source, Buffer target
 }
 
 char * write_xor_rle_patch_buffer_data (CodeFile codefile, const unsigned char * data, unsigned length) {
-  void * buffer = malloc(length << 1);
+  void * buffer = malloc(16 + length << 1); // big enough to stay out of trouble
   unsigned buffer_length = generate_rle_data(data, length, buffer);
   add_data_to_codefile(codefile, buffer, buffer_length);
   free(buffer);
@@ -53,9 +53,53 @@ struct rle_run_data find_next_rle_run (const unsigned char * data, unsigned leng
 }
 
 unsigned write_rle_data_to_buffer (unsigned char * buffer, const unsigned char * data, unsigned length) {
-  // ...
+  unsigned short current_block;
+  unsigned char * wp = buffer;
+  while (length) {
+    current_block = (length > MAX_RLE_DATA_BLOCK) ? MAX_RLE_DATA_BLOCK : length;
+    if (current_block > 31) {
+      *(wp ++) = 0;
+      *(wp ++) = current_block - 32;
+    } else
+      *(wp ++) = current_block;
+    memcpy(wp, data, current_block);
+    wp += current_block;
+    data += current_block;
+    length -= current_block;
+  }
+  return wp - buffer;
 }
 
-unsigned write_rle_run_to_buffer (unsigned char * buffer, const struct rle_run_data run) {
-  // ...
+unsigned write_rle_run_to_buffer (unsigned char * buffer, struct rle_run_data run) {
+  // the function expects run.data_length and run.offset to be valid (run.data_length in {1, 2, 4, 8}, and run.offset = 0 if run.data_length = 8)
+  unsigned short current_block;
+  unsigned char * wp = buffer;
+  unsigned char type;
+  if (run.data_length == 8)
+    type = 0x20;
+  else if (run.data_length == 4)
+    type = 0xc0;
+  else
+    type = run.data_length << 6;
+  if (run.offset)
+    type |= 0x20;
+  while (run.length) {
+    current_block = (run.length > MAX_RLE_RUN_BLOCK) ? MAX_RLE_RUN_BLOCK : run.length;
+    if (current_block < 3) break;
+    if ((run.length != current_block) && ((run.length - current_block) < 3)) current_block = run.length - 3;
+    if (current_block > 31) {
+      *(wp ++) = type + ((current_block - 32) >> 8);
+      *(wp ++) = (current_block - 32) & 0xff;
+    } else
+      *(wp ++) = type + current_block;
+    write_number_to_buffer(wp, run.value, run.data_length);
+    if (run.offset) {
+      write_number_to_buffer(wp + run.data_length, run.offset, run.data_length);
+      run.value += run.offset * current_block;
+      wp += run.data_length << 1;
+    } else
+      wp += run.data_length;
+    run.length -= current_block;
+  }
+  return wp - buffer;
 }

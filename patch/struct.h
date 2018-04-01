@@ -15,6 +15,5 @@ struct rle_run_data {
   unsigned length;
   unsigned long long value;
   unsigned offset;
-  unsigned char type;
   unsigned char data_length;
 };

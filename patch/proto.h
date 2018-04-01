@@ -56,4 +56,4 @@ char * write_xor_rle_patch_buffer_data(CodeFile, const unsigned char *, unsigned
 unsigned generate_rle_data(const unsigned char *, unsigned, unsigned char *);
 struct rle_run_data find_next_rle_run(const unsigned char *, unsigned);
 unsigned write_rle_data_to_buffer(unsigned char *, const unsigned char *, unsigned);
-unsigned write_rle_run_to_buffer(unsigned char *, const struct rle_run_data);
+unsigned write_rle_run_to_buffer(unsigned char *, struct rle_run_data);
