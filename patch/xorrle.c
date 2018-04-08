@@ -62,7 +62,15 @@ struct rle_run_data find_next_rle_run (const unsigned char * data, unsigned leng
 }
 
 void find_rle_byte_run (struct rle_run_data * run, const unsigned char * data, unsigned length) {
-  // ...
+  if (length < 3) return;
+  unsigned char offset = (data[1] - *data) & 0xff;
+  if (((data[2] - data[1]) & 0xff) != offset) return;
+  struct rle_run_data current_run = {.distance = run -> distance, .length = 3, .data_length = 1, .value = *data, .offset = offset};
+  while (current_run.length < length) {
+    if (((data[current_run.length] - data[current_run.length - 1]) & 0xff) != offset) break;
+    current_run.length ++;
+  }
+  if (current_run.length > run -> length) *run = current_run;
 }
 
 void find_rle_multibyte_run (struct rle_run_data * run, const unsigned char * data, unsigned length, unsigned char byte_length, unsigned char allow_offsets) {
