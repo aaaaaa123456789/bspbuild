@@ -50,3 +50,11 @@ void write_number_to_buffer (void * buffer, uintmax_t number, unsigned char leng
     number >>= 8;
   }
 }
+
+uintmax_t read_number_from_buffer (const void * buffer, unsigned char length) {
+  if (length > sizeof(uintmax_t)) return UINTMAX_MAX;
+  unsigned char current;
+  uintmax_t result = 0;
+  for (current = 0; current < length; current ++) result |= ((uintmax_t) current[(const unsigned char *) buffer]) << (current << 3);
+  return result;
+}

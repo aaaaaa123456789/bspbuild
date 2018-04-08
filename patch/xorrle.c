@@ -17,7 +17,7 @@ char * write_xor_rle_patch_data (CodeFile codefile, Buffer source, Buffer target
 }
 
 char * write_xor_rle_patch_buffer_data (CodeFile codefile, const unsigned char * data, unsigned length) {
-  void * buffer = malloc(16 + length << 1); // big enough to stay out of trouble
+  void * buffer = malloc(16 + (length << 1)); // big enough to stay out of trouble
   unsigned buffer_length = generate_rle_data(data, length, buffer);
   add_data_to_codefile(codefile, buffer, buffer_length);
   free(buffer);
@@ -74,7 +74,22 @@ void find_rle_byte_run (struct rle_run_data * run, const unsigned char * data, u
 }
 
 void find_rle_multibyte_run (struct rle_run_data * run, const unsigned char * data, unsigned length, unsigned char byte_length, unsigned char allow_offsets) {
-  // ...
+  length /= byte_length;
+  if (length < 3) return;
+  struct rle_run_data current_run = {.distance = run -> distance, .length = 3, .data_length = byte_length, .value = read_number_from_buffer(data, byte_length)};
+  unsigned long long current = read_number_from_buffer(data + byte_length, byte_length);
+  if ((current != current_run.value) && !allow_offsets) return;
+  unsigned long long mask = ((1 << (byte_length << 2)) << (byte_length << 2)) - 1; // 1 << 64 is undefined, so splitting the shift into two side-steps the issue
+  current_run.offset = (current - current_run.value) & mask;
+  unsigned long long next = read_number_from_buffer(data + (byte_length << 1), byte_length);
+  if (((next - current) & mask) != (unsigned long long) current_run.offset) return;
+  while (current_run.length < length) {
+    current = next;
+    next = read_number_from_buffer(data + current_run.length * byte_length, byte_length);
+    if (((next - current) & mask) != (unsigned long long) current_run.offset) break;
+    current_run.length ++;
+  }
+  if ((current_run.length * byte_length) > run -> length) *run = current_run;
 }
 
 unsigned write_rle_data_to_buffer (unsigned char * buffer, const unsigned char * data, unsigned length) {

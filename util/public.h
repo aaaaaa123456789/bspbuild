@@ -17,6 +17,7 @@ void append_big_endian_number_to_buffer(Buffer * buffer, uintmax_t number, unsig
 void write_halfword_to_buffer(void * buffer, unsigned short number);
 void write_word_to_buffer(void * buffer, unsigned number);
 void write_number_to_buffer(void * buffer, uintmax_t number, unsigned char length);
+uintmax_t read_number_from_buffer(const void * buffer, unsigned char length);
 
 // file.c
 FILE * open_text_file(const char * file, char ** error);
