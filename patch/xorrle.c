@@ -49,6 +49,23 @@ unsigned generate_rle_data (const unsigned char * data, unsigned length, unsigne
 }
 
 struct rle_run_data find_next_rle_run (const unsigned char * data, unsigned length) {
+  struct rle_run_data run = {.distance = 0, .length = 0, .data_length = 0};
+  while ((run.distance + 3) <= length) {
+    find_rle_byte_run(&run, data + run.distance, length - run.distance);
+    find_rle_multibyte_run(&run, data + run.distance, length - run.distance, 2, 1);
+    find_rle_multibyte_run(&run, data + run.distance, length - run.distance, 4, 1);
+    find_rle_multibyte_run(&run, data + run.distance, length - run.distance, 8, 0);
+    if (run.length) return run;
+    run.distance ++;
+  }
+  return (struct rle_run_data) {.distance = length, .length = 0, .data_length = 0};
+}
+
+void find_rle_byte_run (struct rle_run_data * run, const unsigned char * data, unsigned length) {
+  // ...
+}
+
+void find_rle_multibyte_run (struct rle_run_data * run, const unsigned char * data, unsigned length, unsigned char byte_length, unsigned char allow_offsets) {
   // ...
 }
 
