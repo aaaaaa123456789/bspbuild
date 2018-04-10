@@ -14,9 +14,9 @@
 // fragperm.c
 char * generate_fragment_permutation_table(Buffer, Buffer, const struct patching_flags *, struct fragment_permutation_table **);
 char * generate_identity_fragment_permutation_table(unsigned, unsigned, const struct patching_flags *, struct fragment_permutation_table **);
-char * write_fragment_permutation_table_to_codefile(CodeFile, const struct fragment_permutation_table *, int);
-void destroy_fragment_permutation_table(struct fragment_permutation_table *);
 struct fragment_permutation_table * create_fragment_permutation_table(unsigned, unsigned, int);
+void destroy_fragment_permutation_table(struct fragment_permutation_table *);
+char * write_fragment_permutation_table_to_codefile(CodeFile, const struct fragment_permutation_table *, int);
 
 // global.c
 extern const char * const patching_method_names[];

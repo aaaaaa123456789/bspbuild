@@ -17,16 +17,6 @@ char * generate_identity_fragment_permutation_table (unsigned source_length, uns
   return NULL;
 }
 
-char * write_fragment_permutation_table_to_codefile (CodeFile codefile, const struct fragment_permutation_table * table, int reverse) {
-  // ...
-}
-
-void destroy_fragment_permutation_table (struct fragment_permutation_table * table) {
-  free(table -> target_to_source_fragments);
-  free(table -> source_to_target_fragments);
-  free(table);
-}
-
 struct fragment_permutation_table * create_fragment_permutation_table (unsigned source_fragments, unsigned target_fragments, int reversible) {
   struct fragment_permutation_table * result = malloc(sizeof(struct fragment_permutation_table));
   result -> source_fragments = source_fragments;
@@ -37,4 +27,14 @@ struct fragment_permutation_table * create_fragment_permutation_table (unsigned 
   else
     result -> target_to_source_fragments = NULL;
   return result;
+}
+
+void destroy_fragment_permutation_table (struct fragment_permutation_table * table) {
+  free(table -> target_to_source_fragments);
+  free(table -> source_to_target_fragments);
+  free(table);
+}
+
+char * write_fragment_permutation_table_to_codefile (CodeFile codefile, const struct fragment_permutation_table * table, int reverse) {
+  // ...
 }
