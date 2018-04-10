@@ -17,6 +17,8 @@ char * generate_identity_fragment_permutation_table(unsigned, unsigned, const st
 struct fragment_permutation_table * create_fragment_permutation_table(unsigned, unsigned, int);
 void destroy_fragment_permutation_table(struct fragment_permutation_table *);
 char * write_fragment_permutation_table_to_codefile(CodeFile, const struct fragment_permutation_table *, int);
+unsigned ** generate_fragment_cost_matrix(Buffer, Buffer, unsigned);
+unsigned calculate_estimated_fragment_cost(const unsigned char *, const unsigned char *, unsigned);
 
 // global.c
 extern const char * const patching_method_names[];
