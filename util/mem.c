@@ -44,9 +44,9 @@ void * mr_realloc (void * region, void * buffer, unsigned new_size) {
   struct memory_region * old = ((struct memory_region *) buffer) - 1;
   struct memory_region * new = realloc(old, sizeof(struct memory_region) + new_size);
   if (old == new) return buffer;
-  if (old -> next) old -> next -> prev = new;
-  if (old -> prev)
-    old -> prev -> next = new;
+  if (new -> next) new -> next -> prev = new;
+  if (new -> prev)
+    new -> prev -> next = new;
   else
     *((struct memory_region **) region) = new;
   return new + 1;
