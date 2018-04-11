@@ -11,14 +11,22 @@
 #include "struct.h"
 #include "patchgen.h"
 
+// fragcost.c
+unsigned ** generate_fragment_cost_matrix(Buffer, Buffer, unsigned);
+unsigned calculate_estimated_fragment_cost(const unsigned char *, const unsigned char *, unsigned);
+
 // fragperm.c
 char * generate_fragment_permutation_table(Buffer, Buffer, const struct patching_flags *, struct fragment_permutation_table **);
 char * generate_identity_fragment_permutation_table(unsigned, unsigned, const struct patching_flags *, struct fragment_permutation_table **);
 struct fragment_permutation_table * create_fragment_permutation_table(unsigned, unsigned, int);
 void destroy_fragment_permutation_table(struct fragment_permutation_table *);
+
+// ftbuild.c
+void generate_forward_fragment_permutation_table_from_costs(struct fragment_permutation_table *, unsigned **);
+void generate_reversible_fragment_permutation_table_from_costs(struct fragment_permutation_table *, unsigned **);
+
+// ftwriter.c
 char * write_fragment_permutation_table_to_codefile(CodeFile, const struct fragment_permutation_table *, int);
-unsigned ** generate_fragment_cost_matrix(Buffer, Buffer, unsigned);
-unsigned calculate_estimated_fragment_cost(const unsigned char *, const unsigned char *, unsigned);
 
 // global.c
 extern const char * const patching_method_names[];
