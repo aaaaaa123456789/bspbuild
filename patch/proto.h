@@ -24,6 +24,7 @@ void destroy_fragment_permutation_table(struct fragment_permutation_table *);
 // ftbuild.c
 void generate_forward_fragment_permutation_table_from_costs(struct fragment_permutation_table *, unsigned **);
 void generate_reversible_fragment_permutation_table_from_costs(struct fragment_permutation_table *, unsigned **);
+void determine_minimum_cost_subset(unsigned **, unsigned, unsigned, unsigned *);
 
 // ftwriter.c
 char * write_fragment_permutation_table_to_codefile(CodeFile, const struct fragment_permutation_table *, int);

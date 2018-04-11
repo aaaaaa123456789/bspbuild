@@ -19,5 +19,32 @@ void generate_forward_fragment_permutation_table_from_costs (struct fragment_per
 }
 
 void generate_reversible_fragment_permutation_table_from_costs (struct fragment_permutation_table * table, unsigned ** cost_matrix) {
+  unsigned fragment;
+  for (fragment = 0; fragment < table -> target_fragments; fragment ++) table -> source_to_target_fragments[fragment] = -1;
+  for (fragment = 0; fragment < table -> source_fragments; fragment ++) table -> target_to_source_fragments[fragment] = -1;
+  if (!(table -> source_fragments && table -> target_fragments)) return;
+  unsigned * minimum_subset = malloc((((table -> source_fragments + table -> target_fragments) << 1) + 3) * sizeof(unsigned));
+  determine_minimum_cost_subset(cost_matrix, table -> source_fragments + 1, table -> target_fragments + 1, minimum_subset);
+  unsigned * current;
+  for (current = minimum_subset; *current != -1U; current += 2) {
+    if (*current != table -> source_fragments)
+      if (
+        (table -> target_to_source_fragments[*current] == -1) ||
+        (cost_matrix[*current][current[1]] < cost_matrix[*current][table -> target_to_source_fragments[*current]])
+      ) table -> target_to_source_fragments[*current] = current[1];
+    if (current[1] != table -> target_fragments)
+      if (
+        (table -> source_to_target_fragments[current[1]] == -1) ||
+        (cost_matrix[*current][current[1]] < cost_matrix[table -> source_to_target_fragments[current[1]]][current[1]])
+      ) table -> source_to_target_fragments[current[1]] = *current;
+  }
+  free(minimum_subset);
+  for (fragment = 0; fragment < table -> target_fragments; fragment ++)
+    if (table -> source_to_target_fragments[fragment] == table -> source_fragments) table -> source_to_target_fragments[fragment] = -1;
+  for (fragment = 0; fragment < table -> source_fragments; fragment ++)
+    if (table -> target_to_source_fragments[fragment] == table -> target_fragments) table -> target_to_source_fragments[fragment] = -1;
+}
+
+void determine_minimum_cost_subset (unsigned ** cost_matrix, unsigned rows, unsigned columns, unsigned * result) {
   // ...
 }
