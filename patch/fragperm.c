@@ -3,6 +3,7 @@
 char * generate_fragment_permutation_table (Buffer source, Buffer target, const struct patching_flags * flags, struct fragment_permutation_table ** table) {
   unsigned source_fragments = source -> length ? 1 + (source -> length - 1) / (flags -> fragment_size) : 0;
   unsigned target_fragments = target -> length ? 1 + (target -> length - 1) / (flags -> fragment_size) : 0;
+  unsigned ** cost_matrix = generate_fragment_cost_matrix(source, target, flags -> fragment_size);
   // ...
 }
 
@@ -71,5 +72,14 @@ unsigned ** generate_fragment_cost_matrix (Buffer source, Buffer target, unsigne
 }
 
 unsigned calculate_estimated_fragment_cost (const unsigned char * source, const unsigned char * target, unsigned length) {
-  // ...
+  if (!source) {
+    if (!target) return 0;
+    return calculate_estimated_fragment_cost(target, source, length);
+  }
+  unsigned pos, result = 0;
+  if (target)
+    for (pos = 0; pos < length; pos ++) if (source[pos] == target[pos]) result ++;
+  else
+    for (pos = 0; pos < length; pos ++) if (!source[pos]) result ++;
+  return result;
 }
