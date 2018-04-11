@@ -1,7 +1,7 @@
 #include "proto.h"
 
 void validate_options (Options options) {
-  char * (* const validators[])(Options) = {
+  char * (* const validators[]) (Options) = {
     &validate_input_file_options,
     &validate_output_file_options,
     &validate_nonsensical_option_combinations,

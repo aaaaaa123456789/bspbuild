@@ -8,7 +8,7 @@ int main (int argc, char ** argv) {
   else if (options -> error_text)
     fprintf(stderr, "%s: error: %s\n", *argv, options -> error_text);
   else
-    exit_status = ((int (* [])(Options, const char *)) {
+    exit_status = ((int (* []) (Options, const char *)) {
       [OPERATION_MODE_NORMAL] = &normal_operation_mode,
       [OPERATION_MODE_BSP_INPUT] = &bsp_input_operation_mode,
       [OPERATION_MODE_IPS_OUTPUT] = &ips_output_operation_mode
