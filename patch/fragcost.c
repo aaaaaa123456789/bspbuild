@@ -36,8 +36,8 @@ unsigned calculate_estimated_fragment_cost (const unsigned char * source, const 
   }
   unsigned pos, result = 0;
   if (target)
-    for (pos = 0; pos < length; pos ++) if (source[pos] == target[pos]) result ++;
+    for (pos = 0; pos < length; pos ++) if (source[pos] != target[pos]) result ++;
   else
-    for (pos = 0; pos < length; pos ++) if (!source[pos]) result ++;
+    for (pos = 0; pos < length; pos ++) if (source[pos]) result ++;
   return result;
 }
