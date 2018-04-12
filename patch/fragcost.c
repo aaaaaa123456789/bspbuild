@@ -59,5 +59,58 @@ unsigned calculate_estimated_fragment_cost (const unsigned char * source, const 
 }
 
 void determine_minimum_cost_subset (unsigned ** cost_matrix, unsigned rows, unsigned columns, unsigned * result) {
-  // ...
+  // while the solution found by this method may not be optimal, it should be at least reasonable
+  unsigned * best_row_per_column = calloc(columns, sizeof(unsigned));
+  unsigned * best_column_per_row = calloc(rows, sizeof(unsigned));
+  unsigned * best_cost_per_column = malloc(sizeof(unsigned) * columns);
+  unsigned * best_cost_per_row = malloc(sizeof(unsigned) * rows);
+  unsigned column, row;
+  for (column = 0; column < columns; column ++) best_cost_per_column[column] = -1U;
+  for (row = 0; row < rows; row ++) best_cost_per_row[row] = -1U;
+  for (row = 0; row < rows; row ++) for (column = 0; column < columns; column ++) {
+    if (cost_matrix[row][column] < best_cost_per_column[column]) {
+      best_cost_per_column[column] = cost_matrix[row][column];
+      best_row_per_column[column] = row;
+    }
+    if (cost_matrix[row][column] < best_cost_per_row[row]) {
+      best_cost_per_row[row] = cost_matrix[row][column];
+      best_column_per_row[row] = column;
+    }
+  }
+  free(best_cost_per_row);
+  free(best_cost_per_column);
+  unsigned * column_counter = calloc(sizeof(unsigned), columns);
+  unsigned * row_counter = calloc(sizeof(unsigned), rows);
+  unsigned pair, pairs = 0;
+  for (row = 0; row < rows; row ++) {
+    result[pairs << 1] = row;
+    result[(pairs << 1) + 1] = best_column_per_row[row];
+    row_counter[row] ++;
+    column_counter[best_column_per_row[row]] ++;
+    pairs ++;
+  }
+  for (column = 0; column < columns; column ++) {
+    if (best_column_per_row[best_row_per_column[column]] == column) continue;
+    result[pairs << 1] = best_row_per_column[column];
+    result[(pairs << 1) + 1] = column;
+    row_counter[best_row_per_column[column]] ++;
+    column_counter[column] ++;
+    pairs ++;
+  }
+  pair = 0;
+  while (pair < pairs)
+    if ((row_counter[row = result[pair << 1]] > 1) && (column_counter[column = result[(pair << 1) + 1]] > 1)) {
+      pairs --;
+      row_counter[row] --;
+      column_counter[column] --;
+      if (pair == pairs) break;
+      result[pair << 1] = result[pairs << 1];
+      result[(pair << 1) + 1] = result[(pairs << 1) + 1];
+    } else
+      pair ++;
+  free(row_counter);
+  free(column_counter);
+  free(best_column_per_row);
+  free(best_row_per_column);
+  result[pairs << 1] = -1U;
 }
