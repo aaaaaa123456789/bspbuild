@@ -44,7 +44,3 @@ void generate_reversible_fragment_permutation_table_from_costs (struct fragment_
   for (fragment = 0; fragment < table -> source_fragments; fragment ++)
     if (table -> target_to_source_fragments[fragment] == table -> target_fragments) table -> target_to_source_fragments[fragment] = -1;
 }
-
-void determine_minimum_cost_subset (unsigned ** cost_matrix, unsigned rows, unsigned columns, unsigned * result) {
-  // ...
-}

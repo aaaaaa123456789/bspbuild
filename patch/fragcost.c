@@ -57,3 +57,7 @@ unsigned calculate_estimated_fragment_cost (const unsigned char * source, const 
     for (pos = 0; pos < length; pos ++) if (source[pos]) result ++;
   return result;
 }
+
+void determine_minimum_cost_subset (unsigned ** cost_matrix, unsigned rows, unsigned columns, unsigned * result) {
+  // ...
+}
