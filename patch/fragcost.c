@@ -8,10 +8,23 @@ unsigned ** generate_fragment_cost_matrix (Buffer source, Buffer target, unsigne
   unsigned source_fragment, target_fragment;
   const unsigned char * source_pointer = source -> data;
   const unsigned char * target_pointer;
+  unsigned char * source_buffer = NULL;
+  unsigned char * target_buffer = NULL;
+  unsigned remainder;
+  if (remainder = source -> length % fragment_length) {
+    source_buffer = calloc(fragment_length, 1);
+    memcpy(source_buffer, source -> data + (source_fragments - 1) * fragment_length, remainder);
+  }
+  if (remainder = target -> length % fragment_length) {
+    target_buffer = calloc(fragment_length, 1);
+    memcpy(target_buffer, target -> data + (target_fragments - 1) * fragment_length, remainder);
+  }
   for (source_fragment = 0; source_fragment < source_fragments; source_fragment ++) {
     result[source_fragment] = row_pointer;
+    if (source_buffer && (source_fragment == (source_fragments - 1))) source_pointer = source_buffer;
     target_pointer = target -> data;
     for (target_fragment = 0; target_fragment < target_fragments; target_fragment ++) {
+      if (target_buffer && (target_fragment == (target_fragments - 1))) target_pointer = target_buffer;
       result[source_fragment][target_fragment] = calculate_estimated_fragment_cost(source_pointer, target_pointer, fragment_length);
       target_pointer += fragment_length;
     }
@@ -22,10 +35,13 @@ unsigned ** generate_fragment_cost_matrix (Buffer source, Buffer target, unsigne
   result[source_fragments] = row_pointer;
   target_pointer = target -> data;
   for (target_fragment = 0; target_fragment < target_fragments; target_fragment ++) {
+    if (target_buffer && (target_fragment == (target_fragments - 1))) target_pointer = target_buffer;
     result[source_fragments][target_fragment] = calculate_estimated_fragment_cost(NULL, target_pointer, fragment_length);
     target_pointer += fragment_length;
   }
   result[source_fragments][target_fragments] = calculate_estimated_fragment_cost(NULL, NULL, fragment_length);
+  free(target_buffer);
+  free(source_buffer);
   return result;
 }
 
