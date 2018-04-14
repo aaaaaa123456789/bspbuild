@@ -10,7 +10,8 @@ char * write_xor_like_patch (CodeFile codefile, Buffer source, Buffer target, co
 }
 
 void * generate_xor_data_buffer (const unsigned char * source, const unsigned char * target, unsigned length) {
-  uint_fast8_t * xor_data = malloc(length);
+  void * result = malloc(length);
+  uint_fast8_t * xor_data = result;
   unsigned count = length / sizeof(uint_fast8_t);
   const uint_fast8_t * fast_source = (const void *) source;
   const uint_fast8_t * fast_target = (const void *) target;
@@ -22,7 +23,7 @@ void * generate_xor_data_buffer (const unsigned char * source, const unsigned ch
     unsigned char * slow_xor_data = (void *) xor_data;
     while (count --) *(slow_xor_data ++) = *(source ++) ^ *(target ++);
   }
-  return xor_data;
+  return result;
 }
 
 unsigned calculate_unpadded_data_length (const unsigned char * data, unsigned length, const struct patching_flags * flags) {
