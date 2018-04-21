@@ -36,16 +36,44 @@ char * write_fragment_permutation_table_to_codefile (CodeFile codefile, const st
     fragments_OK[fragment] = 1;
     sum ++;
   }
-  if (sum != fragment_count)
+  if (sum < fragment_count)
     error = write_fragment_copy_commands_to_codefile(codefile, fragment_targets, fragments_OK, &sum, fragment_count);
-  if (!error && (sum != fragment_count))
+  if (!error && (sum < fragment_count))
     error = write_fragment_swap_commands_to_codefile(codefile, fragment_targets, fragments_OK, fragment_count);
   free(fragments_OK);
   return error;
 }
 
 char * write_fragment_copy_commands_to_codefile (CodeFile codefile, const int * targets, unsigned char * fragments_OK, unsigned * sum, unsigned fragment_count) {
-  // ...
+  unsigned * use_counts = calloc(fragment_count, sizeof(unsigned));
+  unsigned fragment;
+  for (fragment = 0; fragment < fragment_count; fragment ++) {
+    if (fragments_OK[fragment]) continue;
+    if ((targets[fragment] < 0) || (targets[fragment] >= fragment_count)) continue;
+    use_counts[targets[fragment]] ++;
+  }
+  unsigned updates;
+  char * error;
+  do {
+    updates = 0;
+    for (fragment = 0; fragment < fragment_count; fragment ++) {
+      if (fragments_OK[fragment] || use_counts[fragment]) continue;
+      if (targets[fragment] >= 0) {
+        if (targets[fragment] < fragment_count) use_counts[targets[fragment]] --;
+        error = write_patch_data_to_codefile(codefile, 2, (unsigned []) {targets[fragment], fragment}, NULL);
+      } else
+        error = write_patch_data_to_codefile(codefile, 1, (unsigned []) {fragment | 0x80000000U}, NULL);
+      if (error) {
+        free(use_counts);
+        return error;
+      }
+      fragments_OK[fragment] = 1;
+      updates ++;
+    }
+    *sum += updates;
+  } while (updates && (*sum < fragment_count));
+  free(use_counts);
+  return NULL;
 }
 
 char * write_fragment_swap_commands_to_codefile (CodeFile codefile, const int * targets, unsigned char * fragments_OK, unsigned fragment_count) {
