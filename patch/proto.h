@@ -28,6 +28,8 @@ void generate_reversible_fragment_permutation_table_from_costs(struct fragment_p
 
 // ftwriter.c
 char * write_fragment_permutation_table_to_codefile(CodeFile, const struct fragment_permutation_table *, int);
+char * write_fragment_copy_commands_to_codefile(CodeFile, const int *, unsigned char *, unsigned *, unsigned);
+char * write_fragment_swap_commands_to_codefile(CodeFile, const int *, unsigned char *, unsigned);
 
 // global.c
 extern const char * const patching_method_names[];
