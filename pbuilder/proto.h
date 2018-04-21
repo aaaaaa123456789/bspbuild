@@ -8,6 +8,7 @@
 #include "../headers/enum.h"
 #include "../codegen/public.h"
 #include "../optparse/pubtypes.h"
+#include "../patch/public.h"
 #include "../util/public.h"
 
 #include "struct.h"
