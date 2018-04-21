@@ -77,5 +77,30 @@ char * write_fragment_copy_commands_to_codefile (CodeFile codefile, const int * 
 }
 
 char * write_fragment_swap_commands_to_codefile (CodeFile codefile, const int * targets, unsigned char * fragments_OK, unsigned fragment_count) {
-  // ...
+  unsigned * current_fragments = malloc(fragment_count * sizeof(unsigned));
+  unsigned fragment, swap;
+  char * error;
+  for (fragment = 0; fragment < fragment_count; fragment ++)
+    current_fragments[fragment] = fragments_OK[fragment] ? -1 : fragment; // we don't care about fragments that are already OK
+  for (fragment = 0; fragment < fragment_count; fragment ++) {
+    if (fragments_OK[fragment]) continue;
+    if (current_fragments[fragment] == targets[fragment]) {
+      fragments_OK[fragment] = 1;
+      continue;
+    }
+    for (swap = fragment + 1; swap < fragment_count; swap ++) if (current_fragments[swap] == targets[fragment]) break;
+    if (swap == fragment_count)
+      error = generate_string("could not write fragment swap command to move fragment %d to %u", targets[fragment], fragment);
+    else
+      error = write_patch_data_to_codefile(codefile, 2, (unsigned []) {fragment, swap | 0x80000000U}, NULL);
+    if (error) {
+      free(current_fragments);
+      return error;
+    }
+    current_fragments[swap] = current_fragments[fragment];
+    current_fragments[fragment] = targets[fragment];
+    fragments_OK[fragment] = 1;
+  }
+  free(current_fragments);
+  return NULL;
 }
