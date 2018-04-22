@@ -13,6 +13,7 @@
 
 #include "struct.h"
 #include "public.h"
+#include "engines.h"
 
 #define get_label(member_name, label_name) get_defined_label(&(builder_state -> labels.member_name), label_name)
 

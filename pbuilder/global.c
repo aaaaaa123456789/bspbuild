@@ -1,7 +1,8 @@
 #include <setjmp.h>
 
-#include "struct.h"
 #include "../headers/null.h"
+#include "struct.h"
+#include "engines.h"
 
 void * builder_memory_region = NULL;
 
@@ -21,5 +22,7 @@ const char * const code_error_messages[] = {
 };
 
 void (* const patch_engine_generator_functions[])(void) = {
-  // ...
+  &define_apply_xor_patch_function,
+  &define_apply_xor_rle_patch_function,
+  &define_apply_ips_patch_function
 };
