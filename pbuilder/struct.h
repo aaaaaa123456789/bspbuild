@@ -31,7 +31,7 @@ struct code_generation_state {
     int execute_patch;
     // patch engine auxiliary functions
     int apply_xor_rle_patch; // TODO
-    int pad_to_length; // TODO
+    int pad_to_length;
     int apply_fragmented_patch; // TODO
   } labels;
   struct {
@@ -39,6 +39,7 @@ struct code_generation_state {
     int num_input_files;
     int first_output_file;
     int hash_size;
+    int padding_value;
   } constants;
   struct {
     unsigned get_nth_string:          1;

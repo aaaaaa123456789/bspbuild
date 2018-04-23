@@ -69,6 +69,7 @@ void define_main_function(void);
 // patcheng.c
 void define_apply_xor_like_patch_function(int);
 void define_apply_xor_like_fragmented_patch_function(int);
+void define_pad_to_length_function(void);
 
 // patchfn.c
 void define_apply_patch_function(void);

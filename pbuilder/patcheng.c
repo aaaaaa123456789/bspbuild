@@ -64,3 +64,21 @@ void define_apply_xor_like_fragmented_patch_function (int is_RLE) {
   inst(INST_XORDATA, reg(argument), reg(result));
   inst(INST_RETURN);
 }
+
+void define_pad_to_length_function (void) {
+  // inputs: #argument: target length, #result: current length
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(pad_to_length, "PadToLength"));
+  inst(INST_IFGE, reg(result), reg(argument), loc("done"));
+  inst(INST_SUBTRACT2, reg(argument), reg(result));
+  if (builder_state -> options -> padding_size > 1) {
+    inst(INST_SHIFTRIGHT, reg(temp), reg(argument), imm(builder_state -> options -> padding_size - 1));
+    inst(INST_AND, reg(result), reg(argument), imm((builder_state -> options -> padding_size == 3) ? 3 : 1));
+    inst(INST_SET, reg(argument), err(CODE_ERROR_PADDING_NOT_MULTIPLE));
+    inst(INST_JUMPNZ, reg(result), lbl(error, "Error"));
+    inst((builder_state -> options -> padding_size == 3) ? INST_FILLWORD : INST_FILLHALFWORD, reg(temp), cnst(padding_value));
+  } else
+    inst(INST_FILLBYTE, reg(argument), cnst(padding_value));
+  builder_declare_local("done");
+  inst(INST_RETURN);
+  add_blank_line_to_codefile(builder_state -> codefile);
+}

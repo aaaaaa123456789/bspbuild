@@ -23,12 +23,18 @@ void initialize_code_generator (void) {
   builder_state -> constants.errors[CODE_ERROR_SOURCE_EQUALS_TARGET] = declare_constant("ERROR_SOURCE_EQUALS_TARGET", CODE_ERROR_SOURCE_EQUALS_TARGET);
   builder_state -> constants.errors[CODE_ERROR_INVALID_OUTPUT_SIZE] = declare_constant("ERROR_INVALID_OUTPUT_SIZE", CODE_ERROR_INVALID_OUTPUT_SIZE);
   builder_state -> constants.errors[CODE_ERROR_INVALID_OUTPUT_HASH] = declare_constant("ERROR_INVALID_OUTPUT_HASH", CODE_ERROR_INVALID_OUTPUT_HASH);
+  builder_state -> constants.errors[CODE_ERROR_PATCH_NOT_REVERSIBLE] = declare_constant("ERROR_PATCH_NOT_REVERSIBLE", CODE_ERROR_PATCH_NOT_REVERSIBLE);
+  builder_state -> constants.errors[CODE_ERROR_PADDING_NOT_MULTIPLE] = declare_constant("ERROR_PADDING_NOT_MULTIPLE", CODE_ERROR_PADDING_NOT_MULTIPLE);
   add_blank_line_to_codefile(builder_state -> codefile);
   builder_state -> constants.num_input_files = declare_constant("NUM_INPUT_FILES",
                                                                 builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE] +
                                                                 builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET]);
   builder_state -> constants.first_output_file = declare_constant("FIRST_OUTPUT_FILE", builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE]);
   builder_state -> constants.hash_size = declare_constant("HASH_SIZE", 20);
+  if (builder_state -> options -> padding_size)
+    builder_state -> constants.padding_value = declare_constant("PADDING_VALUE", builder_state -> options -> padding_value);
+  else
+    builder_state -> constants.padding_value = -1;
   add_blank_line_to_codefile(builder_state -> codefile);
 }
 

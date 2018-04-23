@@ -17,7 +17,8 @@ const char * const code_error_messages[] = {
   "Selected target matches source file",
   "Output file size mismatch",
   "Output file hash mismatch",
-  "Patch cannot be applied in reverse"
+  "Patch cannot be applied in reverse",
+  "Padding block size not multiple of padding value size"
   // ...
 };
 
