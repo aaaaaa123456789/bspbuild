@@ -11,4 +11,5 @@ void define_apply_ips_patch_function (void) {
   inst(INST_IFNE, reg(temp), imm(-1), loc("loop"));
   inst(INST_GETWORD, reg(temp), reg(argument));
   inst(INST_TRUNCATE, reg(temp));
+  inst(INST_RETURN);
 }
