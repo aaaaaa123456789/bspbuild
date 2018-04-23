@@ -66,15 +66,15 @@ void builder_throw(const char *, ...);
 // mainfn.c
 void define_main_function(void);
 
+// patcheng.c
+void define_apply_xor_like_patch_function(int);
+void define_apply_xor_like_fragmented_patch_function(int);
+
 // patchfn.c
 void define_apply_patch_function(void);
 void define_apply_reverse_patch_function(void);
 void define_execute_patch_function(void);
 void define_patch_engine_functions(void);
-
-// pexor.c
-void define_apply_xor_like_patch_function(int);
-void define_apply_xor_like_fragmented_patch_function(int);
 
 // runtime.c
 void generate_runtime(void);
