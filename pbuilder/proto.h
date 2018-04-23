@@ -72,6 +72,10 @@ void define_apply_reverse_patch_function(void);
 void define_execute_patch_function(void);
 void define_patch_engine_functions(void);
 
+// pexor.c
+void define_apply_xor_like_patch_function(int);
+void define_apply_xor_like_fragmented_patch_function(int);
+
 // runtime.c
 void generate_runtime(void);
 int get_defined_label(int *, const char *);

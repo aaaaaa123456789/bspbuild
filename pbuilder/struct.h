@@ -29,6 +29,9 @@ struct code_generation_state {
     int file_names;
     int patch_list; // TODO
     int execute_patch;
+    // patch engine auxiliary functions
+    int apply_xor_rle_patch; // TODO
+    int pad_to_length; // TODO
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
@@ -46,6 +49,9 @@ struct code_generation_state {
     unsigned full_file_sizes:         1; // include pure targets' file sizes
     unsigned full_file_hashes:        1; // include pure targets' file hashes
     unsigned full_patch_list:         1; // patch list starts at file #1, instead of the first output file
+    // patch engine auxiliary functions
+    unsigned apply_xor_rle_patch:     1;
+    unsigned pad_to_length:           1;
   } needed_functions;
   struct {
     int labels[NUM_PATCHING_METHODS];
