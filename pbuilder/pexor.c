@@ -38,5 +38,15 @@ void define_apply_xor_like_patch_function (int is_RLE) {
 }
 
 void define_apply_xor_like_fragmented_patch_function (int is_RLE) {
-  // ...
+  if (is_RLE)
+    inst(INST_SET, reg(result), lbl(apply_xor_rle_patch, "ApplyXORRLEPatch"));
+  else
+    inst(INST_SET, reg(result), loc("apply_xor_patch"));
+  builder_state -> needed_functions.apply_fragmented_patch = 1;
+  inst(INST_JUMP, lbl(apply_fragmented_patch, "ApplyFragmentedPatch"));
+  if (is_RLE) return;
+  add_blank_line_to_codefile(builder_state -> codefile);
+  builder_declare_local("apply_xor_patch");
+  inst(INST_XORDATA, reg(argument), reg(result));
+  inst(INST_RETURN);
 }

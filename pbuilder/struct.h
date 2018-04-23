@@ -32,6 +32,7 @@ struct code_generation_state {
     // patch engine auxiliary functions
     int apply_xor_rle_patch; // TODO
     int pad_to_length; // TODO
+    int apply_fragmented_patch; // TODO
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
@@ -52,6 +53,7 @@ struct code_generation_state {
     // patch engine auxiliary functions
     unsigned apply_xor_rle_patch:     1;
     unsigned pad_to_length:           1;
+    unsigned apply_fragmented_patch:  1;
   } needed_functions;
   struct {
     int labels[NUM_PATCHING_METHODS];
