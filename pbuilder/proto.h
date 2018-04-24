@@ -77,6 +77,9 @@ void define_apply_reverse_patch_function(void);
 void define_execute_patch_function(void);
 void define_patch_engine_functions(void);
 
+// pxorrle.c
+void define_apply_xor_rle_patch_helper_function(void);
+
 // runtime.c
 void generate_runtime(void);
 int get_defined_label(int *, const char *);

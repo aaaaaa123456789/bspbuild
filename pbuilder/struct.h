@@ -30,7 +30,7 @@ struct code_generation_state {
     int patch_list; // TODO
     int execute_patch;
     // patch engine auxiliary functions
-    int apply_xor_rle_patch; // TODO
+    int apply_xor_rle_patch;
     int pad_to_length;
     int apply_fragmented_patch; // TODO
   } labels;

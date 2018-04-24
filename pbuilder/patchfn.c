@@ -48,5 +48,6 @@ void define_patch_engine_functions (void) {
     add_blank_line_to_codefile(builder_state -> codefile);
   }
   if (builder_state -> needed_functions.pad_to_length) define_pad_to_length_function();
+  if (builder_state -> needed_functions.apply_xor_rle_patch) define_apply_xor_rle_patch_helper_function();
   // ...
 }
