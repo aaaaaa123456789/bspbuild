@@ -77,6 +77,9 @@ void define_apply_reverse_patch_function(void);
 void define_execute_patch_function(void);
 void define_patch_engine_functions(void);
 
+// pfrag.c
+void define_apply_fragmented_patch_function(void);
+
 // pxorrle.c
 void define_apply_xor_rle_patch_helper_function(void);
 

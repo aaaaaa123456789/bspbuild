@@ -35,6 +35,10 @@ void initialize_code_generator (void) {
     builder_state -> constants.padding_value = declare_constant("PADDING_VALUE", builder_state -> options -> padding_value);
   else
     builder_state -> constants.padding_value = -1;
+  if (builder_state -> options -> fragment_size)
+    builder_state -> constants.fragment_size = declare_constant("FRAGMENT_SIZE", builder_state -> options -> fragment_size);
+  else
+    builder_state -> constants.fragment_size = -1;
   add_blank_line_to_codefile(builder_state -> codefile);
 }
 

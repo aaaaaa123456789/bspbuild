@@ -32,7 +32,8 @@ struct code_generation_state {
     // patch engine auxiliary functions
     int apply_xor_rle_patch;
     int pad_to_length;
-    int apply_fragmented_patch; // TODO
+    int apply_fragmented_patch;
+    int handle_fragment_permutation; // TODO
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
@@ -40,21 +41,23 @@ struct code_generation_state {
     int first_output_file;
     int hash_size;
     int padding_value;
+    int fragment_size;
   } constants;
   struct {
-    unsigned get_nth_string:          1;
-    unsigned print_detected_input:    1;
-    unsigned generate_reverse_output: 1;
-    unsigned apply_reverse_patch:     1;
-    unsigned validate_output:         1;
-    unsigned file_names:              1; // not strictly a function, but...
-    unsigned full_file_sizes:         1; // include pure targets' file sizes
-    unsigned full_file_hashes:        1; // include pure targets' file hashes
-    unsigned full_patch_list:         1; // patch list starts at file #1, instead of the first output file
+    unsigned get_nth_string:              1;
+    unsigned print_detected_input:        1;
+    unsigned generate_reverse_output:     1;
+    unsigned apply_reverse_patch:         1;
+    unsigned validate_output:             1;
+    unsigned file_names:                  1; // not strictly a function, but...
+    unsigned full_file_sizes:             1; // include pure targets' file sizes
+    unsigned full_file_hashes:            1; // include pure targets' file hashes
+    unsigned full_patch_list:             1; // patch list starts at file #1, instead of the first output file
     // patch engine auxiliary functions
-    unsigned apply_xor_rle_patch:     1;
-    unsigned pad_to_length:           1;
-    unsigned apply_fragmented_patch:  1;
+    unsigned apply_xor_rle_patch:         1;
+    unsigned pad_to_length:               1;
+    unsigned apply_fragmented_patch:      1;
+    unsigned handle_fragment_permutation: 1;
   } needed_functions;
   struct {
     int labels[NUM_PATCHING_METHODS];
