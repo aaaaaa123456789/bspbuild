@@ -27,19 +27,20 @@ void define_apply_fragmented_patch_function (void) {
   inst(INST_TRUNCATE, reg(argument));
   builder_declare_local("initial_truncation_done");
   inst(INST_POP, reg(argument));
+  inst(INST_PUSH, reg(temp));
+  inst(INST_PUSH, reg(result));
+  inst(INST_GETWORDINC, reg(result), reg(argument));
+  inst(INST_PUSH, reg(result));
   if (builder_state -> options -> detect_fragment_permutation) {
     builder_state -> needed_functions.handle_fragment_permutation = 1;
-    inst(INST_PUSH, reg(temp));
-    inst(INST_PUSH, reg(result));
-    inst(INST_GETWORDINC, reg(result), reg(argument));
-    inst(INST_PUSH, reg(result));
     inst(INST_CALL, lbl(handle_fragment_permutation, "HandleFragmentPermutation"));
-    inst(INST_POP, reg(argument));
-    inst(INST_POP, reg(result));
-    inst(INST_POP, reg(temp));
-  } else
-    inst(INST_GETWORD, reg(argument), reg(argument));
+  }
   add_blank_line_to_codefile(builder_state -> codefile);
+  add_comment_to_codefile(builder_state -> codefile, "stack contents:", 1);
+  add_comment_to_codefile(builder_state -> codefile, "0: fragment table pointer", 1);
+  add_comment_to_codefile(builder_state -> codefile, "1: fragment callback", 1);
+  add_comment_to_codefile(builder_state -> codefile, "2: number of fragments", 1);
+  add_comment_to_codefile(builder_state -> codefile, "3: target file size", 1);
   // ...
   add_blank_line_to_codefile(builder_state -> codefile);
 }
