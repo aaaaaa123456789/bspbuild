@@ -37,10 +37,34 @@ void define_apply_fragmented_patch_function (void) {
   }
   add_blank_line_to_codefile(builder_state -> codefile);
   add_comment_to_codefile(builder_state -> codefile, "stack contents:", 1);
-  add_comment_to_codefile(builder_state -> codefile, "0: fragment table pointer", 1);
-  add_comment_to_codefile(builder_state -> codefile, "1: fragment callback", 1);
-  add_comment_to_codefile(builder_state -> codefile, "2: number of fragments", 1);
-  add_comment_to_codefile(builder_state -> codefile, "3: target file size", 1);
-  // ...
+  add_comment_to_codefile(builder_state -> codefile, "0: current fragment (not pushed at loop start)", 1);
+  add_comment_to_codefile(builder_state -> codefile, "1: fragment table pointer", 1);
+  add_comment_to_codefile(builder_state -> codefile, "2: fragment callback", 1);
+  add_comment_to_codefile(builder_state -> codefile, "3: number of fragments", 1);
+  add_comment_to_codefile(builder_state -> codefile, "4: target file size", 1);
+  inst(INST_SET, reg(temp), imm(0));
+  builder_declare_local("fragment_loop");
+  inst(INST_PUSH, reg(temp));
+  inst(INST_MULTIPLY2, reg(temp), cnst(fragment_size));
+  inst(INST_SEEK, reg(temp));
+  inst(INST_STACKREAD, reg(temp), imm(1));
+  inst(INST_GETWORDINC, reg(result), reg(temp));
+  inst(INST_JUMPZ, reg(result), loc("no_data_pointer"));
+  inst(INST_GETWORDINC, reg(argument), reg(temp));
+  builder_declare_local("no_data_pointer");
+  inst(INST_STACKWRITE, imm(1), reg(temp));
+  inst(INST_STACKREAD, reg(temp), imm(2));
+  inst(INST_CALLNZ, reg(result), reg(temp));
+  builder_state -> needed_functions.pad_to_length = 1;
+  inst(INST_SET, reg(argument), cnst(fragment_size));
+  inst(INST_CALL, lbl(pad_to_length, "PadToLength"));
+  inst(INST_STACKREAD, reg(argument), imm(3));
+  inst(INST_POP, reg(temp));
+  inst(INST_INCREMENT, reg(temp));
+  inst(INST_IFLT, reg(temp), reg(argument), loc("fragment_loop"));
+  inst(INST_STACKSHIFT, imm(-3));
+  inst(INST_POP, reg(result));
+  inst(INST_TRUNCATE, reg(result));
+  inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
 }
