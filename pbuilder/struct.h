@@ -6,6 +6,10 @@ struct code_generation_state {
   Options options;
   CodeFile codefile;
   int * file_name_labels; // outside of the labels struct so it doesn't get initialized to -1
+  struct builder_file_data {
+    unsigned size;
+    unsigned char hash[20];
+  } * file_data;
   struct {
     unsigned char file;
     unsigned char result;

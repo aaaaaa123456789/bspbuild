@@ -8,6 +8,7 @@ void initialize_builder_state (Options options, CodeFile codefile) {
   memset(&(builder_state -> constants), -1, sizeof (builder_state -> constants));
   memset(&(builder_state -> patch_engines), -1, sizeof (builder_state -> patch_engines));
   builder_state -> patch_engines.count = 0;
+  builder_state -> file_data = mr_calloc(builder_memory_region, builder_state -> options -> input_file_count * sizeof(struct builder_file_data));
 }
 
 void initialize_code_generator (void) {
