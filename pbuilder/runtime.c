@@ -14,7 +14,6 @@ void generate_runtime (void) {
   if (builder_state -> needed_functions.generate_reverse_output) define_generate_reverse_output_function();
   if (builder_state -> needed_functions.validate_output) define_validate_output_function();
   if (builder_state -> needed_functions.get_nth_string) define_get_nth_string_function();
-  define_file_names_data();
 }
 
 int get_defined_label (int * ID, const char * name) {

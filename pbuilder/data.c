@@ -1,5 +1,10 @@
 #include "proto.h"
 
+void generate_patch_data (void) {
+  define_file_names_data();
+  // ...
+}
+
 void define_file_names_data (void) {
   unsigned current_file;
   const unsigned source_files = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];

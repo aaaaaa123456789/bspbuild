@@ -8,6 +8,7 @@ char * generate_patch_code (Options options, CodeFile codefile) {
   if (!rv) {
     initialize_code_generator();
     generate_runtime();
+    generate_patch_data();
     // ...
   }
   // ...

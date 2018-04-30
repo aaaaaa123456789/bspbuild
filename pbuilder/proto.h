@@ -34,6 +34,10 @@
 #define err(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.errors[name]
 #define nloc(...) ARGTYPE_NUMERIC_LOCAL, (unsigned) (__VA_ARGS__)
 
+// data.c
+void generate_patch_data(void);
+void define_file_names_data(void);
+
 // errorfn.c
 void define_error_function(void);
 void simple_error_message_function(char **, unsigned);
@@ -102,9 +106,6 @@ void show_paged_output_selection(const unsigned *, unsigned);
 int compare_target_names(const void *, const void *);
 void generate_filename_menu(const unsigned *, unsigned);
 void generate_file_numbers_for_menu(const unsigned *, unsigned, int);
-
-// utildata.c
-void define_file_names_data(void);
 
 // utilfn.c
 void define_detect_input_function(void);
