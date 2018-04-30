@@ -33,7 +33,7 @@ struct code_generation_state {
     int apply_xor_rle_patch;
     int pad_to_length;
     int apply_fragmented_patch;
-    int handle_fragment_permutation; // TODO
+    int handle_fragment_permutation;
   } labels;
   struct {
     int errors[NUM_CODE_ERRORS + 1];
