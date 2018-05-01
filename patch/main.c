@@ -17,6 +17,11 @@ signed char find_patch_method_by_name (const char * method_name) {
   return -1;
 }
 
+const char * get_patch_method_name (unsigned char method) {
+  if (method >= NUM_PATCHING_METHODS) return NULL;
+  return patching_method_names[method];
+}
+
 char * write_patch_data_to_codefile (CodeFile codefile, unsigned count, const unsigned * values, const char * label) {
   struct instruction_argument * arguments = calloc(count + 1, sizeof(struct instruction_argument));
   unsigned current;

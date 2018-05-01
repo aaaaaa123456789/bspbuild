@@ -50,6 +50,7 @@ void write_file_patch(int, unsigned);
 unsigned write_rainbow_file_patch(unsigned);
 void write_file_patch_header_comment(const char *, unsigned);
 unsigned write_individual_file_patch(unsigned, unsigned);
+int get_file_length_and_hash(unsigned, Buffer);
 
 // genoutfn.c
 void define_generate_output_function(void);
