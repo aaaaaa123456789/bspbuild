@@ -6,6 +6,7 @@
 
 #include "../headers/const.h"
 #include "../headers/enum.h"
+#include "../headers/version.h"
 #include "../codegen/public.h"
 #include "../optparse/pubtypes.h"
 #include "../patch/public.h"
@@ -74,6 +75,7 @@ void declare_patch_engine_labels(void);
 
 // main.c
 void builder_throw(const char *, ...);
+void add_version_header_comments(void);
 
 // mainfn.c
 void define_main_function(void);
