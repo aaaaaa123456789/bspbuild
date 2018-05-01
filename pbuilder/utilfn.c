@@ -2,7 +2,7 @@
 
 void define_detect_input_function (void) {
   add_declared_label_to_codefile(builder_state -> codefile, get_label(detect_input, "DetectInput"));
-  inst(INST_SET, reg(file), imm(0));
+  inst(INST_XOR2, reg(file), reg(file));
   inst(INST_LENGTH, reg(result));
   inst(INST_SET, reg(argument), lbl(file_sizes, "FileSizes"));
   builder_declare_local("loop");

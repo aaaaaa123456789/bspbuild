@@ -5,7 +5,7 @@ void define_apply_xor_rle_patch_helper_function (void) {
   add_declared_label_to_codefile(builder_state -> codefile, get_label(apply_xor_rle_patch, "ApplyXORRLEPatch"));
   inst(INST_RETZ, reg(result));
   inst(INST_SET, reg(temp), reg(result));
-  inst(INST_SET, reg(result), imm(0));
+  inst(INST_XOR2, reg(result), reg(result));
   builder_declare_local("loop");
   inst(INST_PUSH, reg(temp));
   inst(INST_PUSH, reg(result));
@@ -69,7 +69,7 @@ void define_apply_xor_rle_patch_helper_function (void) {
   builder_declare_local("repeat_byte");
   inst(INST_PUSH, reg(argument));
   inst(INST_GETBYTE, reg(temp), reg(argument));
-  inst(INST_SET, reg(argument), imm(0));
+  inst(INST_XOR2, reg(argument), reg(argument));
   builder_declare_local("repeat_byte_loop");
   inst(INST_PUSH, reg(result));
   inst(INST_GETFILEBYTE, reg(result));
@@ -92,7 +92,7 @@ void define_apply_xor_rle_patch_helper_function (void) {
   builder_declare_local("repeat_halfword");
   inst(INST_PUSH, reg(argument));
   inst(INST_GETHALFWORD, reg(temp), reg(argument));
-  inst(INST_SET, reg(argument), imm(0));
+  inst(INST_XOR2, reg(argument), reg(argument));
   builder_declare_local("repeat_halfword_loop");
   inst(INST_PUSH, reg(result));
   inst(INST_GETFILEHALFWORD, reg(result));
@@ -115,7 +115,7 @@ void define_apply_xor_rle_patch_helper_function (void) {
   builder_declare_local("repeat_word");
   inst(INST_PUSH, reg(argument));
   inst(INST_GETWORD, reg(temp), reg(argument));
-  inst(INST_SET, reg(argument), imm(0));
+  inst(INST_XOR2, reg(argument), reg(argument));
   builder_declare_local("repeat_word_loop");
   inst(INST_PUSH, reg(result));
   inst(INST_GETFILEWORD, reg(result));

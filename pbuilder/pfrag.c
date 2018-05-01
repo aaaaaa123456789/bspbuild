@@ -42,7 +42,7 @@ void define_apply_fragmented_patch_function (void) {
   add_comment_to_codefile(builder_state -> codefile, "2: fragment callback", 1);
   add_comment_to_codefile(builder_state -> codefile, "3: number of fragments", 1);
   add_comment_to_codefile(builder_state -> codefile, "4: target file size", 1);
-  inst(INST_SET, reg(temp), imm(0));
+  inst(INST_XOR2, reg(temp), reg(temp));
   builder_declare_local("fragment_loop");
   inst(INST_PUSH, reg(temp));
   inst(INST_MULTIPLY2, reg(temp), cnst(fragment_size));
