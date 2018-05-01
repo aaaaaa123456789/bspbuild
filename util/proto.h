@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <limits.h>
 #include <ctype.h>
+
+#include "../headers/const.h"
 
 #include "struct.h"
 #include "public.h"

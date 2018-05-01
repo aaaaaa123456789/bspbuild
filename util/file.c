@@ -73,6 +73,41 @@ long get_file_length (FILE * fp) {
   return result;
 }
 
+Buffer read_file_into_buffer (const char * filename, char ** error) {
+  *error = NULL;
+  FILE * fp = open_binary_file(filename, error);
+  if (*error) return NULL;
+  unsigned long length = get_file_length(fp);
+  if (length > (UINT_MAX - sizeof(struct buffer))) {
+    fclose(fp);
+    *error = generate_string("invalid file size for file %s", filename);
+    return NULL;
+  }
+  Buffer result = malloc(sizeof(struct buffer) + length);
+  if (!result) {
+    fclose(fp);
+    *error = duplicate_string("out of memory");
+    return NULL;
+  }
+  result -> length = length;
+  char * wp = result -> data;
+  int current, rv;
+  while (length) {
+    current = (length > FILE_BUFFER_SIZE) ? FILE_BUFFER_SIZE : length;
+    rv = fread(wp, 1, current, fp);
+    if (rv <= 0) {
+      fclose(fp);
+      free(result);
+      *error = generate_string("could not read data from %s", filename);
+      return NULL;
+    }
+    length -= rv;
+    wp += rv;
+  }
+  fclose(fp);
+  return result;
+}
+
 char * write_buffer_to_new_file (const char * filename, Buffer buffer) {
   char * error;
   FILE * fp = open_binary_file_for_writing(filename, &error);

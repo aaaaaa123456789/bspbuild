@@ -20,6 +20,8 @@
 #define MAX_RLE_DATA_BLOCK 287
 #define MAX_RLE_RUN_BLOCK 799
 
+#define FILE_BUFFER_SIZE 16384
+
 // configurable parameters
 #define MINIMUM_IPS_RUN 8
 #define MAXIMUM_IPS_REDUNDANCY 6
