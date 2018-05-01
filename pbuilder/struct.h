@@ -9,6 +9,8 @@ struct code_generation_state {
   struct builder_file_data {
     unsigned size;
     unsigned char hash[20];
+    unsigned data_label;
+    int reference_file;
   } * file_data;
   struct {
     unsigned char file;

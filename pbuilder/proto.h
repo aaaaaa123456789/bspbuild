@@ -33,6 +33,7 @@
 #define cnst(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.name
 #define err(name) ARGTYPE_NAMED_CONSTANT, builder_state -> constants.errors[name]
 #define nloc(...) ARGTYPE_NUMERIC_LOCAL, (unsigned) (__VA_ARGS__)
+#define dat(...) ARGTYPE_NUMERIC_DATA, (unsigned) (__VA_ARGS__)
 
 // data.c
 void generate_patch_data(void);
@@ -46,6 +47,9 @@ int add_string_to_printed_error_messages(int **, char ***, unsigned *, char *);
 
 // file.c
 void write_file_patch(int, unsigned);
+unsigned write_rainbow_file_patch(unsigned);
+void write_file_patch_header_comment(const char *, unsigned);
+unsigned write_individual_file_patch(unsigned, unsigned);
 
 // genoutfn.c
 void define_generate_output_function(void);
