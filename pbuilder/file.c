@@ -23,7 +23,13 @@ unsigned write_rainbow_file_patch (unsigned file) {
 }
 
 void write_file_patch_header_comment (const char * tag, unsigned file) {
-  // ...
+  char * comment;
+  if (builder_state -> options -> input_files[file].label)
+    comment = generate_string("%s: \"%s\" (%s)", tag, builder_state -> options -> input_files[file].label, builder_state -> options -> input_files[file].name);
+  else
+    comment = generate_string("%s: %s", tag, builder_state -> options -> input_files[file].name);
+  add_comment_to_codefile(builder_state -> codefile, comment, 1);
+  free(comment);
 }
 
 unsigned write_individual_file_patch (unsigned from_file, unsigned to_file) {
