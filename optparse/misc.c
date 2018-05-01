@@ -23,7 +23,7 @@ char * copy_string_for_options (Options options, const char * string) {
 
 void parse_naked_argument (Options options, const char * argument) {
   if (!*argument) return; // just in case an empty argument manages to make it through
-  if (options -> input_file_count >= 0xffff00) {
+  if (options -> input_file_count >= MAX_INPUT_FILES) {
     options -> error_text = copy_string_for_options(options, "too many input files");
     return;
   }
