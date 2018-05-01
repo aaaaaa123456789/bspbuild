@@ -76,6 +76,7 @@ void declare_patch_engine_labels(void);
 // main.c
 void builder_throw(const char *, ...);
 void add_version_header_comments(void);
+void destroy_builder_state(void);
 
 // mainfn.c
 void define_main_function(void);
