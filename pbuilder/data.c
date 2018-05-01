@@ -2,6 +2,7 @@
 
 void generate_patch_data (void) {
   define_file_names_data();
+  write_file_patches();
   // ...
 }
 

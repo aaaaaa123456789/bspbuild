@@ -44,6 +44,9 @@ void simple_error_message_function(char **, unsigned);
 void descriptive_error_message_function(char **, unsigned);
 int add_string_to_printed_error_messages(int **, char ***, unsigned *, char *);
 
+// file.c
+void write_file_patch(int, unsigned);
+
 // genoutfn.c
 void define_generate_output_function(void);
 void define_generate_reverse_output_function(void);
@@ -74,6 +77,9 @@ void define_main_function(void);
 void define_apply_xor_like_patch_function(int);
 void define_apply_xor_like_fragmented_patch_function(int);
 void define_pad_to_length_function(void);
+
+// patches.c
+void write_file_patches(void);
 
 // patchfn.c
 void define_apply_patch_function(void);
