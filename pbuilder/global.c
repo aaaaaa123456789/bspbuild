@@ -19,7 +19,6 @@ const char * const code_error_messages[] = {
   "Output file hash mismatch",
   "Patch cannot be applied in reverse",
   "Padding block size not multiple of padding value size"
-  // ...
 };
 
 void (* const patch_engine_generator_functions[])(void) = {

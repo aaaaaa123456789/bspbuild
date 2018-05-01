@@ -9,7 +9,7 @@
 #define NUMERIC_CHARACTERS DIGITS "+-"
 
 #define NUM_PATCHING_METHODS 3
-#define NUM_CODE_ERRORS 10 // FIXME: update with real value after error constants have been defined
+#define NUM_CODE_ERRORS 6
 
 #define MAX_INPUT_FILES 0xFF0000
 #define MAX_PATCHING_METHODS 64 // maximum allowable due to the number of bits allocated to this value
