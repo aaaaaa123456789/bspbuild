@@ -27,5 +27,10 @@ Options version_response (void) {
 }
 
 Options help_response (void) {
-  // ...
+  return special_option_response(
+    "bspbuild - version " VERSION_STRING "\n"
+    "\n"
+    "Help text for this tool isn't available yet. Please check\n"
+    "https://github.com/aaaaaa123456789/bspbuild/tree/master/README.md for more info.\n"
+  );
 }
