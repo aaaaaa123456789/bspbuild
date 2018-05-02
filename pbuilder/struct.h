@@ -30,10 +30,10 @@ struct code_generation_state {
     int apply_reverse_patch;
     int validate_output;
     int get_nth_string;
-    int file_sizes; // TODO
-    int file_hashes; // TODO
+    int file_sizes;
+    int file_hashes;
     int file_names;
-    int patch_list; // TODO
+    int patch_list;
     int execute_patch;
     // patch engine auxiliary functions
     int apply_xor_rle_patch;

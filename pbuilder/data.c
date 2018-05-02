@@ -35,16 +35,40 @@ void check_for_unopened_files (void) {
 }
 
 void define_patch_list (void) {
-  // ...
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(patch_list, "PatchList"));
+  unsigned file;
+  if (builder_state -> needed_functions.full_patch_list)
+    file = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+  else
+    file = 1;
+  for (; file < builder_state -> options -> input_file_count; file ++) {
+    if (!(builder_state -> file_data[file].data_label))
+      builder_throw("no patch data generated for file %s", builder_state -> options -> input_files[file].name);
+    inst(INST_DW, imm(builder_state -> file_data[file].reference_file), dat(builder_state -> file_data[file].data_label));
+  }
   add_blank_line_to_codefile(builder_state -> codefile);
 }
 
 void define_file_sizes (void) {
-  // ...
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(file_sizes, "FileSizes"));
+  unsigned file, limit;
+  if (builder_state -> needed_functions.full_file_sizes)
+    limit = builder_state -> options -> input_file_count;
+  else
+    limit = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE] + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET];
+  for (file = 0; file < limit; file ++)
+    inst(INST_DW, imm(builder_state -> file_data[file].size));
   add_blank_line_to_codefile(builder_state -> codefile);
 }
 
 void define_file_hashes (void) {
-  // ...
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(file_hashes, "FileHashes"));
+  unsigned file, limit;
+  if (builder_state -> needed_functions.full_file_hashes)
+    limit = builder_state -> options -> input_file_count;
+  else
+    limit = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE] + builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET];
+  for (file = 0; file < limit; file ++)
+    add_data_to_codefile(builder_state -> codefile, builder_state -> file_data[file].hash, 20);
   add_blank_line_to_codefile(builder_state -> codefile);
 }
