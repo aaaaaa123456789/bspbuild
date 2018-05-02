@@ -3,7 +3,10 @@
 void generate_patch_data (void) {
   define_file_names_data();
   write_file_patches();
-  // ...
+  check_for_unopened_files();
+  define_patch_list();
+  define_file_sizes();
+  define_file_hashes();
 }
 
 void define_file_names_data (void) {
@@ -20,5 +23,28 @@ void define_file_names_data (void) {
     if (!add_string_to_codefile(builder_state -> codefile, builder_state -> options -> input_files[current_file].label))
       builder_throw("could not add file label \"%s\" to codefile", builder_state -> options -> input_files[current_file].label);
   }
+  add_blank_line_to_codefile(builder_state -> codefile);
+}
+
+void check_for_unopened_files (void) {
+  const unsigned char null_hash[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  unsigned file;
+  for (file = 0; file < builder_state -> options -> input_file_count; file ++)
+    if (!(builder_state -> file_data[file].size || memcmp(builder_state -> file_data[file].hash, null_hash, 20)))
+      builder_throw("no patch data generated for file %s", builder_state -> options -> input_files[file].name);
+}
+
+void define_patch_list (void) {
+  // ...
+  add_blank_line_to_codefile(builder_state -> codefile);
+}
+
+void define_file_sizes (void) {
+  // ...
+  add_blank_line_to_codefile(builder_state -> codefile);
+}
+
+void define_file_hashes (void) {
+  // ...
   add_blank_line_to_codefile(builder_state -> codefile);
 }

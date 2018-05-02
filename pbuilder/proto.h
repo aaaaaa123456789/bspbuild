@@ -39,6 +39,10 @@
 // data.c
 void generate_patch_data(void);
 void define_file_names_data(void);
+void check_for_unopened_files(void);
+void define_patch_list(void);
+void define_file_sizes(void);
+void define_file_hashes(void);
 
 // errorfn.c
 void define_error_function(void);
