@@ -1,0 +1,7 @@
+# ignore the compiled binary
+bspbuild
+# ...and the same for Windows
+bspbuild.exe
+
+# ignore object files
+*.o
