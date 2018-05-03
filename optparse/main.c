@@ -32,7 +32,7 @@ Options new_options_object (void) {
   Options result = mr_calloc(mr, sizeof(struct options));
   result -> memory_region = mr;
   result -> current_conversion_direction = DIRECTION_SOURCE_TARGET;
-  result -> current_conversion_method = 0; // optimization hint; not strictly needed
+  result -> current_conversion_method = METHOD_XOR_RLE;
   result -> current_conversion_reference = TARGET_TYPE_PREVIOUS;
   return result;
 }
