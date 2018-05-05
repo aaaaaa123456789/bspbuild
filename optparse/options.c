@@ -207,7 +207,7 @@ char * set_initial_register_option (Options options, const char * new_value, int
   unsigned number = convert_string_to_number(new_value, &error);
   free(error);
   if (error) return generate_string("invalid argument to --initial-register: %s", new_value);
-  if (number > 255) return duplicate_string("initial register number must be between 0 and 255");
+  if (number > 252) return duplicate_string("initial register number must be between 0 and 252");
   options -> initial_register_number = number;
   options -> initial_register_number_given = 1;
   return NULL;

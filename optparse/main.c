@@ -34,6 +34,7 @@ Options new_options_object (void) {
   result -> current_conversion_direction = DIRECTION_SOURCE_TARGET;
   result -> current_conversion_method = METHOD_XOR_RLE;
   result -> current_conversion_reference = TARGET_TYPE_PREVIOUS;
+  result -> initial_register_number = 252;
   return result;
 }
 
