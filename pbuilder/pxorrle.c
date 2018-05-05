@@ -146,5 +146,6 @@ void define_apply_xor_rle_patch_helper_function (void) {
   inst(INST_JUMPNZ, reg(result), loc("repeat_doubleword_loop"));
   inst(INST_POP, reg(argument));
   inst(INST_ADD2, reg(argument), imm(8));
+  inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
 }

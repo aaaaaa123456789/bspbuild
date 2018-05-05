@@ -99,6 +99,6 @@ int add_string_to_printed_error_messages (int ** labels, char *** strings, unsig
   *labels = mr_realloc(builder_memory_region, *labels, sizeof(int) * (*label_count + 1));
   *strings = mr_realloc(builder_memory_region, *strings, sizeof(char *) * (*label_count + 1));
   (*labels)[*label_count] = result;
-  (*strings)[*label_count ++] = string;
+  (*strings)[(*label_count) ++] = string;
   return result;
 }

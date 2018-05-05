@@ -9,7 +9,7 @@
 */
 
 void define_generate_output_function (void) {
-  add_declared_label_to_codefile(builder_state -> codefile, get_label(main, "GenerateOutput"));
+  add_declared_label_to_codefile(builder_state -> codefile, get_label(generate_output, "GenerateOutput"));
   if (builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE_TARGET] > 1) {
     builder_state -> needed_functions.generate_reverse_output = 1;
     inst(INST_IFLT, reg(argument), reg(file), lbl(generate_reverse_output, "GenerateReverseOutput"));
@@ -21,8 +21,10 @@ void define_generate_output_function (void) {
   if (!(builder_state -> options -> no_source_patches)) {
     builder_state -> needed_functions.full_patch_list = 1;
     first_patch_entry = 1;
-  } else
+  } else {
     first_patch_entry = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+    if (!first_patch_entry) first_patch_entry = 1;
+  }
   inst(INST_SUBTRACT, reg(temp), reg(argument), imm(first_patch_entry));
   inst(INST_SHIFTLEFT2, reg(temp), imm(3));
   inst(INST_ADD2, reg(temp), lbl(patch_list, "PatchList"));
@@ -48,8 +50,10 @@ void define_generate_reverse_output_function (void) {
   if (!(builder_state -> options -> no_source_patches)) {
     builder_state -> needed_functions.full_patch_list = 1;
     first_patch_entry = 1;
-  } else
+  } else {
     first_patch_entry = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+    if (!first_patch_entry) first_patch_entry = 1;
+  }
   inst(INST_SUBTRACT, reg(temp), reg(file), imm(first_patch_entry));
   inst(INST_SHIFTLEFT2, reg(temp), imm(3));
   inst(INST_ADD2, reg(temp), lbl(patch_list, "PatchList"));

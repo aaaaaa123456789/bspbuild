@@ -75,6 +75,7 @@ char * add_instruction_with_arguments_to_codefile (CodeFile file, int instructio
       result = realloc(result, result_length + argument_length + 2);
     result[result_length ++] = ' ';
     memcpy(result + result_length, formatted_argument, argument_length + 1);
+    result_length += argument_length;
     free(formatted_argument);
   }
   add_line_to_codefile(file, result);

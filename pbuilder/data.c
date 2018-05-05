@@ -44,9 +44,10 @@ void define_patch_list (void) {
   add_declared_label_to_codefile(builder_state -> codefile, get_label(patch_list, "PatchList"));
   unsigned file;
   if (builder_state -> needed_functions.full_patch_list)
-    file = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
-  else
     file = 1;
+  else
+    file = builder_state -> options -> file_count_per_direction[DIRECTION_SOURCE];
+  if (!file) file = 1;
   for (; file < builder_state -> options -> input_file_count; file ++) {
     if (!(builder_state -> file_data[file].data_label))
       builder_throw("no patch data generated for file %s", builder_state -> options -> input_files[file].name);
