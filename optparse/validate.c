@@ -26,7 +26,8 @@ void validate_options (Options options) {
 
 char * validate_input_file_options (Options options) {
   if (!(options -> input_file_count)) return copy_string_for_options(options, "no input files");
-  if (options -> input_file_count == 1) return copy_string_for_options(options, "only one input file given");
+  if ((options -> input_file_count == 1) && (options -> operation_mode != OPERATION_MODE_BSP_INPUT))
+    return copy_string_for_options(options, "only one input file given");
   if (options -> file_count_per_direction[DIRECTION_SOURCE_TARGET]) return NULL;
   if (!(options -> file_count_per_direction[DIRECTION_TARGET])) return copy_string_for_options(options, "no target input files");
   if (!(options -> file_count_per_direction[DIRECTION_SOURCE])) return copy_string_for_options(options, "no source input files");
