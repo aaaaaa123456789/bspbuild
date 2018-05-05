@@ -95,8 +95,8 @@ int process_label_file (Options options) {
   unsigned line, p;
   for (line = 0; line < line_count; line ++) line_types[line] = line | (get_label_file_line_type(lines[line]) << 30);
   sort_number_array(line_types, line_count);
-  for (line = 0; (line < line_count) && !(line_types[line] & (3U << 30)); line ++);
-  for (; (line < line_count) && ((line_types[line] & (3U << 30)) == 1); line ++) assign_named_file_label(options, lines[line_types[line] & 0x3fffffffU]);
+  for (line = 0; (line < line_count) && !(line_types[line] >> 30); line ++);
+  for (; (line < line_count) && ((line_types[line] >> 30) == 1); line ++) assign_named_file_label(options, lines[line_types[line] & 0x3fffffffU]);
   if (line != line_count) {
     for (p = line; p < line_count; p ++) line_types[p] &= 0x3fffffffU;
     assign_unnamed_file_labels(options, lines, line_types + line, line_count - line);
