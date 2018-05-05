@@ -53,7 +53,9 @@ char ** extract_components_from_line (const char * line) {
   while (pos >= 0) {
     pos = find_unquoted_character(current, ',');
     if (pos >= 0) current[pos] = 0;
-    component = trim_string(current);
+    copy = trim_string(current);
+    component = mr_duplicate_string(bsp_memory_region, copy);
+    free(copy);
     if (pos >= 0) current += pos + 1;
     if (*component) {
       result = mr_realloc(bsp_memory_region, result, sizeof(char *) * (components + 1));
