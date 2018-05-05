@@ -2,7 +2,7 @@ ifeq ($(strip $(shell echo $$CC)),)
 CC := gcc
 endif
 
-TOOLCHAIN_PREFIX ?=
+TOOLCHAIN_PREFIX :=
 
 W32_PREFIX := i686-w64-mingw32-
 W64_PREFIX := x86_64-w64-mingw32-
@@ -31,11 +31,14 @@ install:
 	cp ${EXE_NAME} /usr/local/bin/
 	chmod 0755 /usr/local/bin/${EXE_NAME}
 
-w32:
-	make TOOLCHAIN_PREFIX=${W32_PREFIX} EXE_NAME=bspbuild.exe
+w32: TOOLCHAIN_PREFIX := ${W32_PREFIX}
+w64: TOOLCHAIN_PREFIX := ${W64_PREFIX}
 
-w64:
-	make TOOLCHAIN_PREFIX=${W64_PREFIX} EXE_NAME=bspbuild.exe
+w32 w64: EXE_NAME := bspbuild.exe
+w32 w64 windows: CC := gcc
+
+w32: all
+w64: all
 
 windows:
 	make TOOLCHAIN_PREFIX=${W32_PREFIX} EXE_NAME=bspbuild32.exe
