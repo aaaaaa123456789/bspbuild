@@ -79,7 +79,7 @@ void find_rle_multibyte_run (struct rle_run_data * run, const unsigned char * da
   struct rle_run_data current_run = {.distance = run -> distance, .length = 3, .data_length = byte_length, .value = read_number_from_buffer(data, byte_length)};
   unsigned long long current = read_number_from_buffer(data + byte_length, byte_length);
   if ((current != current_run.value) && !allow_offsets) return;
-  unsigned long long mask = ((1 << (byte_length << 2)) << (byte_length << 2)) - 1; // 1 << 64 is undefined, so splitting the shift into two side-steps the issue
+  unsigned long long mask = ((1ULL << (byte_length << 2)) << (byte_length << 2)) - 1; // 1 << 64 is undefined, so splitting the shift into two side-steps the issue
   current_run.offset = (current - current_run.value) & mask;
   unsigned long long next = read_number_from_buffer(data + (byte_length << 1), byte_length);
   if (((next - current) & mask) != (unsigned long long) current_run.offset) return;
