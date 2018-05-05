@@ -141,10 +141,10 @@ char * write_xor_like_fragment (CodeFile codefile, const unsigned char * source,
 }
 
 unsigned calculate_fragment_length (const unsigned char * source, const unsigned char * target, const struct patching_flags * flags) {
-  unsigned length, result = -1;
+  unsigned length, result = 0;
   while (target) {
     length = calculate_unpadded_data_length(target, flags -> fragment_size, flags);
-    if (length < result) result = length;
+    if (length > result) result = length;
     target = source;
     source = NULL;
   }
