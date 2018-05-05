@@ -31,7 +31,7 @@ unsigned generate_rle_data (const unsigned char * data, unsigned length, unsigne
   while (length) {
     run = find_next_rle_run(data, length);
     if (run.distance) {
-      current = write_rle_data_to_buffer(result, data, length);
+      current = write_rle_data_to_buffer(result, data, run.distance);
       result_length += current;
       result += current;
       data += run.distance;
