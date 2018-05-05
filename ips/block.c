@@ -35,7 +35,7 @@ unsigned write_next_ips_block (const char * data, unsigned length, unsigned offs
   } else
     remaining = 0;
   int run_pos = check_runs(data, current);
-  if (run_pos > 0) {
+  if (run_pos >= 0) {
     remaining += current - run_pos;
     current = run_pos;
     if ((offset + current) == IPS_EOF_MARKER) {
