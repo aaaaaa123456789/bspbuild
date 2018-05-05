@@ -25,6 +25,7 @@ void define_main_function (void) {
   inst(INST_SET, reg(argument), reg(result));
   if (builder_state -> options -> disable_output_validations != VALIDATE_NONE)
     inst(INST_PUSH, reg(argument));
+  inst(INST_UNLOCKPOS);
   inst(INST_SEEK, imm(0));
   inst(INST_CALL, lbl(generate_output, "GenerateOutput"));
   if (builder_state -> options -> disable_output_validations != VALIDATE_NONE) {
