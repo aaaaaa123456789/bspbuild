@@ -41,6 +41,7 @@ char * write_fragment_permutation_table_to_codefile (CodeFile codefile, const st
   if (!error && (sum < fragment_count))
     error = write_fragment_swap_commands_to_codefile(codefile, fragment_targets, fragments_OK, fragment_count);
   free(fragments_OK);
+  if (!error) error = write_patch_data_to_codefile(codefile, 1, (unsigned []) {-1}, NULL);
   return error;
 }
 

@@ -65,6 +65,7 @@ void define_handle_fragment_permutation_function (void) {
   inst(INST_POP, reg(argument));
   inst(INST_DECREMENT, reg(argument));
   inst(INST_JUMPNZ, reg(argument), loc("swap_loop"));
+  inst(INST_POP, reg(argument));
   inst(INST_RETURN);
   add_blank_line_to_codefile(builder_state -> codefile);
 }
@@ -85,7 +86,7 @@ void write_fragment_copy_code (int move_to_instruction, int move_back_instructio
   inst(INST_WRITEWORD, reg(result));
   inst(move_back_instruction, reg(temp));
   inst(INST_DECREMENT, reg(argument));
-  inst(INST_JUMPNZ, loc(loop_label));
+  inst(INST_JUMPNZ, reg(argument), loc(loop_label));
   inst(INST_POP, reg(argument));
   inst(INST_RETURN);
 }
