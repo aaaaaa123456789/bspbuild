@@ -36,7 +36,7 @@ void define_execute_patch_function (void) {
   inst(INST_JUMPTABLE, reg(result)); // engine ID is in #result (patch pointer in #argument)
   unsigned char engine;
   for (engine = 0; engine < builder_state -> patch_engines.count; engine ++)
-    inst(INST_DW, ARGTYPE_GLOBAL_LABEL, builder_state -> patch_engines.labels[engine]); // no point in defining a macro for an argument type only used here
+    inst(INST_DW, ARGTYPE_NAMED_LABEL, builder_state -> patch_engines.labels[engine]); // no point in defining a macro for an argument type only used here
   add_blank_line_to_codefile(builder_state -> codefile);
 }
 
