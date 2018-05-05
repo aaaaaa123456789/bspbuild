@@ -1,7 +1,7 @@
 #include "proto.h"
 
 Buffer generate_ips_patch (const void * source, const void * target, unsigned length) {
-  if (length > 0x1000000) return NULL;
+  if (length > MAX_IPS_PATCH_SIZE) return NULL;
   ips_buffer = create_buffer();
   ips_source = source;
   ips_target = target;
