@@ -87,3 +87,53 @@ should be generated from, creating a tree-like structure at the end of the patch
 
 Note that all of these options imply `-t`. Also, they can be given multiple times in the command line, each one coming
 into force until a new one is given. This way, the end of the patching chain can be manipulated at will.
+
+### Patching methods
+
+A patching method is a specific data format for a patch. In other words, the patching method determines how the patch
+data should be stored, and how it should be used to transform a file into another. Every individual patching method
+requires a corresponding patching engine in order to apply its patches; bspbuild takes care to include all the
+necessary patching engines in the patches it generates. Note that patching methods may have minor differences across
+patches built by bspbuild depending on the configuration options passed to it; however, a single patching method will
+not show any differences if used multiple times in the same BSP file.
+
+The patching method used to generate each file in the patching chain can be selected by the user; this is true
+irrespective of whether a file is a source, source+target or target file. (Files removed from the patching chain by
+the `--no-source-to-source` option, as well as the very first source file (or source+target file, if there are no
+source files) ignore the selected patching method, as they are never outputs to any patch.
+
+The patching method is selected using the `-m` option (for instance, `-m ips` selects the `ips` patching method); the
+selected method applies for all subsequent files until a new method is selected. The available patching methods are:
+
+* `ips`: generates IPS-like patches (modified to allow patches for files larger than 16 MB, as well as patches that
+  generate smaller files than the original). These patches are not naturally reversible, which means that a reversible
+  IPS patch will be stored as two separate patches.
+* `xor`: generates a patch where the data is stored as the XOR between the two files involved. This has the same size
+  as the larger of the two files, and is equivalent to encrypting one of the files using the other as key.
+* `xor-rle` (default): generates a patch where the data is computed as the XOR between the two files involved, but
+  then stored in a format that encodes runs of equal values and arithmetical sequences in a compact format, thus
+  usually resulting in a smaller patch.
+
+### Fragmentation and padding
+
+If a file is internally made up of multiple smaller blocks of equal size (called _fragments_), it may be useful to
+indicate this fact to the patch builder; this will adapt the patching method to handle each fragment separately. This
+allows for smaller and better patches to be generated, particularly when combined with the options explained below.
+The fragment size is indicated with the `-f` option; for instance, `-f 16384` indicates that the file should be broken
+into 16 KB fragments. (The smallest valid size is 64; however, using this option with fragments smaller than a few
+kilobytes in size is not recommended.)
+
+If the target file in question is a file that has been padded up to its current size, this can be indicated to produce
+a smaller patch. The options `-pb`, `-ph` and `-pw` respectively accept an 8, 16 or 32-bit value as an argument, and
+indicate that the file has been padded with that value; for instance, `-pb 0xff` indicates that the file has been
+padded with FF bytes. If fragmentation is enabled, each individual fragment is considered to be padded to length;
+therefore, the padding at the end of each fragment may be omitted.
+
+If the fragments in the target file are not in the same order as in the source file, the patching method can be
+adapted to take this into account; the `--check-fragment-swap` option does this. This will add an initial pass of
+fragment reordering before applying the patch.
+
+Note that patching methods may or may not take the information given by these options into account; for instance, the
+`ips` method ignores it. Also note that misuse of these options will not generate incorrect patches — these options
+are intended as optimizations to produce smaller and faster patches, but using them incorrectly will only result in a
+larger and slower patch being generated.
