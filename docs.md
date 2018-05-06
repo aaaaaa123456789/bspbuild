@@ -46,7 +46,7 @@ to the differences between sources and targets, input files must be marked as so
 * The `-st` command-line option indicates that the input files that follow are both sources and targets; this is the
   default if nothing is specified. The patch will contain instructions to convert any of these files into the targets,
   as well as instructions to convert any of the sources into these files; in other words, they can be both inputs and
-  outputs of the patch. These files will be referred to as source+target files.
+  outputs of the patch. These files will be referred to as _source+target files_.
 
 Note that, in order to generate a patch, at least one source and one target must be present. Source+target files count
 as either. (However, a single source+target file by itself is not enough; there must be at least two input files.)
@@ -85,5 +85,5 @@ should be generated from, creating a tree-like structure at the end of the patch
   the `--no-source-to-source` option is enabled and there are no source+target files, this generates rainbow patches
   for all subsequent target files.
 
-Note that all of this options imply `-t`. Also, they can be given multiple times in the command line, each one coming
+Note that all of these options imply `-t`. Also, they can be given multiple times in the command line, each one coming
 into force until a new one is given. This way, the end of the patching chain can be manipulated at will.
