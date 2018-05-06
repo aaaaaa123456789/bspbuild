@@ -61,7 +61,8 @@ unsigned write_individual_file_patch (unsigned from_file, unsigned to_file) {
     .padding_length = builder_state -> options -> padding_size,
     .fragmentation_enabled = (builder_state -> options -> fragment_size >= MINIMUM_FRAGMENT_SIZE),
     .fragment_reordering = builder_state -> options -> detect_fragment_permutation,
-    .reversible_patch = (builder_state -> options -> input_files[to_file].direction != DIRECTION_TARGET)
+    .reversible_patch = (builder_state -> options -> input_files[from_file].direction == DIRECTION_SOURCE_TARGET) && 
+                        (builder_state -> options -> input_files[to_file].direction == DIRECTION_SOURCE_TARGET)
   };
   unsigned char patch_method_descriptor_byte = builder_state -> patch_engines.IDs[flags.patching_method];
   if (flags.reversible_patch) patch_method_descriptor_byte |= 0x80;
