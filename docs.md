@@ -12,9 +12,13 @@ patch created by this utility, you will need a BSP patcher, such as the one avai
 [bsp]: https://github.com/aaaaaa123456789/bsp
 [patcher]: https://aaaaaa123456789.github.io/bsp
 
+---
+
 ## Table of contents
 
 TODO
+
+---
 
 ## Patching basics
 
@@ -137,3 +141,43 @@ Note that patching methods may or may not take the information given by these op
 `ips` method ignores it. Also note that misuse of these options will not generate incorrect patches — these options
 are intended as optimizations to produce smaller and faster patches, but using them incorrectly will only result in a
 larger and slower patch being generated.
+
+### User interaction
+
+BSP patches may have interactivity with the user in the form of displaying messages and menus. The patches generated
+by bspbuild do use these capabilities, in the following ways:
+
+* Displaying initial messages
+* Displaying the detected source file
+* Showing a menu for the user to select the desired target file
+* Printing a message after the patch has finished successfully
+* Showing an error message in case patching isn't successful
+
+Various options allow controlling these interactions. By default, the initial and final messages are empty (and thus
+not shown); however, the options `--opening-banner` and `--success-message` can be used to add a message to the patch.
+Similarly, the default error message is a generic `Error: <error text>`; however, the `--error-message` option can be
+used to override it. All of these options have a `-from-file` version (e.g., `--opening-banner-from-file`) that load
+the message from a file instead of directly from the command line. Note that the message shown when an error occurs
+can contain the error itself (in fact, the default message does this); this is specified as `###` in the message,
+which is replaced by the error when displayed (and so, the default message can be obtained with `--error-message
+"Error: ###"`). This placeholder can be changed using the `--error-text-substitute` option.
+
+The detected source file is shown by default, as well as an error message if an error occurs. These messages can be
+disabled using the `--suppress-source-message` and `--suppress-errors` options, respectively. Also, the default
+message of `Detected input file: ` used to show the detected source file can be modified using the
+`--source-detection-message` option.
+
+If there are two or more possible target files, a menu will be presented for the user to select the target that they
+want to generate. If there is only one possible target file, this menu is hidden by default; the `--force-output-menu`
+option can be used to force this menu to appear anyway. Also, if there are too many targets to fit comfortably in a
+single menu, the `--targets-per-page` option can be used to split the menu into multiple submenus containing between 2
+and 15 targets each, as indicated in the option. (Note that the menu will only be split into pages if at least two
+pages would be generated this way. Also, the last page may have one more target than the rest; a new page will not be
+generated for just one target.) Finally, the `--sort-output-menu` option can be used to sort the target menu
+alphabetically, instead of showing the targets in the order they are given in the command line.
+
+---
+
+## Advanced features
+
+
