@@ -16,7 +16,37 @@ patch created by this utility, you will need a BSP patcher, such as the one avai
 
 ## Table of contents
 
-TODO
+* [Patching basics][section-basics]
+    * [Inputs and outputs][section-IO]
+    * [Sources and targets][section-sources-targets]
+    * [Patching chains][section-chains]
+    * [Patching methods][section-methods]
+    * [Fragmentation and padding][section-fragmentation]
+    * [User interaction][section-interaction]
+* [Advanced features][section-advanced]
+    * [BSP source code generation][section-source]
+    * [Output validations][section-validations]
+    * [Alternate execution modes][section-alternate]
+* [Command-line usage][section-command-line]
+    * [Simple examples][section-examples]
+    * [Full command-line syntax and options][section-syntax]
+    * [Titles file format][section-titles]
+
+[section-basics]: #patching-basics
+[section-IO]: #inputs-and-outputs
+[section-sources-targets]: #sources-and-targets
+[section-chains]: #patching-chains
+[section-methods]: #patching-methods
+[section-fragmentation]: #fragmentation-and-padding
+[section-interaction]: #user-interaction
+[section-advanced]: #advanced-features
+[section-source]: #bsp-source-code-generation
+[section-validations]: #output-validations
+[section-alternate]: #alternate-execution-modes
+[section-command-line]: #command-line-usage
+[section-examples]: #simple-examples
+[section-syntax]: #full-command-line-syntax-and-options
+[section-titles]: #titles-file-format
 
 ---
 
@@ -388,10 +418,6 @@ be combined with any other option except `-o` (which is used to indicate the loc
 * `--ips`: invokes the IPS patch generator. Exactly two input files must be given, which will be the source and target
   of the IPS patch; they cannot be larger than 16 MB, and the source cannot be larger than the target. The output will
   be an IPS patch.
-
-[section-methods]: #patching-methods
-[section-source]: #bsp-source-code-generation
-[section-titles]: #titles-file-format
 
 ### Titles file format
 
