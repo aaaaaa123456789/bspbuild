@@ -9,6 +9,8 @@ W64_PREFIX := x86_64-w64-mingw32-
 
 EXE_NAME := bspbuild
 
+INSTALL_PATH := /usr/local/bin
+
 MODULES := bsp codegen ips main optparse patch pbuilder util
 
 .SUFFIXES:
@@ -28,8 +30,8 @@ clean:
 	rm -rf bspbuild bspbuild*.exe
 
 install:
-	cp ${EXE_NAME} /usr/local/bin/
-	chmod 0755 /usr/local/bin/${EXE_NAME}
+	cp ${EXE_NAME} ${INSTALL_PATH}/
+	chmod 0755 ${INSTALL_PATH}/${EXE_NAME}
 
 w32: TOOLCHAIN_PREFIX := ${W32_PREFIX}
 w64: TOOLCHAIN_PREFIX := ${W64_PREFIX}
