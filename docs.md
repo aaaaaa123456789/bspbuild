@@ -256,11 +256,16 @@ bspbuild [<options>] [--] [<input files>]
 
 Note that, despite the syntax shown above, options and input files can be freely mixed — any command-line argument not
 bound to an option will be considered an input file. Command-line arguments beginning with `-` will be considered
-options by default; `--` may be given by itself to indicate that all command-line arguments that follow are input
-files. At least two input files must be given.
+options by default. At least two input files must be given.
 
 Valid options are listed below. Note that short options may **not** be combined (e.g., `-st` is not the same as `-s
 -t`).
+
+**Escaping:**
+
+* `--`: indicates the end of the option list. All further command-line arguments will be interpreted as input files.
+* `-$`: indicates that the next command-line argument must be interpreted as an input file, regardless of whether it
+  begins with `-`.
 
 **Help and version:**
 
