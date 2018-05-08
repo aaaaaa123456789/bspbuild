@@ -134,7 +134,7 @@ not show any differences if used multiple times in the same BSP file.
 The patching method used to generate each file in the patching chain can be selected by the user; this is true
 irrespective of whether a file is a source, source+target or target file. (Files removed from the patching chain by
 the `--no-source-to-source` option, as well as the very first source file (or source+target file, if there are no
-source files) ignore the selected patching method, as they are never outputs to any patch.
+source files) ignore the selected patching method, as they are never outputs to any patch.)
 
 The patching method is selected using the `-m` option (for instance, `-m ips` selects the `ips` patching method); the
 selected method applies for all subsequent files until a new method is selected. The available patching methods are:
@@ -161,7 +161,8 @@ If the target file in question is a file that has been padded up to its current 
 a smaller patch. The options `-pb`, `-ph` and `-pw` respectively accept an 8, 16 or 32-bit value as an argument, and
 indicate that the file has been padded with that value; for instance, `-pb 0xff` indicates that the file has been
 padded with FF bytes. If fragmentation is enabled, each individual fragment is considered to be padded to length;
-therefore, the padding at the end of each fragment may be omitted.
+therefore, the padding at the end of each fragment may be taken into account by the patching method and omitted from
+the generated patch data.
 
 If the fragments in the target file are not in the same order as in the source file, the patching method can be
 adapted to take this into account; the `--check-fragment-swap` option does this. This will add an initial pass of
