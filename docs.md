@@ -229,3 +229,23 @@ These options are as follows:
   <target.bsp>`. Any number of source code files can be specified, and they will be compiled in the order given.
 
 ---
+
+## Command line usage
+
+### Simple examples
+
+* Build a patch between two files: `bspbuild file1.dat file2.dat -o patch.bsp`. Since the files are source+target
+  files by default, this patch will allow generating either of the files from the other one.
+* In order to ensure that `file1.dat` is the source and `file2.dat` is the target, do `bspbuild -s file1.dat -t
+  file2.dat -o patch.bsp`.
+* If the patch should be able to generate both `file2.dat` and `file3.dat`, then `bspbuild -s file1.dat -t file2.dat
+  file3.dat -o patch.bsp` will achieve that. If the patch should also be able to patch `file2.dat` and `file3.dat`
+  into one another, then they should be made source+target files, by using `-st` instead of `-t`.
+* It may be desirable to use an IPS patch between the two target files in the example above, instead of a XOR RLE
+  patch (the default); this is particularly the case when the differences between those two files are very small.
+  Since the patching method only applies to the target of a link in the patching chain, this effect is achieved by
+  `bspbuild -s file1.dat -t file2.dat -m ips file3.dat -o patch.bsp`.
+* In any of the above examples, if the goal is to obtain BSP code instead of a compiled patch, the `-ob` option
+  should be used instead of `-o`. It is also possible to use both options, in which case two files will be generated.
+
+
