@@ -391,4 +391,51 @@ be combined with any other option except `-o` (which is used to indicate the loc
 
 [section-methods]: #patching-methods
 [section-source]: #bsp-source-code-generation
-[section-titles]: #
+[section-titles]: #titles-file-format
+
+### Titles file format
+
+This section describes the format of the file titles file. This is the file that is passed to the `--titles` option as
+its argument.
+
+The purpose of said file is to assign a user-friendly title to each input file (source, source+target or target) to be
+shown to patch users. This file contains one line per input file to name; blank lines are ignored. Also, lines
+beginning with `//` are considered comments. Note that whitespace is significant, as it will be considered part of
+filenames or titles.
+
+Each line can be _labelled_ or _unlabelled_. A labelled line gives a title for a specific file; the filename must be
+specified exactly as given in the command line. These lines take the form `filename=title` (without any whitespace
+surrounding the `=`), and the title in question will only be used for the named file.
+
+Unlabelled lines are those that don't begin with a filename. Unlabelled lines may also begin with a `=` sign (that is
+ignored); this will escape any further `=` signs that occur in the title. After all labelled lines are parsed and the
+corresponding files are given their titles, the remaining files will be assigned titles from unlabelled lines, in the
+order they are given in the command line (source files first, then source+target files, and finally target files).
+
+The following is a sample valid titles file:
+
+```
+// name the source file
+input.dat=Input File
+
+// name the source+target files
+Second File
+Third File
+Fourth File
+
+// name the target files
+=FIFTH==FILE
+output.dat=SIXTH==FILE
+```
+
+For the command line `bspbuild -s input.dat -st file2.dat file3.dat file4.dat -t file5.dat output.dat -o patch.bsp
+--titles titles.txt`, this will assign the titles in the order given. (It is not necessary to use such a random mix of
+labelled and unlabelled lines; they are shown here for the example.) Note that the title for `file5.dat` will be
+`FIFTH==FILE`; the initial `=` is an escape character that signals that the line is unlabelled. If that `=` character
+had been omitted, bspbuild would look for a file called `FIFTH` and assign the title `=FILE` to it.
+
+If some labelled lines don't match any files, they are ignored; excess unlabelled lines are likewise ignored. If there
+are too few unlabelled lines (including the case where there are none at all), the leftover files will not be assigned
+a title.
+
+---
