@@ -2,12 +2,14 @@
 
 int main (int argc, char ** argv) {
   Options options = parse_options(argv + 1, argc - 1);
-  int exit_status = EXIT_STATUS_INVALID_OPTIONS; // default for the errors below
-  if (options -> response)
+  int exit_status;
+  if (options -> response) {
     fprintf(stderr, "%s\n", options -> response);
-  else if (options -> error_text)
+    exit_status = EXIT_STATUS_OK;
+  } else if (options -> error_text) {
     fprintf(stderr, "%s: error: %s\n", *argv, options -> error_text);
-  else
+    exit_status = EXIT_STATUS_INVALID_OPTIONS;
+  } else
     exit_status = ((int (* []) (Options, const char *)) {
       [OPERATION_MODE_NORMAL] = &normal_operation_mode,
       [OPERATION_MODE_BSP_INPUT] = &bsp_input_operation_mode,
