@@ -81,5 +81,6 @@ char * convert_label_prefix_to_register_prefix (const char * label_prefix) {
   }
   if (cw[-1] != '_') *(cw ++) = '_';
   *cw = 0;
+  string_to_lowercase(result);
   return result;
 }
