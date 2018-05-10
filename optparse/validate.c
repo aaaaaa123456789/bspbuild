@@ -36,6 +36,8 @@ char * validate_input_file_options (Options options) {
 
 char * validate_output_file_options (Options options) {
   if (!(options -> output_files.compiled || options -> output_files.source)) return copy_string_for_options(options, "no output files");
+  if (options -> output_files.compiled && options -> output_files.source && !strcmp(options -> output_files.compiled, options -> output_files.source))
+    return copy_string_for_options(options, "compiled and source code output files are the same");
   return NULL;
 }
 
