@@ -9,12 +9,29 @@ The resulting patch can be applied by using a BSP patcher, such as the one found
 For more information, check the [documentation](docs.md). For additional information about BSP patches, check the
 corresponding [repository][bsp-repo].
 
+**Licensing:** the contents of this repository are released to the public domain under the Unlicense; therefore, no
+license is necessary to use this program or any part of it. For more information, check the (conventionally but
+inaccurately named) [LICENSE](LICENSE) file.
+
 [patcher-website]: https://aaaaaa123456789.github.io/bsp
 [bsp-repo]: https://github.com/aaaaaa123456789/bsp
 
-### Installation instructions
+### Downloads
 
-The only prerequisite is a C99 compiler; bspbuild doesn't have any other dependencies.
+You can download the latest version from the [releases page][releases].
+
+A Linux binary is available (`bspbuild`), although the recommended process for Linux is to compile from source (by
+cloning the repository and doing `make; sudo make install`).  
+For Windows, two binaries are available, `bspbuild32.exe` and `bspbuild64.exe`, for 32-bit and 64-bit OSes
+respectively. Do keep in mind when using these binaries that the documentation refers to the program as `bspbuild`;
+make sure to substitute `bspbuild` with the corresponding name for the .exe in command lines. (For instance, to check
+the current version using the 64-bit Windows binary, run `bspbuild64 --version`.)
+
+[releases]: https://github.com/aaaaaa123456789/bspbuild/releases
+
+### Compilation instructions
+
+The only prerequisite is a C99 compiler; bspbuild doesn't have any dependencies.
 
 To compile bspbuild, run `make`. This will use the C compiler specified by the `CC` environment variable; it will
 default to `gcc` if the variable is unset. You can also pass `CC=<compiler name>` to make itself.  
