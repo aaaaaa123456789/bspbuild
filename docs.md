@@ -209,7 +209,8 @@ alphabetically, instead of showing the targets in the order they are given in th
 
 Whenever a source or target is to be displayed, its filename is used by default. This can be overridden by specifying
 a file containing names for each file involved; this is done with the `--titles` option. The format of this file will
-be described in [the corresponding section][section-titles].
+be described in [the corresponding section][section-titles]. Alternately, this data can be given through the standard
+input; this is indicated through the `--titles-from-stdin` option.
 
 ---
 
@@ -384,6 +385,8 @@ that they want when multiple options are available.
 * `--titles <file>`: indicates a file containing title information for the input files. File titles will be used
   instead of file names if they are available in user messages and prompts. The format of this file will be described
   [in a separate section][section-titles].
+* `--titles-from-stdin`: indicates that title information for input files (as described for the previous option)
+  should be read from standard input. The format of this data is identical.
 * `--sort-output-menu`: sorts the output file menu alphabetically, instead of in the order given in the command line.
   If this option is not given, files will appear in the order they are named in the command line, with source+target
   files appearing before target files.
@@ -423,7 +426,7 @@ be combined with any other option except `-o` (which is used to indicate the loc
 ### Titles file format
 
 This section describes the format of the file titles file. This is the file that is passed to the `--titles` option as
-its argument.
+its argument, or the contents of the standard input if the `--titles-from-stdin` option is used.
 
 The purpose of said file is to assign a user-friendly title to each input file (source, source+target or target) to be
 shown to patch users. This file contains one line per input file to name; blank lines are ignored. Also, lines
