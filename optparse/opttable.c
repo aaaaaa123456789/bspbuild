@@ -51,5 +51,6 @@ const struct option_parser option_parsers[] = {
   {.option = "--target-from-source",        .no_argument_callback = &set_target_and_reference_option,   .has_argument = 0, .parameter = TARGET_TYPE_FROM_SOURCE},
   {.option = "--targets-per-page",          .argument_callback =    &targets_per_page_option,           .has_argument = 1},
   {.option = "--titles",                    .argument_callback =    &title_file_option,                 .has_argument = 1},
+  {.option = "--titles-from-stdin",         .no_argument_callback = &titles_from_stdin_option,          .has_argument = 0},
   {.option = NULL}
 };

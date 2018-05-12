@@ -89,7 +89,15 @@ char * set_target_and_reference_option (Options options, int reference_mode) {
 
 char * title_file_option (Options options, const char * filename, int param) {
   if (options -> label_file) return multiple_option_response("--titles");
+  if (options -> file_labels_from_stdin) return duplicate_string("--titles and --titles-from-stdin cannot be given simultaneously");
   options -> label_file = copy_string_for_options(options, filename);
+  return NULL;
+}
+
+char * titles_from_stdin_option (Options options, int param) {
+  if (options -> file_labels_from_stdin) return multiple_option_response("--titles-from-stdin");
+  if (options -> label_file) return duplicate_string("--titles and --titles-from-stdin cannot be given simultaneously");
+  options -> file_labels_from_stdin = 1;
   return NULL;
 }
 

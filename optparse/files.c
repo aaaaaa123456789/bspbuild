@@ -5,7 +5,7 @@ void process_input_file_options (Options options) {
   && (options -> opening_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.opening)) : 1)
   && (options -> success_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.success)) : 1)
   && (options -> error_message_from_file ? convert_options_filename_to_text(options, &(options -> messages.error)) : 1)
-  && (options -> label_file ? process_label_file(options) : 1);
+  && ((options -> label_file || options -> file_labels_from_stdin) ? process_label_file(options) : 1);
 }
 
 int reorder_input_files (Options options) {
@@ -81,8 +81,14 @@ int process_label_file (Options options) {
      lines starting with // are comments; the // must come at the beginning of the line (use =// to create a label beginning with //)
      extra lines and mismatched filenames are ignored; missing lines become null labels
   */
-  char * error;
-  FILE * fp = open_text_file(options -> label_file, &error);
+  char * error = NULL;
+  FILE * fp;
+  if (options -> label_file)
+    fp = open_text_file(options -> label_file, &error);
+  else if (options -> file_labels_from_stdin)
+    fp = stdin;
+  else
+    return 1;
   if (error) {
     options -> error_text = copy_string_for_options(options, error);
     free(error);
@@ -90,7 +96,7 @@ int process_label_file (Options options) {
   }
   unsigned line_count;
   char ** lines = read_file_as_lines(fp, &line_count);
-  fclose(fp);
+  if (options -> label_file) fclose(fp);
   unsigned * line_types = malloc(sizeof(unsigned) * line_count);
   unsigned line, p;
   for (line = 0; line < line_count; line ++) line_types[line] = line | (get_label_file_line_type(lines[line]) << 30);

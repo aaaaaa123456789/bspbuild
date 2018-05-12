@@ -13,6 +13,7 @@ char * no_source_to_source_option(Options, int);
 char * sort_target_list_option(Options, int);
 char * set_target_and_reference_option(Options, int);
 char * title_file_option(Options, const char *, int);
+char * titles_from_stdin_option(Options, int);
 char * suppress_errors_option(Options, int);
 char * targets_per_page_option(Options, const char *, int);
 char * check_fragment_permutation_option(Options, int);

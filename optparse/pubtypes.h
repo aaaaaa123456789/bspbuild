@@ -56,6 +56,7 @@ typedef struct options {
   unsigned success_message_from_file:                1;
   unsigned error_message_from_file:                  1;
   unsigned no_source_patches:                        1;
+  unsigned file_labels_from_stdin:                   1;
 } * Options;
 
 #endif
