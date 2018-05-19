@@ -87,6 +87,19 @@ char * set_target_and_reference_option (Options options, int reference_mode) {
   return NULL;
 }
 
+char * set_named_reference_target_option (Options options, const char * reference, int param) {
+  if (!*reference) return duplicate_string("invalid empty argument to --target-from");
+  unsigned current;
+  for (current = 0; current < options -> input_file_count; current ++) {
+    if (options -> input_files[current].direction != DIRECTION_TARGET) continue;
+    if (!strcmp(reference, options -> input_files[current].name)) break;
+  }
+  if (current == options -> input_file_count) return generate_string("%s is not a previously given target file", reference);
+  options -> current_conversion_reference = current;
+  options -> current_conversion_direction = DIRECTION_TARGET;
+  return NULL;
+}
+
 char * title_file_option (Options options, const char * filename, int param) {
   if (options -> label_file) return multiple_option_response("--titles");
   if (options -> file_labels_from_stdin) return duplicate_string("--titles and --titles-from-stdin cannot be given simultaneously");

@@ -46,6 +46,7 @@ const struct option_parser option_parsers[] = {
   {.option = "--suppress-errors",           .no_argument_callback = &suppress_errors_option,            .has_argument = 0},
   {.option = "--suppress-source-message",   .no_argument_callback = &suppress_source_message_option,    .has_argument = 0},
   {.option = "--target",                    .no_argument_callback = &set_next_input_file_mode,          .has_argument = 0, .parameter = DIRECTION_TARGET},
+  {.option = "--target-from",               .argument_callback    = &set_named_reference_target_option, .has_argument = 1},
   {.option = "--target-from-last",          .no_argument_callback = &set_target_and_reference_option,   .has_argument = 0, .parameter = -1},
   {.option = "--target-from-previous",      .no_argument_callback = &set_target_and_reference_option,   .has_argument = 0, .parameter = TARGET_TYPE_PREVIOUS},
   {.option = "--target-from-source",        .no_argument_callback = &set_target_and_reference_option,   .has_argument = 0, .parameter = TARGET_TYPE_FROM_SOURCE},
