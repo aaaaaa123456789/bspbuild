@@ -28,9 +28,28 @@ Options version_response (void) {
 
 Options help_response (void) {
   return special_option_response(
-    "bspbuild - version " VERSION_STRING "\n"
+    "bspbuild {-s <source files> | -st <source+target files> | -t <target files>}\n"
+    "         [-m <method>] [-tp | -tl | -ts | --target-from <reference file>]\n"
+    "         {-o <output> | -ob <source code output>} [-f <fragment size>]\n"
+    "         [-p[b|h|w] <padding value>] [--check-fragment-swap]\n"
+    "         [--targets-per-page <value>] [--force-output-menu]\n"
+    "         [--sort-output-menu] [--titles <file> | --titles-from-stdin]\n"
+    "         [--opening-banner <message> | --opening-banner-from-file <file>]\n"
+    "         [--success-message <message> | --success-message-from-file <file>]\n"
+    "         [--source-detection-message <message> | --suppress-source-message]\n"
+    "         [--error-message <message> | --error-message-from-file <file> |\n"
+    "          --suppress-errors] [--error-text-substitute <placeholder>]\n"
+    "         [--no-output-validation | --no-output-sha1-validation]\n"
+    "         [--no-source-to-source] [--initial-register <value>]\n"
+    "         [--prefix <prefix> | [--constant-prefix <prefix>]\n"
+    "          [--register-prefix <prefix>] [--label-prefix <prefix>]]\n"
     "\n"
-    "Help text for this tool isn't available yet. Please check\n"
-    "https://github.com/aaaaaa123456789/bspbuild/tree/master/docs.md for more info."
+    "bspbuild --ips <source file> <target file> -o <output>\n"
+    "\n"
+    "bspbuild --bsp <files> -o <output>\n"
+    "\n"
+    "Check the online documentation available at\n"
+    "https://github.com/aaaaaa123456789/bspbuild/blob/version-" VERSION_STRING "/docs.md\n"
+    "for further information and explanations about the command-line options."
   );
 }
