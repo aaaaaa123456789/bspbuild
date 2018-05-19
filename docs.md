@@ -118,6 +118,9 @@ should be generated from, creating a tree-like structure at the end of the patch
 * The `-ts` option indicates that subsequent target files should be generated directly from the last source file. If
   the `--no-source-to-source` option is enabled and there are no source+target files, this generates rainbow patches
   for all subsequent target files.
+* The `--target-from` option takes a filename as an argument (which must be a target file already given in the command
+  line), and indicates that subsequent target files should be generated from the named target file. This creates a
+  branch in the patching chain.
 
 Note that all of these options imply `-t`. Also, they can be given multiple times in the command line, each one coming
 into force until a new one is given. This way, the end of the patching chain can be manipulated at will.
@@ -328,6 +331,8 @@ All of the following options imply `-t`.
   named before this option (which must be a target file).
 * `-ts`, `--target-from-source`: specifies that the target files that follow must be built directly from source or
   source+target files.
+* `--target-from <file>`: specifies that the target files that follow must be built from the file named as argument.
+  This file must be a target file that has already appeared in the command line.
 
 **Patching options:**
 
