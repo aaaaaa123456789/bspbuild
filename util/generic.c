@@ -34,5 +34,5 @@ void sort_number_array (unsigned * array, unsigned size) {
 int compare_numbers (const void * first, const void * second) {
   const unsigned * n1 = first;
   const unsigned * n2 = second;
-  return (n1 > n2) - (n1 < n2);
+  return (*n1 > *n2) - (*n1 < *n2);
 }
