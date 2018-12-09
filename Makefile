@@ -18,7 +18,7 @@ MODULES := bsp codegen ips main optparse patch pbuilder util
 
 all: CFLAGS := -O3
 all: bspbuild
-	${TOOLCHAIN_PREFIX}strip -s ${EXE_NAME}
+	-${TOOLCHAIN_PREFIX}strip -s ${EXE_NAME}
 
 debug: CFLAGS := -ggdb -Og
 debug: bspbuild
